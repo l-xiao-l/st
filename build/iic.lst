@@ -1,0 +1,1437 @@
+ARM GAS  /tmp/ccBwaTyH.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"iic.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.I2C_Start,"ax",%progbits
+  16              		.align	1
+  17              		.global	I2C_Start
+  18              		.syntax unified
+  19              		.code	16
+  20              		.thumb_func
+  21              		.fpu softvfp
+  23              	I2C_Start:
+  24              	.LFB38:
+  25              		.file 1 "Dsp/iic.c"
+   1:Dsp/iic.c     **** #include "iic.h"
+   2:Dsp/iic.c     **** 
+   3:Dsp/iic.c     **** /**
+   4:Dsp/iic.c     ****   * 函数功能: I2C总线位延迟，最快400KHz
+   5:Dsp/iic.c     ****   * 输入参数: 无
+   6:Dsp/iic.c     ****   * 返 回 值: 无
+   7:Dsp/iic.c     ****   * 说    明：无
+   8:Dsp/iic.c     ****   */
+   9:Dsp/iic.c     **** static void I2C_Delay(void)
+  10:Dsp/iic.c     **** {
+  11:Dsp/iic.c     **** 	uint8_t i;
+  12:Dsp/iic.c     **** 
+  13:Dsp/iic.c     **** 	/*　
+  14:Dsp/iic.c     **** 	 	下面的时间是通过逻辑分析仪测试得到的。
+  15:Dsp/iic.c     **** 		CPU主频72MHz时，在内部Flash运行, MDK工程不优化
+  16:Dsp/iic.c     **** 		循环次数为10时，SCL频率 = 205KHz 
+  17:Dsp/iic.c     **** 		循环次数为7时，SCL频率 = 347KHz， SCL高电平时间1.5us，SCL低电平时间2.87us 
+  18:Dsp/iic.c     **** 	 	循环次数为5时，SCL频率 = 421KHz， SCL高电平时间1.25us，SCL低电平时间2.375us
+  19:Dsp/iic.c     ****         
+  20:Dsp/iic.c     ****     IAR工程编译效率高，不能设置为7
+  21:Dsp/iic.c     **** 	*/
+  22:Dsp/iic.c     **** 	for (i = 0; i < 7; i++);
+  23:Dsp/iic.c     **** }
+  24:Dsp/iic.c     **** 
+  25:Dsp/iic.c     **** /**
+  26:Dsp/iic.c     ****   * 函数功能: CPU发起I2C总线启动信号
+  27:Dsp/iic.c     ****   * 输入参数: 无
+  28:Dsp/iic.c     ****   * 返 回 值: 无
+  29:Dsp/iic.c     ****   * 说    明：无
+  30:Dsp/iic.c     ****   */
+  31:Dsp/iic.c     **** void I2C_Start(void)
+  32:Dsp/iic.c     **** {
+  26              		.loc 1 32 0
+ARM GAS  /tmp/ccBwaTyH.s 			page 2
+
+
+  27              		.cfi_startproc
+  28              		@ args = 0, pretend = 0, frame = 0
+  29              		@ frame_needed = 0, uses_anonymous_args = 0
+  30 0000 10B5     		push	{r4, lr}
+  31              	.LCFI0:
+  32              		.cfi_def_cfa_offset 8
+  33              		.cfi_offset 4, -8
+  34              		.cfi_offset 14, -4
+  33:Dsp/iic.c     **** 	/* 当SCL高电平时，SDA出现一个下跳沿表示I2C总线启动信号 */
+  34:Dsp/iic.c     **** 	I2C_SDA_HIGH();
+  35              		.loc 1 34 0
+  36 0002 0B4C     		ldr	r4, .L2
+  37 0004 0122     		movs	r2, #1
+  38 0006 4021     		movs	r1, #64
+  39 0008 2000     		movs	r0, r4
+  40 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
+  41              	.LVL0:
+  35:Dsp/iic.c     **** 	I2C_SCL_HIGH();
+  42              		.loc 1 35 0
+  43 000e 0122     		movs	r2, #1
+  44 0010 8021     		movs	r1, #128
+  45 0012 2000     		movs	r0, r4
+  46 0014 FFF7FEFF 		bl	HAL_GPIO_WritePin
+  47              	.LVL1:
+  36:Dsp/iic.c     **** 	I2C_Delay();
+  37:Dsp/iic.c     **** 	I2C_SDA_LOW();
+  48              		.loc 1 37 0
+  49 0018 0022     		movs	r2, #0
+  50 001a 4021     		movs	r1, #64
+  51 001c 2000     		movs	r0, r4
+  52 001e FFF7FEFF 		bl	HAL_GPIO_WritePin
+  53              	.LVL2:
+  38:Dsp/iic.c     **** 	I2C_Delay();
+  39:Dsp/iic.c     **** 	I2C_SCL_LOW();
+  54              		.loc 1 39 0
+  55 0022 0022     		movs	r2, #0
+  56 0024 8021     		movs	r1, #128
+  57 0026 2000     		movs	r0, r4
+  58 0028 FFF7FEFF 		bl	HAL_GPIO_WritePin
+  59              	.LVL3:
+  40:Dsp/iic.c     **** 	I2C_Delay();
+  41:Dsp/iic.c     **** }
+  60              		.loc 1 41 0
+  61              		@ sp needed
+  62 002c 10BD     		pop	{r4, pc}
+  63              	.L3:
+  64 002e C046     		.align	2
+  65              	.L2:
+  66 0030 00040048 		.word	1207960576
+  67              		.cfi_endproc
+  68              	.LFE38:
+  70              		.section	.text.I2C_Stop,"ax",%progbits
+  71              		.align	1
+  72              		.global	I2C_Stop
+  73              		.syntax unified
+  74              		.code	16
+  75              		.thumb_func
+ARM GAS  /tmp/ccBwaTyH.s 			page 3
+
+
+  76              		.fpu softvfp
+  78              	I2C_Stop:
+  79              	.LFB39:
+  42:Dsp/iic.c     **** 
+  43:Dsp/iic.c     **** /**
+  44:Dsp/iic.c     ****   * 函数功能: CPU发起I2C总线停止信号
+  45:Dsp/iic.c     ****   * 输入参数: 无
+  46:Dsp/iic.c     ****   * 返 回 值: 无
+  47:Dsp/iic.c     ****   * 说    明：无
+  48:Dsp/iic.c     ****   */
+  49:Dsp/iic.c     **** void I2C_Stop(void)
+  50:Dsp/iic.c     **** {
+  80              		.loc 1 50 0
+  81              		.cfi_startproc
+  82              		@ args = 0, pretend = 0, frame = 0
+  83              		@ frame_needed = 0, uses_anonymous_args = 0
+  84 0000 10B5     		push	{r4, lr}
+  85              	.LCFI1:
+  86              		.cfi_def_cfa_offset 8
+  87              		.cfi_offset 4, -8
+  88              		.cfi_offset 14, -4
+  51:Dsp/iic.c     **** 	/* 当SCL高电平时，SDA出现一个上跳沿表示I2C总线停止信号 */
+  52:Dsp/iic.c     **** 	I2C_SDA_LOW();
+  89              		.loc 1 52 0
+  90 0002 084C     		ldr	r4, .L5
+  91 0004 0022     		movs	r2, #0
+  92 0006 4021     		movs	r1, #64
+  93 0008 2000     		movs	r0, r4
+  94 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
+  95              	.LVL4:
+  53:Dsp/iic.c     **** 	I2C_SCL_HIGH();
+  96              		.loc 1 53 0
+  97 000e 0122     		movs	r2, #1
+  98 0010 8021     		movs	r1, #128
+  99 0012 2000     		movs	r0, r4
+ 100 0014 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 101              	.LVL5:
+  54:Dsp/iic.c     **** 	I2C_Delay();
+  55:Dsp/iic.c     **** 	I2C_SDA_HIGH();
+ 102              		.loc 1 55 0
+ 103 0018 0122     		movs	r2, #1
+ 104 001a 4021     		movs	r1, #64
+ 105 001c 2000     		movs	r0, r4
+ 106 001e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 107              	.LVL6:
+  56:Dsp/iic.c     **** }
+ 108              		.loc 1 56 0
+ 109              		@ sp needed
+ 110 0022 10BD     		pop	{r4, pc}
+ 111              	.L6:
+ 112              		.align	2
+ 113              	.L5:
+ 114 0024 00040048 		.word	1207960576
+ 115              		.cfi_endproc
+ 116              	.LFE39:
+ 118              		.section	.text.I2C_InitGPIO,"ax",%progbits
+ 119              		.align	1
+ARM GAS  /tmp/ccBwaTyH.s 			page 4
+
+
+ 120              		.syntax unified
+ 121              		.code	16
+ 122              		.thumb_func
+ 123              		.fpu softvfp
+ 125              	I2C_InitGPIO:
+ 126              	.LFB45:
+  57:Dsp/iic.c     **** 
+  58:Dsp/iic.c     **** /**
+  59:Dsp/iic.c     ****   * 函数功能: CPU向I2C总线设备发送8bit数据
+  60:Dsp/iic.c     ****   * 输入参数: Byte ： 等待发送的字节
+  61:Dsp/iic.c     ****   * 返 回 值: 无
+  62:Dsp/iic.c     ****   * 说    明：无
+  63:Dsp/iic.c     ****   */
+  64:Dsp/iic.c     **** void I2C_SendByte(uint8_t Byte)
+  65:Dsp/iic.c     **** {
+  66:Dsp/iic.c     **** 	uint8_t i;
+  67:Dsp/iic.c     **** 
+  68:Dsp/iic.c     **** 	/* 先发送字节的高位bit7 */
+  69:Dsp/iic.c     **** 	for (i = 0; i < 8; i++)
+  70:Dsp/iic.c     **** 	{		
+  71:Dsp/iic.c     **** 		if (Byte & 0x80)
+  72:Dsp/iic.c     **** 		{
+  73:Dsp/iic.c     **** 			I2C_SDA_HIGH();
+  74:Dsp/iic.c     **** 		}
+  75:Dsp/iic.c     **** 		else
+  76:Dsp/iic.c     **** 		{
+  77:Dsp/iic.c     **** 			I2C_SDA_LOW();
+  78:Dsp/iic.c     **** 		}
+  79:Dsp/iic.c     **** 		I2C_Delay();
+  80:Dsp/iic.c     **** 		I2C_SCL_HIGH();
+  81:Dsp/iic.c     **** 		I2C_Delay();	
+  82:Dsp/iic.c     **** 		I2C_SCL_LOW();
+  83:Dsp/iic.c     **** 		if (i == 7)
+  84:Dsp/iic.c     **** 		{
+  85:Dsp/iic.c     **** 			I2C_SDA_HIGH(); // 释放总线
+  86:Dsp/iic.c     **** 		}
+  87:Dsp/iic.c     **** 		Byte <<= 1;	/* 左移一个bit */
+  88:Dsp/iic.c     **** 		I2C_Delay();
+  89:Dsp/iic.c     **** 	}
+  90:Dsp/iic.c     **** }
+  91:Dsp/iic.c     **** 
+  92:Dsp/iic.c     **** 
+  93:Dsp/iic.c     **** /**
+  94:Dsp/iic.c     ****   * 函数功能: CPU从I2C总线设备读取8bit数据
+  95:Dsp/iic.c     ****   * 输入参数: 无
+  96:Dsp/iic.c     ****   * 返 回 值: 读到的数据
+  97:Dsp/iic.c     ****   * 说    明：无
+  98:Dsp/iic.c     ****   */
+  99:Dsp/iic.c     **** uint8_t I2C_ReadByte(void)
+ 100:Dsp/iic.c     **** {
+ 101:Dsp/iic.c     **** 	uint8_t i;
+ 102:Dsp/iic.c     **** 	uint8_t value;
+ 103:Dsp/iic.c     **** 
+ 104:Dsp/iic.c     **** 	/* 读到第1个bit为数据的bit7 */
+ 105:Dsp/iic.c     **** 	value = 0;
+ 106:Dsp/iic.c     **** 	for (i = 0; i < 8; i++)
+ 107:Dsp/iic.c     **** 	{
+ARM GAS  /tmp/ccBwaTyH.s 			page 5
+
+
+ 108:Dsp/iic.c     **** 		value <<= 1;
+ 109:Dsp/iic.c     **** 		I2C_SCL_HIGH();
+ 110:Dsp/iic.c     **** 		I2C_Delay();
+ 111:Dsp/iic.c     **** 		if (I2C_SDA_READ())
+ 112:Dsp/iic.c     **** 		{
+ 113:Dsp/iic.c     **** 			value++;
+ 114:Dsp/iic.c     **** 		}
+ 115:Dsp/iic.c     **** 		I2C_SCL_LOW();
+ 116:Dsp/iic.c     **** 		I2C_Delay();
+ 117:Dsp/iic.c     **** 	}
+ 118:Dsp/iic.c     **** 	return value;
+ 119:Dsp/iic.c     **** }
+ 120:Dsp/iic.c     **** 
+ 121:Dsp/iic.c     **** /**
+ 122:Dsp/iic.c     ****   * 函数功能: CPU产生一个时钟，并读取器件的ACK应答信号
+ 123:Dsp/iic.c     ****   * 输入参数: 无
+ 124:Dsp/iic.c     ****   * 返 回 值: 返回0表示正确应答，1表示无器件响应
+ 125:Dsp/iic.c     ****   * 说    明：无
+ 126:Dsp/iic.c     ****   */
+ 127:Dsp/iic.c     **** uint8_t I2C_WaitAck(void)
+ 128:Dsp/iic.c     **** {
+ 129:Dsp/iic.c     **** 	uint8_t re;
+ 130:Dsp/iic.c     **** 
+ 131:Dsp/iic.c     **** 	I2C_SDA_HIGH();	/* CPU释放SDA总线 */
+ 132:Dsp/iic.c     **** 	I2C_Delay();
+ 133:Dsp/iic.c     **** 	I2C_SCL_HIGH();	/* CPU驱动SCL = 1, 此时器件会返回ACK应答 */
+ 134:Dsp/iic.c     **** 	I2C_Delay();
+ 135:Dsp/iic.c     **** 	if (I2C_SDA_READ())	/* CPU读取SDA口线状态 */
+ 136:Dsp/iic.c     **** 	{
+ 137:Dsp/iic.c     **** 		re = 1;
+ 138:Dsp/iic.c     **** 	}
+ 139:Dsp/iic.c     **** 	else
+ 140:Dsp/iic.c     **** 	{
+ 141:Dsp/iic.c     **** 		re = 0;
+ 142:Dsp/iic.c     **** 	}
+ 143:Dsp/iic.c     **** 	I2C_SCL_LOW();
+ 144:Dsp/iic.c     **** 	I2C_Delay();
+ 145:Dsp/iic.c     **** 	return re;
+ 146:Dsp/iic.c     **** }
+ 147:Dsp/iic.c     **** 
+ 148:Dsp/iic.c     **** /**
+ 149:Dsp/iic.c     ****   * 函数功能: CPU产生一个ACK信号
+ 150:Dsp/iic.c     ****   * 输入参数: 无
+ 151:Dsp/iic.c     ****   * 返 回 值: 无
+ 152:Dsp/iic.c     ****   * 说    明：无
+ 153:Dsp/iic.c     ****   */
+ 154:Dsp/iic.c     **** void I2C_Ack(void)
+ 155:Dsp/iic.c     **** {
+ 156:Dsp/iic.c     **** 	I2C_SDA_LOW();	/* CPU驱动SDA = 0 */
+ 157:Dsp/iic.c     **** 	I2C_Delay();
+ 158:Dsp/iic.c     **** 	I2C_SCL_HIGH();	/* CPU产生1个时钟 */
+ 159:Dsp/iic.c     **** 	I2C_Delay();
+ 160:Dsp/iic.c     **** 	I2C_SCL_LOW();
+ 161:Dsp/iic.c     **** 	I2C_Delay();
+ 162:Dsp/iic.c     **** 	I2C_SDA_HIGH();	/* CPU释放SDA总线 */
+ 163:Dsp/iic.c     **** }
+ 164:Dsp/iic.c     **** 
+ARM GAS  /tmp/ccBwaTyH.s 			page 6
+
+
+ 165:Dsp/iic.c     **** /**
+ 166:Dsp/iic.c     ****   * 函数功能: CPU产生1个NACK信号
+ 167:Dsp/iic.c     ****   * 输入参数: 无
+ 168:Dsp/iic.c     ****   * 返 回 值: 无
+ 169:Dsp/iic.c     ****   * 说    明：无
+ 170:Dsp/iic.c     ****   */
+ 171:Dsp/iic.c     **** void I2C_NAck(void)
+ 172:Dsp/iic.c     **** {
+ 173:Dsp/iic.c     **** 	I2C_SDA_HIGH();	/* CPU驱动SDA = 1 */
+ 174:Dsp/iic.c     **** 	I2C_Delay();
+ 175:Dsp/iic.c     **** 	I2C_SCL_HIGH();	/* CPU产生1个时钟 */
+ 176:Dsp/iic.c     **** 	I2C_Delay();
+ 177:Dsp/iic.c     **** 	I2C_SCL_LOW();
+ 178:Dsp/iic.c     **** 	I2C_Delay();	
+ 179:Dsp/iic.c     **** }
+ 180:Dsp/iic.c     **** 
+ 181:Dsp/iic.c     **** /**
+ 182:Dsp/iic.c     ****   * 函数功能: 配置I2C总线的GPIO，采用模拟IO的方式实现
+ 183:Dsp/iic.c     ****   * 输入参数: 无
+ 184:Dsp/iic.c     ****   * 返 回 值: 无
+ 185:Dsp/iic.c     ****   * 说    明：无
+ 186:Dsp/iic.c     ****   */
+ 187:Dsp/iic.c     **** static void I2C_InitGPIO(void)
+ 188:Dsp/iic.c     **** {
+ 127              		.loc 1 188 0
+ 128              		.cfi_startproc
+ 129              		@ args = 0, pretend = 0, frame = 24
+ 130              		@ frame_needed = 0, uses_anonymous_args = 0
+ 131 0000 00B5     		push	{lr}
+ 132              	.LCFI2:
+ 133              		.cfi_def_cfa_offset 4
+ 134              		.cfi_offset 14, -4
+ 135 0002 87B0     		sub	sp, sp, #28
+ 136              	.LCFI3:
+ 137              		.cfi_def_cfa_offset 32
+ 138              	.LBB2:
+ 189:Dsp/iic.c     ****   GPIO_InitTypeDef GPIO_InitStruct;
+ 190:Dsp/iic.c     ****   
+ 191:Dsp/iic.c     ****   /* 打开GPIO时钟 */
+ 192:Dsp/iic.c     **** 	I2C_GPIO_CLK_ENABLE();
+ 139              		.loc 1 192 0
+ 140 0004 0B4A     		ldr	r2, .L8
+ 141 0006 5169     		ldr	r1, [r2, #20]
+ 142 0008 8020     		movs	r0, #128
+ 143 000a C002     		lsls	r0, r0, #11
+ 144 000c 0143     		orrs	r1, r0
+ 145 000e 5161     		str	r1, [r2, #20]
+ 146 0010 5369     		ldr	r3, [r2, #20]
+ 147 0012 0340     		ands	r3, r0
+ 148 0014 0093     		str	r3, [sp]
+ 149 0016 009B     		ldr	r3, [sp]
+ 150              	.LBE2:
+ 193:Dsp/iic.c     **** 
+ 194:Dsp/iic.c     ****   GPIO_InitStruct.Pin = I2C_SCL_PIN|I2C_SDA_PIN;
+ 151              		.loc 1 194 0
+ 152 0018 C023     		movs	r3, #192
+ 153 001a 0193     		str	r3, [sp, #4]
+ARM GAS  /tmp/ccBwaTyH.s 			page 7
+
+
+ 195:Dsp/iic.c     ****   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+ 154              		.loc 1 195 0
+ 155 001c AF3B     		subs	r3, r3, #175
+ 156 001e 0293     		str	r3, [sp, #8]
+ 196:Dsp/iic.c     ****   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
+ 157              		.loc 1 196 0
+ 158 0020 103B     		subs	r3, r3, #16
+ 159 0022 0493     		str	r3, [sp, #16]
+ 197:Dsp/iic.c     ****   HAL_GPIO_Init(I2C_GPIO_PORT, &GPIO_InitStruct);
+ 160              		.loc 1 197 0
+ 161 0024 01A9     		add	r1, sp, #4
+ 162 0026 0448     		ldr	r0, .L8+4
+ 163 0028 FFF7FEFF 		bl	HAL_GPIO_Init
+ 164              	.LVL7:
+ 198:Dsp/iic.c     **** 
+ 199:Dsp/iic.c     ****   /* 给一个停止信号, 复位I2C总线上的所有设备到待机模式 */
+ 200:Dsp/iic.c     ****   I2C_Stop();
+ 165              		.loc 1 200 0
+ 166 002c FFF7FEFF 		bl	I2C_Stop
+ 167              	.LVL8:
+ 201:Dsp/iic.c     **** }
+ 168              		.loc 1 201 0
+ 169 0030 07B0     		add	sp, sp, #28
+ 170              		@ sp needed
+ 171 0032 00BD     		pop	{pc}
+ 172              	.L9:
+ 173              		.align	2
+ 174              	.L8:
+ 175 0034 00100240 		.word	1073876992
+ 176 0038 00040048 		.word	1207960576
+ 177              		.cfi_endproc
+ 178              	.LFE45:
+ 180              		.section	.text.I2C_SendByte,"ax",%progbits
+ 181              		.align	1
+ 182              		.global	I2C_SendByte
+ 183              		.syntax unified
+ 184              		.code	16
+ 185              		.thumb_func
+ 186              		.fpu softvfp
+ 188              	I2C_SendByte:
+ 189              	.LFB40:
+  65:Dsp/iic.c     **** 	uint8_t i;
+ 190              		.loc 1 65 0
+ 191              		.cfi_startproc
+ 192              		@ args = 0, pretend = 0, frame = 0
+ 193              		@ frame_needed = 0, uses_anonymous_args = 0
+ 194              	.LVL9:
+ 195 0000 70B5     		push	{r4, r5, r6, lr}
+ 196              	.LCFI4:
+ 197              		.cfi_def_cfa_offset 16
+ 198              		.cfi_offset 4, -16
+ 199              		.cfi_offset 5, -12
+ 200              		.cfi_offset 6, -8
+ 201              		.cfi_offset 14, -4
+ 202 0002 0500     		movs	r5, r0
+ 203              	.LVL10:
+  69:Dsp/iic.c     **** 	{		
+ARM GAS  /tmp/ccBwaTyH.s 			page 8
+
+
+ 204              		.loc 1 69 0
+ 205 0004 0024     		movs	r4, #0
+ 206 0006 15E0     		b	.L11
+ 207              	.LVL11:
+ 208              	.L18:
+  73:Dsp/iic.c     **** 		}
+ 209              		.loc 1 73 0
+ 210 0008 0122     		movs	r2, #1
+ 211 000a 4021     		movs	r1, #64
+ 212 000c 1248     		ldr	r0, .L19
+ 213 000e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 214              	.LVL12:
+ 215              	.L13:
+  80:Dsp/iic.c     **** 		I2C_Delay();	
+ 216              		.loc 1 80 0
+ 217 0012 114E     		ldr	r6, .L19
+ 218 0014 0122     		movs	r2, #1
+ 219 0016 8021     		movs	r1, #128
+ 220 0018 3000     		movs	r0, r6
+ 221 001a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 222              	.LVL13:
+  82:Dsp/iic.c     **** 		if (i == 7)
+ 223              		.loc 1 82 0
+ 224 001e 0022     		movs	r2, #0
+ 225 0020 8021     		movs	r1, #128
+ 226 0022 3000     		movs	r0, r6
+ 227 0024 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 228              	.LVL14:
+  83:Dsp/iic.c     **** 		{
+ 229              		.loc 1 83 0
+ 230 0028 072C     		cmp	r4, #7
+ 231 002a 0ED0     		beq	.L16
+ 232              	.L14:
+  87:Dsp/iic.c     **** 		I2C_Delay();
+ 233              		.loc 1 87 0 discriminator 2
+ 234 002c 6D00     		lsls	r5, r5, #1
+ 235              	.LVL15:
+ 236 002e EDB2     		uxtb	r5, r5
+ 237              	.LVL16:
+  69:Dsp/iic.c     **** 	{		
+ 238              		.loc 1 69 0 discriminator 2
+ 239 0030 0134     		adds	r4, r4, #1
+ 240              	.LVL17:
+ 241 0032 E4B2     		uxtb	r4, r4
+ 242              	.LVL18:
+ 243              	.L11:
+  69:Dsp/iic.c     **** 	{		
+ 244              		.loc 1 69 0 is_stmt 0 discriminator 1
+ 245 0034 072C     		cmp	r4, #7
+ 246 0036 0ED8     		bhi	.L17
+  71:Dsp/iic.c     **** 		{
+ 247              		.loc 1 71 0 is_stmt 1
+ 248 0038 6BB2     		sxtb	r3, r5
+ 249 003a 002B     		cmp	r3, #0
+ 250 003c E4DB     		blt	.L18
+  77:Dsp/iic.c     **** 		}
+ 251              		.loc 1 77 0
+ARM GAS  /tmp/ccBwaTyH.s 			page 9
+
+
+ 252 003e 0022     		movs	r2, #0
+ 253 0040 4021     		movs	r1, #64
+ 254 0042 0548     		ldr	r0, .L19
+ 255 0044 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 256              	.LVL19:
+ 257 0048 E3E7     		b	.L13
+ 258              	.L16:
+  85:Dsp/iic.c     **** 		}
+ 259              		.loc 1 85 0
+ 260 004a 0122     		movs	r2, #1
+ 261 004c 4021     		movs	r1, #64
+ 262 004e 3000     		movs	r0, r6
+ 263 0050 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 264              	.LVL20:
+ 265 0054 EAE7     		b	.L14
+ 266              	.L17:
+  90:Dsp/iic.c     **** 
+ 267              		.loc 1 90 0
+ 268              		@ sp needed
+ 269              	.LVL21:
+ 270              	.LVL22:
+ 271 0056 70BD     		pop	{r4, r5, r6, pc}
+ 272              	.L20:
+ 273              		.align	2
+ 274              	.L19:
+ 275 0058 00040048 		.word	1207960576
+ 276              		.cfi_endproc
+ 277              	.LFE40:
+ 279              		.section	.text.I2C_ReadByte,"ax",%progbits
+ 280              		.align	1
+ 281              		.global	I2C_ReadByte
+ 282              		.syntax unified
+ 283              		.code	16
+ 284              		.thumb_func
+ 285              		.fpu softvfp
+ 287              	I2C_ReadByte:
+ 288              	.LFB41:
+ 100:Dsp/iic.c     **** 	uint8_t i;
+ 289              		.loc 1 100 0
+ 290              		.cfi_startproc
+ 291              		@ args = 0, pretend = 0, frame = 0
+ 292              		@ frame_needed = 0, uses_anonymous_args = 0
+ 293 0000 70B5     		push	{r4, r5, r6, lr}
+ 294              	.LCFI5:
+ 295              		.cfi_def_cfa_offset 16
+ 296              		.cfi_offset 4, -16
+ 297              		.cfi_offset 5, -12
+ 298              		.cfi_offset 6, -8
+ 299              		.cfi_offset 14, -4
+ 300              	.LVL23:
+ 105:Dsp/iic.c     **** 	for (i = 0; i < 8; i++)
+ 301              		.loc 1 105 0
+ 302 0002 0024     		movs	r4, #0
+ 106:Dsp/iic.c     **** 	{
+ 303              		.loc 1 106 0
+ 304 0004 0025     		movs	r5, #0
+ 305 0006 06E0     		b	.L22
+ARM GAS  /tmp/ccBwaTyH.s 			page 10
+
+
+ 306              	.LVL24:
+ 307              	.L23:
+ 115:Dsp/iic.c     **** 		I2C_Delay();
+ 308              		.loc 1 115 0 discriminator 2
+ 309 0008 0022     		movs	r2, #0
+ 310 000a 8021     		movs	r1, #128
+ 311 000c 0C48     		ldr	r0, .L26
+ 312 000e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 313              	.LVL25:
+ 106:Dsp/iic.c     **** 	{
+ 314              		.loc 1 106 0 discriminator 2
+ 315 0012 0135     		adds	r5, r5, #1
+ 316              	.LVL26:
+ 317 0014 EDB2     		uxtb	r5, r5
+ 318              	.LVL27:
+ 319              	.L22:
+ 106:Dsp/iic.c     **** 	{
+ 320              		.loc 1 106 0 is_stmt 0 discriminator 1
+ 321 0016 072D     		cmp	r5, #7
+ 322 0018 10D8     		bhi	.L25
+ 108:Dsp/iic.c     **** 		I2C_SCL_HIGH();
+ 323              		.loc 1 108 0 is_stmt 1
+ 324 001a 6400     		lsls	r4, r4, #1
+ 325              	.LVL28:
+ 326 001c E4B2     		uxtb	r4, r4
+ 327              	.LVL29:
+ 109:Dsp/iic.c     **** 		I2C_Delay();
+ 328              		.loc 1 109 0
+ 329 001e 084E     		ldr	r6, .L26
+ 330 0020 0122     		movs	r2, #1
+ 331 0022 8021     		movs	r1, #128
+ 332 0024 3000     		movs	r0, r6
+ 333 0026 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 334              	.LVL30:
+ 111:Dsp/iic.c     **** 		{
+ 335              		.loc 1 111 0
+ 336 002a 4021     		movs	r1, #64
+ 337 002c 3000     		movs	r0, r6
+ 338 002e FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 339              	.LVL31:
+ 340 0032 0028     		cmp	r0, #0
+ 341 0034 E8D0     		beq	.L23
+ 113:Dsp/iic.c     **** 		}
+ 342              		.loc 1 113 0
+ 343 0036 0134     		adds	r4, r4, #1
+ 344              	.LVL32:
+ 345 0038 E4B2     		uxtb	r4, r4
+ 346              	.LVL33:
+ 347 003a E5E7     		b	.L23
+ 348              	.L25:
+ 119:Dsp/iic.c     **** 
+ 349              		.loc 1 119 0
+ 350 003c 2000     		movs	r0, r4
+ 351              		@ sp needed
+ 352              	.LVL34:
+ 353              	.LVL35:
+ 354 003e 70BD     		pop	{r4, r5, r6, pc}
+ARM GAS  /tmp/ccBwaTyH.s 			page 11
+
+
+ 355              	.L27:
+ 356              		.align	2
+ 357              	.L26:
+ 358 0040 00040048 		.word	1207960576
+ 359              		.cfi_endproc
+ 360              	.LFE41:
+ 362              		.section	.text.I2C_WaitAck,"ax",%progbits
+ 363              		.align	1
+ 364              		.global	I2C_WaitAck
+ 365              		.syntax unified
+ 366              		.code	16
+ 367              		.thumb_func
+ 368              		.fpu softvfp
+ 370              	I2C_WaitAck:
+ 371              	.LFB42:
+ 128:Dsp/iic.c     **** 	uint8_t re;
+ 372              		.loc 1 128 0
+ 373              		.cfi_startproc
+ 374              		@ args = 0, pretend = 0, frame = 0
+ 375              		@ frame_needed = 0, uses_anonymous_args = 0
+ 376 0000 10B5     		push	{r4, lr}
+ 377              	.LCFI6:
+ 378              		.cfi_def_cfa_offset 8
+ 379              		.cfi_offset 4, -8
+ 380              		.cfi_offset 14, -4
+ 131:Dsp/iic.c     **** 	I2C_Delay();
+ 381              		.loc 1 131 0
+ 382 0002 0D4C     		ldr	r4, .L32
+ 383 0004 0122     		movs	r2, #1
+ 384 0006 4021     		movs	r1, #64
+ 385 0008 2000     		movs	r0, r4
+ 386 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 387              	.LVL36:
+ 133:Dsp/iic.c     **** 	I2C_Delay();
+ 388              		.loc 1 133 0
+ 389 000e 0122     		movs	r2, #1
+ 390 0010 8021     		movs	r1, #128
+ 391 0012 2000     		movs	r0, r4
+ 392 0014 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 393              	.LVL37:
+ 135:Dsp/iic.c     **** 	{
+ 394              		.loc 1 135 0
+ 395 0018 4021     		movs	r1, #64
+ 396 001a 2000     		movs	r0, r4
+ 397 001c FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 398              	.LVL38:
+ 399 0020 0028     		cmp	r0, #0
+ 400 0022 07D1     		bne	.L31
+ 141:Dsp/iic.c     **** 	}
+ 401              		.loc 1 141 0
+ 402 0024 0024     		movs	r4, #0
+ 403              	.L29:
+ 404              	.LVL39:
+ 143:Dsp/iic.c     **** 	I2C_Delay();
+ 405              		.loc 1 143 0
+ 406 0026 0022     		movs	r2, #0
+ 407 0028 8021     		movs	r1, #128
+ARM GAS  /tmp/ccBwaTyH.s 			page 12
+
+
+ 408 002a 0348     		ldr	r0, .L32
+ 409 002c FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 410              	.LVL40:
+ 146:Dsp/iic.c     **** 
+ 411              		.loc 1 146 0
+ 412 0030 2000     		movs	r0, r4
+ 413              		@ sp needed
+ 414              	.LVL41:
+ 415 0032 10BD     		pop	{r4, pc}
+ 416              	.L31:
+ 137:Dsp/iic.c     **** 	}
+ 417              		.loc 1 137 0
+ 418 0034 0124     		movs	r4, #1
+ 419 0036 F6E7     		b	.L29
+ 420              	.L33:
+ 421              		.align	2
+ 422              	.L32:
+ 423 0038 00040048 		.word	1207960576
+ 424              		.cfi_endproc
+ 425              	.LFE42:
+ 427              		.section	.text.I2C_Ack,"ax",%progbits
+ 428              		.align	1
+ 429              		.global	I2C_Ack
+ 430              		.syntax unified
+ 431              		.code	16
+ 432              		.thumb_func
+ 433              		.fpu softvfp
+ 435              	I2C_Ack:
+ 436              	.LFB43:
+ 155:Dsp/iic.c     **** 	I2C_SDA_LOW();	/* CPU驱动SDA = 0 */
+ 437              		.loc 1 155 0
+ 438              		.cfi_startproc
+ 439              		@ args = 0, pretend = 0, frame = 0
+ 440              		@ frame_needed = 0, uses_anonymous_args = 0
+ 441 0000 10B5     		push	{r4, lr}
+ 442              	.LCFI7:
+ 443              		.cfi_def_cfa_offset 8
+ 444              		.cfi_offset 4, -8
+ 445              		.cfi_offset 14, -4
+ 156:Dsp/iic.c     **** 	I2C_Delay();
+ 446              		.loc 1 156 0
+ 447 0002 0B4C     		ldr	r4, .L35
+ 448 0004 0022     		movs	r2, #0
+ 449 0006 4021     		movs	r1, #64
+ 450 0008 2000     		movs	r0, r4
+ 451 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 452              	.LVL42:
+ 158:Dsp/iic.c     **** 	I2C_Delay();
+ 453              		.loc 1 158 0
+ 454 000e 0122     		movs	r2, #1
+ 455 0010 8021     		movs	r1, #128
+ 456 0012 2000     		movs	r0, r4
+ 457 0014 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 458              	.LVL43:
+ 160:Dsp/iic.c     **** 	I2C_Delay();
+ 459              		.loc 1 160 0
+ 460 0018 0022     		movs	r2, #0
+ARM GAS  /tmp/ccBwaTyH.s 			page 13
+
+
+ 461 001a 8021     		movs	r1, #128
+ 462 001c 2000     		movs	r0, r4
+ 463 001e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 464              	.LVL44:
+ 162:Dsp/iic.c     **** }
+ 465              		.loc 1 162 0
+ 466 0022 0122     		movs	r2, #1
+ 467 0024 4021     		movs	r1, #64
+ 468 0026 2000     		movs	r0, r4
+ 469 0028 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 470              	.LVL45:
+ 163:Dsp/iic.c     **** 
+ 471              		.loc 1 163 0
+ 472              		@ sp needed
+ 473 002c 10BD     		pop	{r4, pc}
+ 474              	.L36:
+ 475 002e C046     		.align	2
+ 476              	.L35:
+ 477 0030 00040048 		.word	1207960576
+ 478              		.cfi_endproc
+ 479              	.LFE43:
+ 481              		.section	.text.I2C_NAck,"ax",%progbits
+ 482              		.align	1
+ 483              		.global	I2C_NAck
+ 484              		.syntax unified
+ 485              		.code	16
+ 486              		.thumb_func
+ 487              		.fpu softvfp
+ 489              	I2C_NAck:
+ 490              	.LFB44:
+ 172:Dsp/iic.c     **** 	I2C_SDA_HIGH();	/* CPU驱动SDA = 1 */
+ 491              		.loc 1 172 0
+ 492              		.cfi_startproc
+ 493              		@ args = 0, pretend = 0, frame = 0
+ 494              		@ frame_needed = 0, uses_anonymous_args = 0
+ 495 0000 10B5     		push	{r4, lr}
+ 496              	.LCFI8:
+ 497              		.cfi_def_cfa_offset 8
+ 498              		.cfi_offset 4, -8
+ 499              		.cfi_offset 14, -4
+ 173:Dsp/iic.c     **** 	I2C_Delay();
+ 500              		.loc 1 173 0
+ 501 0002 084C     		ldr	r4, .L38
+ 502 0004 0122     		movs	r2, #1
+ 503 0006 4021     		movs	r1, #64
+ 504 0008 2000     		movs	r0, r4
+ 505 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 506              	.LVL46:
+ 175:Dsp/iic.c     **** 	I2C_Delay();
+ 507              		.loc 1 175 0
+ 508 000e 0122     		movs	r2, #1
+ 509 0010 8021     		movs	r1, #128
+ 510 0012 2000     		movs	r0, r4
+ 511 0014 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 512              	.LVL47:
+ 177:Dsp/iic.c     **** 	I2C_Delay();	
+ 513              		.loc 1 177 0
+ARM GAS  /tmp/ccBwaTyH.s 			page 14
+
+
+ 514 0018 0022     		movs	r2, #0
+ 515 001a 8021     		movs	r1, #128
+ 516 001c 2000     		movs	r0, r4
+ 517 001e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 518              	.LVL48:
+ 179:Dsp/iic.c     **** 
+ 519              		.loc 1 179 0
+ 520              		@ sp needed
+ 521 0022 10BD     		pop	{r4, pc}
+ 522              	.L39:
+ 523              		.align	2
+ 524              	.L38:
+ 525 0024 00040048 		.word	1207960576
+ 526              		.cfi_endproc
+ 527              	.LFE44:
+ 529              		.section	.text.I2C_CheckDevice,"ax",%progbits
+ 530              		.align	1
+ 531              		.global	I2C_CheckDevice
+ 532              		.syntax unified
+ 533              		.code	16
+ 534              		.thumb_func
+ 535              		.fpu softvfp
+ 537              	I2C_CheckDevice:
+ 538              	.LFB46:
+ 202:Dsp/iic.c     **** 
+ 203:Dsp/iic.c     **** /**
+ 204:Dsp/iic.c     ****   * 函数功能: 检测I2C总线设备，CPU向发送设备地址，然后读取设备应答来判
+ 205:Dsp/iic.c     ****   * 输入参数: _Address：设备的I2C总线地址
+ 206:Dsp/iic.c     ****   * 返 回 值: 返回值 0 表示正确， 返回1表示未探测到
+ 207:Dsp/iic.c     ****   * 说    明：在访问I2C设备前，请先调用 I2C_CheckDevice() 检测I2C设备是否正常
+ 208:Dsp/iic.c     ****   */
+ 209:Dsp/iic.c     **** uint8_t I2C_CheckDevice(uint8_t _Address)
+ 210:Dsp/iic.c     **** {
+ 539              		.loc 1 210 0
+ 540              		.cfi_startproc
+ 541              		@ args = 0, pretend = 0, frame = 0
+ 542              		@ frame_needed = 0, uses_anonymous_args = 0
+ 543              	.LVL49:
+ 544 0000 10B5     		push	{r4, lr}
+ 545              	.LCFI9:
+ 546              		.cfi_def_cfa_offset 8
+ 547              		.cfi_offset 4, -8
+ 548              		.cfi_offset 14, -4
+ 549 0002 0400     		movs	r4, r0
+ 211:Dsp/iic.c     **** 	uint8_t ucAck;
+ 212:Dsp/iic.c     **** 
+ 213:Dsp/iic.c     **** 	I2C_InitGPIO();		/* 配置GPIO */	
+ 550              		.loc 1 213 0
+ 551 0004 FFF7FEFF 		bl	I2C_InitGPIO
+ 552              	.LVL50:
+ 214:Dsp/iic.c     **** 	I2C_Start();		/* 发送启动信号 */
+ 553              		.loc 1 214 0
+ 554 0008 FFF7FEFF 		bl	I2C_Start
+ 555              	.LVL51:
+ 215:Dsp/iic.c     **** 	/* 发送设备地址+读写控制bit（0 = w， 1 = r) bit7 先传 */
+ 216:Dsp/iic.c     **** 	I2C_SendByte(_Address | I2C_WR);
+ 556              		.loc 1 216 0
+ARM GAS  /tmp/ccBwaTyH.s 			page 15
+
+
+ 557 000c 2000     		movs	r0, r4
+ 558 000e FFF7FEFF 		bl	I2C_SendByte
+ 559              	.LVL52:
+ 217:Dsp/iic.c     **** 	ucAck = I2C_WaitAck();	/* 检测设备的ACK应答 */
+ 560              		.loc 1 217 0
+ 561 0012 FFF7FEFF 		bl	I2C_WaitAck
+ 562              	.LVL53:
+ 563 0016 0400     		movs	r4, r0
+ 564              	.LVL54:
+ 218:Dsp/iic.c     **** 	I2C_Stop();			/* 发送停止信号 */
+ 565              		.loc 1 218 0
+ 566 0018 FFF7FEFF 		bl	I2C_Stop
+ 567              	.LVL55:
+ 219:Dsp/iic.c     **** 	return ucAck;
+ 220:Dsp/iic.c     **** }
+ 568              		.loc 1 220 0
+ 569 001c 2000     		movs	r0, r4
+ 570              		@ sp needed
+ 571              	.LVL56:
+ 572 001e 10BD     		pop	{r4, pc}
+ 573              		.cfi_endproc
+ 574              	.LFE46:
+ 576              		.section	.text.EEPROM_CheckOk,"ax",%progbits
+ 577              		.align	1
+ 578              		.global	EEPROM_CheckOk
+ 579              		.syntax unified
+ 580              		.code	16
+ 581              		.thumb_func
+ 582              		.fpu softvfp
+ 584              	EEPROM_CheckOk:
+ 585              	.LFB47:
+ 221:Dsp/iic.c     **** 
+ 222:Dsp/iic.c     **** /**
+ 223:Dsp/iic.c     ****   * 函数功能: 判断串行EERPOM是否正常
+ 224:Dsp/iic.c     ****   * 输入参数: 无
+ 225:Dsp/iic.c     ****   * 返 回 值: 1 表示正常， 0 表示不正常
+ 226:Dsp/iic.c     ****   * 说    明：无
+ 227:Dsp/iic.c     ****   */
+ 228:Dsp/iic.c     **** uint8_t EEPROM_CheckOk(void)
+ 229:Dsp/iic.c     **** {
+ 586              		.loc 1 229 0
+ 587              		.cfi_startproc
+ 588              		@ args = 0, pretend = 0, frame = 0
+ 589              		@ frame_needed = 0, uses_anonymous_args = 0
+ 590 0000 10B5     		push	{r4, lr}
+ 591              	.LCFI10:
+ 592              		.cfi_def_cfa_offset 8
+ 593              		.cfi_offset 4, -8
+ 594              		.cfi_offset 14, -4
+ 230:Dsp/iic.c     **** 	if(I2C_CheckDevice(EEPROM_DEV_ADDR) == 0)
+ 595              		.loc 1 230 0
+ 596 0002 A020     		movs	r0, #160
+ 597 0004 FFF7FEFF 		bl	I2C_CheckDevice
+ 598              	.LVL57:
+ 599 0008 0028     		cmp	r0, #0
+ 600 000a 01D1     		bne	.L44
+ 231:Dsp/iic.c     **** 	{
+ARM GAS  /tmp/ccBwaTyH.s 			page 16
+
+
+ 232:Dsp/iic.c     **** 		return 1;
+ 601              		.loc 1 232 0
+ 602 000c 0120     		movs	r0, #1
+ 603              	.L42:
+ 233:Dsp/iic.c     **** 	}
+ 234:Dsp/iic.c     **** 	else
+ 235:Dsp/iic.c     **** 	{
+ 236:Dsp/iic.c     **** 		/* 失败后，切记发送I2C总线停止信号 */
+ 237:Dsp/iic.c     **** 		I2C_Stop();		
+ 238:Dsp/iic.c     **** 		return 0;
+ 239:Dsp/iic.c     **** 	}
+ 240:Dsp/iic.c     **** }
+ 604              		.loc 1 240 0
+ 605              		@ sp needed
+ 606 000e 10BD     		pop	{r4, pc}
+ 607              	.L44:
+ 237:Dsp/iic.c     **** 		return 0;
+ 608              		.loc 1 237 0
+ 609 0010 FFF7FEFF 		bl	I2C_Stop
+ 610              	.LVL58:
+ 238:Dsp/iic.c     **** 	}
+ 611              		.loc 1 238 0
+ 612 0014 0020     		movs	r0, #0
+ 613 0016 FAE7     		b	.L42
+ 614              		.cfi_endproc
+ 615              	.LFE47:
+ 617              		.section	.text.EEPROM_ReadBytes,"ax",%progbits
+ 618              		.align	1
+ 619              		.global	EEPROM_ReadBytes
+ 620              		.syntax unified
+ 621              		.code	16
+ 622              		.thumb_func
+ 623              		.fpu softvfp
+ 625              	EEPROM_ReadBytes:
+ 626              	.LFB48:
+ 241:Dsp/iic.c     **** 
+ 242:Dsp/iic.c     **** /**
+ 243:Dsp/iic.c     ****   * 函数功能: 从串行EEPROM指定地址处开始读取若干数据
+ 244:Dsp/iic.c     ****   * 输入参数: ReadBuf : 存放读到的数据的缓冲区指针
+ 245:Dsp/iic.c     ****   *           Address : 起始地址  
+ 246:Dsp/iic.c     ****   *           Size : 数据长度，单位为字节
+ 247:Dsp/iic.c     ****   * 返 回 值:  0 表示失败，1表示成功
+ 248:Dsp/iic.c     ****   * 说    明：无
+ 249:Dsp/iic.c     ****   */
+ 250:Dsp/iic.c     **** uint8_t EEPROM_ReadBytes(uint8_t *ReadBuf, uint16_t Address, uint16_t Size)
+ 251:Dsp/iic.c     **** {
+ 627              		.loc 1 251 0
+ 628              		.cfi_startproc
+ 629              		@ args = 0, pretend = 0, frame = 0
+ 630              		@ frame_needed = 0, uses_anonymous_args = 0
+ 631              	.LVL59:
+ 632 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 633              	.LCFI11:
+ 634              		.cfi_def_cfa_offset 24
+ 635              		.cfi_offset 3, -24
+ 636              		.cfi_offset 4, -20
+ 637              		.cfi_offset 5, -16
+ARM GAS  /tmp/ccBwaTyH.s 			page 17
+
+
+ 638              		.cfi_offset 6, -12
+ 639              		.cfi_offset 7, -8
+ 640              		.cfi_offset 14, -4
+ 641 0002 0500     		movs	r5, r0
+ 642 0004 0C00     		movs	r4, r1
+ 643 0006 1600     		movs	r6, r2
+ 252:Dsp/iic.c     **** 	uint16_t i;
+ 253:Dsp/iic.c     **** 	
+ 254:Dsp/iic.c     **** 	/* 采用串行EEPROM随即读取指令序列，连续读取若干字节 */
+ 255:Dsp/iic.c     **** 	
+ 256:Dsp/iic.c     **** 	/* 第1步：发起I2C总线启动信号 */
+ 257:Dsp/iic.c     **** 	I2C_Start();	
+ 644              		.loc 1 257 0
+ 645 0008 FFF7FEFF 		bl	I2C_Start
+ 646              	.LVL60:
+ 258:Dsp/iic.c     ****   
+ 259:Dsp/iic.c     **** 	/* 第2步：发起控制字节，高7bit是地址，bit0是读写控制位，0表示写，1表示
+ 260:Dsp/iic.c     **** 	I2C_SendByte(EEPROM_DEV_ADDR | I2C_WR);	/* 此处是写指令 */	
+ 647              		.loc 1 260 0
+ 648 000c A020     		movs	r0, #160
+ 649 000e FFF7FEFF 		bl	I2C_SendByte
+ 650              	.LVL61:
+ 261:Dsp/iic.c     ****   
+ 262:Dsp/iic.c     **** 	/* 第3步：等待ACK */
+ 263:Dsp/iic.c     **** 	if (I2C_WaitAck() != 0)
+ 651              		.loc 1 263 0
+ 652 0012 FFF7FEFF 		bl	I2C_WaitAck
+ 653              	.LVL62:
+ 654 0016 0028     		cmp	r0, #0
+ 655 0018 06D1     		bne	.L46
+ 264:Dsp/iic.c     **** 	{
+ 265:Dsp/iic.c     **** 		goto cmd_fail;	/* EEPROM器件无应答 */
+ 266:Dsp/iic.c     **** 	}
+ 267:Dsp/iic.c     ****   
+ 268:Dsp/iic.c     **** 	/* 第4步：发送字节地址，24C02只有256字节，因此1个字节就够了，如果是24C0
+ 269:Dsp/iic.c     **** 	I2C_SendByte((uint8_t)Address);	
+ 656              		.loc 1 269 0
+ 657 001a E0B2     		uxtb	r0, r4
+ 658 001c FFF7FEFF 		bl	I2C_SendByte
+ 659              	.LVL63:
+ 270:Dsp/iic.c     ****   
+ 271:Dsp/iic.c     **** 	/* 第5步：等待ACK */
+ 272:Dsp/iic.c     **** 	if (I2C_WaitAck() != 0)
+ 660              		.loc 1 272 0
+ 661 0020 FFF7FEFF 		bl	I2C_WaitAck
+ 662              	.LVL64:
+ 663 0024 0028     		cmp	r0, #0
+ 664 0026 03D0     		beq	.L52
+ 665              	.L46:
+ 273:Dsp/iic.c     **** 	{
+ 274:Dsp/iic.c     **** 		goto cmd_fail;	/* EEPROM器件无应答 */
+ 275:Dsp/iic.c     **** 	}	
+ 276:Dsp/iic.c     **** 	/* 第6步：重新启动I2C总线。前面的代码的目的向EEPROM传送地址，下面开始�
+ 277:Dsp/iic.c     **** 	I2C_Start();	
+ 278:Dsp/iic.c     ****   
+ 279:Dsp/iic.c     **** 	/* 第7步：发起控制字节，高7bit是地址，bit0是读写控制位，0表示写，1表示
+ 280:Dsp/iic.c     **** 	I2C_SendByte(EEPROM_DEV_ADDR | I2C_RD);	/* 此处是读指令 */
+ARM GAS  /tmp/ccBwaTyH.s 			page 18
+
+
+ 281:Dsp/iic.c     **** 	
+ 282:Dsp/iic.c     **** 	/* 第8步：发送ACK */
+ 283:Dsp/iic.c     **** 	if (I2C_WaitAck() != 0)
+ 284:Dsp/iic.c     **** 	{
+ 285:Dsp/iic.c     **** 		goto cmd_fail;	/* EEPROM器件无应答 */
+ 286:Dsp/iic.c     **** 	}	
+ 287:Dsp/iic.c     **** 	
+ 288:Dsp/iic.c     **** 	/* 第9步：循环读取数据 */
+ 289:Dsp/iic.c     **** 	for (i = 0; i < Size; i++)
+ 290:Dsp/iic.c     **** 	{
+ 291:Dsp/iic.c     **** 		ReadBuf[i] = I2C_ReadByte();	/* 读1个字节 */
+ 292:Dsp/iic.c     **** 		
+ 293:Dsp/iic.c     **** 		/* 每读完1个字节后，需要发送Ack， 最后一个字节不需要Ack，发Nack */
+ 294:Dsp/iic.c     **** 		if (i != Size - 1)
+ 295:Dsp/iic.c     **** 		{
+ 296:Dsp/iic.c     **** 			I2C_Ack();	/* 中间字节读完后，CPU产生ACK信号(驱动SDA = 0) */
+ 297:Dsp/iic.c     **** 		}
+ 298:Dsp/iic.c     **** 		else
+ 299:Dsp/iic.c     **** 		{
+ 300:Dsp/iic.c     **** 			I2C_NAck();	/* 最后1个字节读完后，CPU产生NACK信号(驱动SDA = 1) */
+ 301:Dsp/iic.c     **** 		}
+ 302:Dsp/iic.c     **** 	}
+ 303:Dsp/iic.c     **** 	/* 发送I2C总线停止信号 */
+ 304:Dsp/iic.c     **** 	I2C_Stop();
+ 305:Dsp/iic.c     **** 	return 1;	/* 执行成功 */
+ 306:Dsp/iic.c     **** 
+ 307:Dsp/iic.c     **** cmd_fail: /* 命令执行失败后，切记发送停止信号，避免影响I2C总线上其他设�
+ 308:Dsp/iic.c     **** 	/* 发送I2C总线停止信号 */
+ 309:Dsp/iic.c     **** 	I2C_Stop();
+ 666              		.loc 1 309 0
+ 667 0028 FFF7FEFF 		bl	I2C_Stop
+ 668              	.LVL65:
+ 310:Dsp/iic.c     **** 	return 0;
+ 669              		.loc 1 310 0
+ 670 002c 0020     		movs	r0, #0
+ 671              	.L51:
+ 311:Dsp/iic.c     **** }
+ 672              		.loc 1 311 0
+ 673              		@ sp needed
+ 674              	.LVL66:
+ 675 002e F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 676              	.LVL67:
+ 677              	.L52:
+ 277:Dsp/iic.c     ****   
+ 678              		.loc 1 277 0
+ 679 0030 FFF7FEFF 		bl	I2C_Start
+ 680              	.LVL68:
+ 280:Dsp/iic.c     **** 	
+ 681              		.loc 1 280 0
+ 682 0034 A120     		movs	r0, #161
+ 683 0036 FFF7FEFF 		bl	I2C_SendByte
+ 684              	.LVL69:
+ 283:Dsp/iic.c     **** 	{
+ 685              		.loc 1 283 0
+ 686 003a FFF7FEFF 		bl	I2C_WaitAck
+ 687              	.LVL70:
+ 688 003e 0028     		cmp	r0, #0
+ARM GAS  /tmp/ccBwaTyH.s 			page 19
+
+
+ 689 0040 F2D1     		bne	.L46
+ 289:Dsp/iic.c     **** 	{
+ 690              		.loc 1 289 0
+ 691 0042 0024     		movs	r4, #0
+ 692 0044 03E0     		b	.L47
+ 693              	.LVL71:
+ 694              	.L48:
+ 300:Dsp/iic.c     **** 		}
+ 695              		.loc 1 300 0
+ 696 0046 FFF7FEFF 		bl	I2C_NAck
+ 697              	.LVL72:
+ 698              	.L49:
+ 289:Dsp/iic.c     **** 	{
+ 699              		.loc 1 289 0 discriminator 2
+ 700 004a 0134     		adds	r4, r4, #1
+ 701              	.LVL73:
+ 702 004c A4B2     		uxth	r4, r4
+ 703              	.LVL74:
+ 704              	.L47:
+ 289:Dsp/iic.c     **** 	{
+ 705              		.loc 1 289 0 is_stmt 0 discriminator 1
+ 706 004e B442     		cmp	r4, r6
+ 707 0050 09D2     		bcs	.L53
+ 291:Dsp/iic.c     **** 		
+ 708              		.loc 1 291 0 is_stmt 1
+ 709 0052 2F19     		adds	r7, r5, r4
+ 710 0054 FFF7FEFF 		bl	I2C_ReadByte
+ 711              	.LVL75:
+ 712 0058 3870     		strb	r0, [r7]
+ 294:Dsp/iic.c     **** 		{
+ 713              		.loc 1 294 0
+ 714 005a 731E     		subs	r3, r6, #1
+ 715 005c 9C42     		cmp	r4, r3
+ 716 005e F2D0     		beq	.L48
+ 296:Dsp/iic.c     **** 		}
+ 717              		.loc 1 296 0
+ 718 0060 FFF7FEFF 		bl	I2C_Ack
+ 719              	.LVL76:
+ 720 0064 F1E7     		b	.L49
+ 721              	.L53:
+ 304:Dsp/iic.c     **** 	return 1;	/* 执行成功 */
+ 722              		.loc 1 304 0
+ 723 0066 FFF7FEFF 		bl	I2C_Stop
+ 724              	.LVL77:
+ 305:Dsp/iic.c     **** 
+ 725              		.loc 1 305 0
+ 726 006a 0120     		movs	r0, #1
+ 727 006c DFE7     		b	.L51
+ 728              		.cfi_endproc
+ 729              	.LFE48:
+ 731              		.section	.text.EEPROM_WriteBytes,"ax",%progbits
+ 732              		.align	1
+ 733              		.global	EEPROM_WriteBytes
+ 734              		.syntax unified
+ 735              		.code	16
+ 736              		.thumb_func
+ 737              		.fpu softvfp
+ARM GAS  /tmp/ccBwaTyH.s 			page 20
+
+
+ 739              	EEPROM_WriteBytes:
+ 740              	.LFB49:
+ 312:Dsp/iic.c     **** 
+ 313:Dsp/iic.c     **** /**
+ 314:Dsp/iic.c     ****   * 函数功能: 向串行EEPROM指定地址写入若干数据，采用页写操作提高写入效
+ 315:Dsp/iic.c     ****   * 输入参数: WriteBuf : 存放带写入的数据的缓冲区指针
+ 316:Dsp/iic.c     ****   *           Address : 起始地址
+ 317:Dsp/iic.c     ****   *           Size : 数据长度，单位为字节 
+ 318:Dsp/iic.c     ****   * 返 回 值:  0 表示失败，1表示成功
+ 319:Dsp/iic.c     ****   * 说    明：无
+ 320:Dsp/iic.c     ****   */
+ 321:Dsp/iic.c     **** uint8_t EEPROM_WriteBytes(uint8_t *WriteBuf, uint16_t Address, uint16_t Size)
+ 322:Dsp/iic.c     **** {
+ 741              		.loc 1 322 0
+ 742              		.cfi_startproc
+ 743              		@ args = 0, pretend = 0, frame = 0
+ 744              		@ frame_needed = 0, uses_anonymous_args = 0
+ 745              	.LVL78:
+ 746 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 747              	.LCFI12:
+ 748              		.cfi_def_cfa_offset 20
+ 749              		.cfi_offset 4, -20
+ 750              		.cfi_offset 5, -16
+ 751              		.cfi_offset 6, -12
+ 752              		.cfi_offset 7, -8
+ 753              		.cfi_offset 14, -4
+ 754 0002 C646     		mov	lr, r8
+ 755 0004 00B5     		push	{lr}
+ 756              	.LCFI13:
+ 757              		.cfi_def_cfa_offset 24
+ 758              		.cfi_offset 8, -24
+ 759 0006 8046     		mov	r8, r0
+ 760 0008 0E00     		movs	r6, r1
+ 761 000a 1700     		movs	r7, r2
+ 762              	.LVL79:
+ 323:Dsp/iic.c     **** 	uint16_t i,m;
+ 324:Dsp/iic.c     **** 	uint16_t usAddr;
+ 325:Dsp/iic.c     **** 	
+ 326:Dsp/iic.c     **** 	/* 
+ 327:Dsp/iic.c     **** 	 * 写串行EEPROM不像读操作可以连续读取很多字节，每次写操作只能在同一�
+ 328:Dsp/iic.c     **** 	 * 对于24xx02，page size = 8
+ 329:Dsp/iic.c     **** 	 * 简单的处理方法为：按字节写操作模式，没写1个字节，都发送地址
+ 330:Dsp/iic.c     **** 	 * 为了提高连续写的效率: 本函数采用page wirte操作。
+ 331:Dsp/iic.c     **** 	 */
+ 332:Dsp/iic.c     **** 
+ 333:Dsp/iic.c     **** 	usAddr = Address;	
+ 334:Dsp/iic.c     **** 	for (i = 0; i < Size; i++)
+ 763              		.loc 1 334 0
+ 764 000c 0025     		movs	r5, #0
+ 765 000e 16E0     		b	.L55
+ 766              	.LVL80:
+ 767              	.L59:
+ 335:Dsp/iic.c     **** 	{
+ 336:Dsp/iic.c     **** 		/* 当发送第1个字节或是页面首地址时，需要重新发起启动信号和地址 */
+ 337:Dsp/iic.c     **** 		if ((i == 0) || (usAddr & (EEPROM_PAGE_SIZE - 1)) == 0)
+ 338:Dsp/iic.c     **** 		{
+ 339:Dsp/iic.c     **** 			/*　第０步：发停止信号，启动内部写操作　*/
+ARM GAS  /tmp/ccBwaTyH.s 			page 21
+
+
+ 340:Dsp/iic.c     **** 			I2C_Stop();
+ 341:Dsp/iic.c     **** 			
+ 342:Dsp/iic.c     **** 			/* 通过检查器件应答的方式，判断内部写操作是否完成, 一般小于 10ms 			
+ 343:Dsp/iic.c     **** 				CLK频率为200KHz时，查询次数为30次左右
+ 344:Dsp/iic.c     **** 			*/
+ 345:Dsp/iic.c     **** 			for (m = 0; m < 1000; m++)
+ 346:Dsp/iic.c     **** 			{				
+ 347:Dsp/iic.c     **** 				/* 第1步：发起I2C总线启动信号 */
+ 348:Dsp/iic.c     **** 				I2C_Start();
+ 349:Dsp/iic.c     **** 				
+ 350:Dsp/iic.c     **** 				/* 第2步：发起控制字节，高7bit是地址，bit0是读写控制位，0表示写，1表
+ 351:Dsp/iic.c     **** 				I2C_SendByte(EEPROM_DEV_ADDR | I2C_WR);	/* 此处是写指令 */
+ 352:Dsp/iic.c     **** 				
+ 353:Dsp/iic.c     **** 				/* 第3步：发送一个时钟，判断器件是否正确应答 */
+ 354:Dsp/iic.c     **** 				if (I2C_WaitAck() == 0)
+ 355:Dsp/iic.c     **** 				{
+ 356:Dsp/iic.c     **** 					break;
+ 357:Dsp/iic.c     **** 				}
+ 358:Dsp/iic.c     **** 			}
+ 359:Dsp/iic.c     **** 			if (m  == 1000)
+ 768              		.loc 1 359 0
+ 769 0010 FA23     		movs	r3, #250
+ 770 0012 9B00     		lsls	r3, r3, #2
+ 771 0014 9C42     		cmp	r4, r3
+ 772 0016 2ED0     		beq	.L61
+ 360:Dsp/iic.c     **** 			{
+ 361:Dsp/iic.c     **** 				goto cmd_fail;	/* EEPROM器件写超时 */
+ 362:Dsp/iic.c     **** 			}
+ 363:Dsp/iic.c     **** 		
+ 364:Dsp/iic.c     **** 			/* 第4步：发送字节地址，24C02只有256字节，因此1个字节就够了，如果是24
+ 365:Dsp/iic.c     **** 			I2C_SendByte((uint8_t)usAddr);
+ 773              		.loc 1 365 0
+ 774 0018 F0B2     		uxtb	r0, r6
+ 775 001a FFF7FEFF 		bl	I2C_SendByte
+ 776              	.LVL81:
+ 366:Dsp/iic.c     **** 			
+ 367:Dsp/iic.c     **** 			/* 第5步：等待ACK */
+ 368:Dsp/iic.c     **** 			if (I2C_WaitAck() != 0)
+ 777              		.loc 1 368 0
+ 778 001e FFF7FEFF 		bl	I2C_WaitAck
+ 779              	.LVL82:
+ 780 0022 0028     		cmp	r0, #0
+ 781 0024 27D1     		bne	.L61
+ 782              	.LVL83:
+ 783              	.L57:
+ 369:Dsp/iic.c     **** 			{
+ 370:Dsp/iic.c     **** 				goto cmd_fail;	/* EEPROM器件无应答 */
+ 371:Dsp/iic.c     **** 			}
+ 372:Dsp/iic.c     **** 		}
+ 373:Dsp/iic.c     **** 	
+ 374:Dsp/iic.c     **** 		/* 第6步：开始写入数据 */
+ 375:Dsp/iic.c     **** 		I2C_SendByte(WriteBuf[i]);
+ 784              		.loc 1 375 0
+ 785 0026 4346     		mov	r3, r8
+ 786 0028 585D     		ldrb	r0, [r3, r5]
+ 787 002a FFF7FEFF 		bl	I2C_SendByte
+ 788              	.LVL84:
+ARM GAS  /tmp/ccBwaTyH.s 			page 22
+
+
+ 376:Dsp/iic.c     **** 	
+ 377:Dsp/iic.c     **** 		/* 第7步：发送ACK */
+ 378:Dsp/iic.c     **** 		if (I2C_WaitAck() != 0)
+ 789              		.loc 1 378 0
+ 790 002e FFF7FEFF 		bl	I2C_WaitAck
+ 791              	.LVL85:
+ 792 0032 0028     		cmp	r0, #0
+ 793 0034 1FD1     		bne	.L61
+ 379:Dsp/iic.c     **** 		{
+ 380:Dsp/iic.c     **** 			goto cmd_fail;	/* EEPROM器件无应答 */
+ 381:Dsp/iic.c     **** 		}
+ 382:Dsp/iic.c     **** 
+ 383:Dsp/iic.c     **** 		usAddr++;	/* 地址增1 */		
+ 794              		.loc 1 383 0 discriminator 2
+ 795 0036 0136     		adds	r6, r6, #1
+ 796              	.LVL86:
+ 797 0038 B6B2     		uxth	r6, r6
+ 798              	.LVL87:
+ 334:Dsp/iic.c     **** 	{
+ 799              		.loc 1 334 0 discriminator 2
+ 800 003a 0135     		adds	r5, r5, #1
+ 801              	.LVL88:
+ 802 003c ADB2     		uxth	r5, r5
+ 803              	.LVL89:
+ 804              	.L55:
+ 334:Dsp/iic.c     **** 	{
+ 805              		.loc 1 334 0 is_stmt 0 discriminator 1
+ 806 003e BD42     		cmp	r5, r7
+ 807 0040 15D2     		bcs	.L64
+ 337:Dsp/iic.c     **** 		{
+ 808              		.loc 1 337 0 is_stmt 1
+ 809 0042 002D     		cmp	r5, #0
+ 810 0044 01D0     		beq	.L56
+ 337:Dsp/iic.c     **** 		{
+ 811              		.loc 1 337 0 is_stmt 0 discriminator 1
+ 812 0046 7307     		lsls	r3, r6, #29
+ 813 0048 EDD1     		bne	.L57
+ 814              	.L56:
+ 340:Dsp/iic.c     **** 			
+ 815              		.loc 1 340 0 is_stmt 1
+ 816 004a FFF7FEFF 		bl	I2C_Stop
+ 817              	.LVL90:
+ 345:Dsp/iic.c     **** 			{				
+ 818              		.loc 1 345 0
+ 819 004e 0024     		movs	r4, #0
+ 820              	.LVL91:
+ 821              	.L58:
+ 345:Dsp/iic.c     **** 			{				
+ 822              		.loc 1 345 0 is_stmt 0 discriminator 1
+ 823 0050 0C4B     		ldr	r3, .L65
+ 824 0052 9C42     		cmp	r4, r3
+ 825 0054 DCD8     		bhi	.L59
+ 348:Dsp/iic.c     **** 				
+ 826              		.loc 1 348 0 is_stmt 1
+ 827 0056 FFF7FEFF 		bl	I2C_Start
+ 828              	.LVL92:
+ 351:Dsp/iic.c     **** 				
+ARM GAS  /tmp/ccBwaTyH.s 			page 23
+
+
+ 829              		.loc 1 351 0
+ 830 005a A020     		movs	r0, #160
+ 831 005c FFF7FEFF 		bl	I2C_SendByte
+ 832              	.LVL93:
+ 354:Dsp/iic.c     **** 				{
+ 833              		.loc 1 354 0
+ 834 0060 FFF7FEFF 		bl	I2C_WaitAck
+ 835              	.LVL94:
+ 836 0064 0028     		cmp	r0, #0
+ 837 0066 D3D0     		beq	.L59
+ 345:Dsp/iic.c     **** 			{				
+ 838              		.loc 1 345 0 discriminator 2
+ 839 0068 0134     		adds	r4, r4, #1
+ 840              	.LVL95:
+ 841 006a A4B2     		uxth	r4, r4
+ 842              	.LVL96:
+ 843 006c F0E7     		b	.L58
+ 844              	.LVL97:
+ 845              	.L64:
+ 384:Dsp/iic.c     **** 	}
+ 385:Dsp/iic.c     **** 	
+ 386:Dsp/iic.c     **** 	/* 命令执行成功，发送I2C总线停止信号 */
+ 387:Dsp/iic.c     **** 	I2C_Stop();
+ 846              		.loc 1 387 0
+ 847 006e FFF7FEFF 		bl	I2C_Stop
+ 848              	.LVL98:
+ 388:Dsp/iic.c     **** 	return 1;
+ 849              		.loc 1 388 0
+ 850 0072 0120     		movs	r0, #1
+ 851 0074 02E0     		b	.L63
+ 852              	.L61:
+ 389:Dsp/iic.c     **** 
+ 390:Dsp/iic.c     **** cmd_fail: /* 命令执行失败后，切记发送停止信号，避免影响I2C总线上其他设�
+ 391:Dsp/iic.c     **** 	/* 发送I2C总线停止信号 */
+ 392:Dsp/iic.c     **** 	I2C_Stop();
+ 853              		.loc 1 392 0
+ 854 0076 FFF7FEFF 		bl	I2C_Stop
+ 855              	.LVL99:
+ 393:Dsp/iic.c     **** 	return 0;
+ 856              		.loc 1 393 0
+ 857 007a 0020     		movs	r0, #0
+ 858              	.L63:
+ 394:Dsp/iic.c     **** }
+ 859              		.loc 1 394 0
+ 860              		@ sp needed
+ 861              	.LVL100:
+ 862              	.LVL101:
+ 863              	.LVL102:
+ 864 007c 04BC     		pop	{r2}
+ 865 007e 9046     		mov	r8, r2
+ 866 0080 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 867              	.L66:
+ 868 0082 C046     		.align	2
+ 869              	.L65:
+ 870 0084 E7030000 		.word	999
+ 871              		.cfi_endproc
+ 872              	.LFE49:
+ARM GAS  /tmp/ccBwaTyH.s 			page 24
+
+
+ 874              		.text
+ 875              	.Letext0:
+ 876              		.file 2 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/machine/_default_
+ 877              		.file 3 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/_stdint.h"
+ 878              		.file 4 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
+ 879              		.file 5 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/stm32f030x6.h"
+ 880              		.file 6 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/lock.h"
+ 881              		.file 7 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/_types.h"
+ 882              		.file 8 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/lib/gcc/arm-none-eabi/7.2.1/include/std
+ 883              		.file 9 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/reent.h"
+ 884              		.file 10 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_gpio.h"
+ARM GAS  /tmp/ccBwaTyH.s 			page 25
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 iic.c
+     /tmp/ccBwaTyH.s:16     .text.I2C_Start:0000000000000000 $t
+     /tmp/ccBwaTyH.s:23     .text.I2C_Start:0000000000000000 I2C_Start
+     /tmp/ccBwaTyH.s:66     .text.I2C_Start:0000000000000030 $d
+     /tmp/ccBwaTyH.s:71     .text.I2C_Stop:0000000000000000 $t
+     /tmp/ccBwaTyH.s:78     .text.I2C_Stop:0000000000000000 I2C_Stop
+     /tmp/ccBwaTyH.s:114    .text.I2C_Stop:0000000000000024 $d
+     /tmp/ccBwaTyH.s:119    .text.I2C_InitGPIO:0000000000000000 $t
+     /tmp/ccBwaTyH.s:125    .text.I2C_InitGPIO:0000000000000000 I2C_InitGPIO
+     /tmp/ccBwaTyH.s:175    .text.I2C_InitGPIO:0000000000000034 $d
+     /tmp/ccBwaTyH.s:181    .text.I2C_SendByte:0000000000000000 $t
+     /tmp/ccBwaTyH.s:188    .text.I2C_SendByte:0000000000000000 I2C_SendByte
+     /tmp/ccBwaTyH.s:275    .text.I2C_SendByte:0000000000000058 $d
+     /tmp/ccBwaTyH.s:280    .text.I2C_ReadByte:0000000000000000 $t
+     /tmp/ccBwaTyH.s:287    .text.I2C_ReadByte:0000000000000000 I2C_ReadByte
+     /tmp/ccBwaTyH.s:358    .text.I2C_ReadByte:0000000000000040 $d
+     /tmp/ccBwaTyH.s:363    .text.I2C_WaitAck:0000000000000000 $t
+     /tmp/ccBwaTyH.s:370    .text.I2C_WaitAck:0000000000000000 I2C_WaitAck
+     /tmp/ccBwaTyH.s:423    .text.I2C_WaitAck:0000000000000038 $d
+     /tmp/ccBwaTyH.s:428    .text.I2C_Ack:0000000000000000 $t
+     /tmp/ccBwaTyH.s:435    .text.I2C_Ack:0000000000000000 I2C_Ack
+     /tmp/ccBwaTyH.s:477    .text.I2C_Ack:0000000000000030 $d
+     /tmp/ccBwaTyH.s:482    .text.I2C_NAck:0000000000000000 $t
+     /tmp/ccBwaTyH.s:489    .text.I2C_NAck:0000000000000000 I2C_NAck
+     /tmp/ccBwaTyH.s:525    .text.I2C_NAck:0000000000000024 $d
+     /tmp/ccBwaTyH.s:530    .text.I2C_CheckDevice:0000000000000000 $t
+     /tmp/ccBwaTyH.s:537    .text.I2C_CheckDevice:0000000000000000 I2C_CheckDevice
+     /tmp/ccBwaTyH.s:577    .text.EEPROM_CheckOk:0000000000000000 $t
+     /tmp/ccBwaTyH.s:584    .text.EEPROM_CheckOk:0000000000000000 EEPROM_CheckOk
+     /tmp/ccBwaTyH.s:618    .text.EEPROM_ReadBytes:0000000000000000 $t
+     /tmp/ccBwaTyH.s:625    .text.EEPROM_ReadBytes:0000000000000000 EEPROM_ReadBytes
+     /tmp/ccBwaTyH.s:732    .text.EEPROM_WriteBytes:0000000000000000 $t
+     /tmp/ccBwaTyH.s:739    .text.EEPROM_WriteBytes:0000000000000000 EEPROM_WriteBytes
+     /tmp/ccBwaTyH.s:870    .text.EEPROM_WriteBytes:0000000000000084 $d
+
+UNDEFINED SYMBOLS
+HAL_GPIO_WritePin
+HAL_GPIO_Init
+HAL_GPIO_ReadPin
