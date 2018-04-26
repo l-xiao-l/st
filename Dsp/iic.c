@@ -276,13 +276,13 @@ uint8_t AT24CXX_ReadOneByte(uint16_t ReadAddr)
 	}
 
 	I2C_WaitAck(); 
-    I2C_SendByte(ReadAddr % 256);   //发送低地址
+    	I2C_SendByte(ReadAddr % 256);   //发送低地址
 	I2C_WaitAck();	    
 	I2C_Start();  	 	   
 	I2C_SendByte(0XA1);           //进入接收模式			   
 	I2C_WaitAck();	 
-    temp = I2C_ReadByte(0);		   
-    I2C_Stop();           //产生一个停止条件	    
+    	temp = I2C_ReadByte(0);		   
+    	I2C_Stop();           //产生一个停止条件	    
 
 
 	return temp;
@@ -295,7 +295,7 @@ uint8_t AT24CXX_ReadOneByte(uint16_t ReadAddr)
   */
 void AT24CXX_WriteOneByte(uint16_t WriteAddr, uint8_t DataToWrite)
 {				   	  	    																 
-    I2C_Start();  
+    	I2C_Start();  
 	if (EE_TYPE > AT24C16)
 	{
 		I2C_SendByte(0XA0);	    //发送写命令
@@ -307,11 +307,11 @@ void AT24CXX_WriteOneByte(uint16_t WriteAddr, uint8_t DataToWrite)
 		I2C_SendByte(0XA0 + ((WriteAddr / 256) << 1));   //发送器件地址0XA0,写数据 
 	}	 
 	I2C_WaitAck();	   
-    I2C_SendByte(WriteAddr % 256);   //发送低地址
+    	I2C_SendByte(WriteAddr % 256);   //发送低地址
 	I2C_WaitAck(); 	 										  		   
 	I2C_SendByte(DataToWrite);     //发送字节							   
 	I2C_WaitAck();  		    	   
-    I2C_Stop();//产生一个停止条件 
+    	I2C_Stop();//产生一个停止条件 
 	//I2C_Delay();
 	HAL_Delay(2);
 }
