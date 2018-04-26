@@ -12,15 +12,15 @@ uint8_t I2c_Read[5];
 void at24c02_adc_write(void)
 {
 	char str[5];
-
-	if (flag_ec11 == 1)
+	static uint16_t at_cn = 0;
+	
+	at_cn++;
+	if (flag_ec11 == 1 || at_cn == 80)  //at_cn * 300
 	{
 		itoa(I2c_Write, str, 10);
 		AT24CXX_Write(0, (uint8_t*)str, 5);
 		flag_ec11 = 0;
-	}
-	else
-	{
+		at_cn = 0;
 	}
 }
 
