@@ -6,7 +6,7 @@
 extern uint8_t flag;           //ec11.c
 extern uint16_t I2c_last;      //table.c
 extern uint16_t I2c_Write;     //table.c
-uint8_t flag_exti0 = 0;
+uint8_t flag_exti0 = 0;        //ec11.c
 uint8_t flag_ec11 = 0; 	       //ec11.c
 uint8_t I2c_Read[5];
 uint8_t flag_t = 0;
@@ -46,7 +46,7 @@ void at24c02_adc_read(void)
 	}
 
 	GPIOA->BRR = 1 << 0;   //beep
-	flag_t = 1;
+	flag_t = 2;           //at24cxx.c   write
 }
 
 
