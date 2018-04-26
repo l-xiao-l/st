@@ -6,8 +6,10 @@
 extern uint8_t flag;           //ec11.c
 extern uint16_t I2c_last;      //table.c
 extern uint16_t I2c_Write;     //table.c
+uint8_t flag_exti0 = 0;
 uint8_t flag_ec11 = 0; 	       //ec11.c
 uint8_t I2c_Read[5];
+uint8_t flag_t = 0;
 
 void at24c02_adc_write(void)
 {
@@ -15,11 +17,13 @@ void at24c02_adc_write(void)
 	static uint16_t at_cn = 0;
 	
 	at_cn++;
-	if (flag_ec11 == 1 || at_cn == 80)  //at_cn * 300
+	if (flag_ec11 == 1 || at_cn == 100 || (flag_exti0 == 1 && flag_t == 2))  //at_cn * 300
 	{
 		itoa(I2c_Write, str, 10);
 		AT24CXX_Write(0, (uint8_t*)str, 5);
 		flag_ec11 = 0;
+		flag_exti0 = 0;
+		flag_t = 0;
 		at_cn = 0;
 	}
 }
@@ -42,6 +46,7 @@ void at24c02_adc_read(void)
 	}
 
 	GPIOA->BRR = 1 << 0;   //beep
+	flag_t = 1;
 }
 
 
