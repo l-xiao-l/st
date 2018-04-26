@@ -1,4 +1,4 @@
-ARM GAS  /tmp/cck3bTc8.s 			page 1
+ARM GAS  /tmp/ccdtPmnO.s 			page 1
 
 
    1              		.cpu cortex-m0
@@ -36,31 +36,32 @@ ARM GAS  /tmp/cck3bTc8.s 			page 1
    6:Dsp/table.c   **** 
    7:Dsp/table.c   **** extern uint16_t adc_cont;
    8:Dsp/table.c   **** extern uint16_t adc_target;
-   9:Dsp/table.c   **** uint8_t I2c_Write = 0;
-  10:Dsp/table.c   **** uint16_t add = 0;
-  11:Dsp/table.c   **** uint16_t add_t = 0;
-  12:Dsp/table.c   **** //uint16_t t_pid = 1;
-  13:Dsp/table.c   **** 
-  14:Dsp/table.c   **** uint16_t ad[101] = {
-  15:Dsp/table.c   **** 					987,1026,1066,1107,1148,1190,1233,1276,1320,1365,
-  16:Dsp/table.c   **** 					1410,1455,1501,1547,1593,1640,1687,1734,1781,1828,
-  17:Dsp/table.c   **** 					1875,1923,1970,2017,2063,2110,2156,2202,2248,2293,
-  18:Dsp/table.c   **** 					2338,2382,2426,2469,2512,2554,2596,2637,2677,2716,
-  19:Dsp/table.c   **** 					2755,2794,2831,2868,2904,2939,2974,3008,3041,3074,
-  20:Dsp/table.c   **** 					3105,3136,3166,3196,3225,3253,3280,3307,3333,3358,
-  21:Dsp/table.c   **** 					3383,3406,3430,3452,3474,3496,3517,3537,3556,3576,
-  22:Dsp/table.c   **** 					3594,3612,3630,3647,3663,3679,3694,3709,3724,3738,
-  23:Dsp/table.c   **** 					3752,3765,3778,3791,3803,3815,3826,3837,3848,3858,
-  24:Dsp/table.c   **** 					3868,3878,3888,3897,3906,3914,3923,3931,3939,3947,
-  25:Dsp/table.c   **** 					3954
-  26:Dsp/table.c   **** 					};
-  27:Dsp/table.c   **** 
-  28:Dsp/table.c   **** float LinearValue(uint16_t arr[], uint16_t Value, uint8_t mid)
-  29:Dsp/table.c   **** {
-  29              		.loc 1 29 0
-ARM GAS  /tmp/cck3bTc8.s 			page 2
+   9:Dsp/table.c   **** uint16_t I2c_last = 0;
+  10:Dsp/table.c   **** uint16_t I2c_Write = 0;
+  11:Dsp/table.c   **** uint16_t add = 0;
+  12:Dsp/table.c   **** uint16_t add_t = 0;
+  13:Dsp/table.c   **** //uint16_t t_pid = 1;
+  14:Dsp/table.c   **** 
+  15:Dsp/table.c   **** uint16_t ad[101] = {
+  16:Dsp/table.c   **** 					987,1026,1066,1107,1148,1190,1233,1276,1320,1365,
+  17:Dsp/table.c   **** 					1410,1455,1501,1547,1593,1640,1687,1734,1781,1828,
+  18:Dsp/table.c   **** 					1875,1923,1970,2017,2063,2110,2156,2202,2248,2293,
+  19:Dsp/table.c   **** 					2338,2382,2426,2469,2512,2554,2596,2637,2677,2716,
+  20:Dsp/table.c   **** 					2755,2794,2831,2868,2904,2939,2974,3008,3041,3074,
+  21:Dsp/table.c   **** 					3105,3136,3166,3196,3225,3253,3280,3307,3333,3358,
+  22:Dsp/table.c   **** 					3383,3406,3430,3452,3474,3496,3517,3537,3556,3576,
+  23:Dsp/table.c   **** 					3594,3612,3630,3647,3663,3679,3694,3709,3724,3738,
+  24:Dsp/table.c   **** 					3752,3765,3778,3791,3803,3815,3826,3837,3848,3858,
+  25:Dsp/table.c   **** 					3868,3878,3888,3897,3906,3914,3923,3931,3939,3947,
+  26:Dsp/table.c   **** 					3954
+  27:Dsp/table.c   **** 					};
+  28:Dsp/table.c   **** 
+  29:Dsp/table.c   **** float LinearValue(uint16_t arr[], uint16_t Value, uint8_t mid)
+  30:Dsp/table.c   **** {
+ARM GAS  /tmp/ccdtPmnO.s 			page 2
 
 
+  29              		.loc 1 30 0
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
   32              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -76,10 +77,10 @@ ARM GAS  /tmp/cck3bTc8.s 			page 1
   42              		.cfi_offset 14, -4
   43 0002 0700     		movs	r7, r0
   44 0004 1400     		movs	r4, r2
-  30:Dsp/table.c   **** 	float temper;
-  31:Dsp/table.c   **** 	
-  32:Dsp/table.c   **** 	temper = (float)(Value - arr[mid])/(arr[mid + 1] - arr[mid]) + mid;
-  45              		.loc 1 32 0
+  31:Dsp/table.c   **** 	float temper;
+  32:Dsp/table.c   **** 	
+  33:Dsp/table.c   **** 	temper = (float)(Value - arr[mid]) / (arr[mid + 1] - arr[mid]) + mid;
+  45              		.loc 1 33 0
   46 0006 5300     		lsls	r3, r2, #1
   47 0008 1E5A     		ldrh	r6, [r3, r0]
   48 000a 881B     		subs	r0, r1, r6
@@ -105,10 +106,10 @@ ARM GAS  /tmp/cck3bTc8.s 			page 1
   68 0030 281C     		adds	r0, r5, #0
   69 0032 FFF7FEFF 		bl	__aeabi_fadd
   70              	.LVL6:
-  33:Dsp/table.c   **** 	
-  34:Dsp/table.c   **** 	return temper;
-  35:Dsp/table.c   **** }
-  71              		.loc 1 35 0
+  34:Dsp/table.c   **** 	
+  35:Dsp/table.c   **** 	return temper;
+  36:Dsp/table.c   **** }
+  71              		.loc 1 36 0
   72              		@ sp needed
   73              	.LVL7:
   74 0036 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
@@ -117,20 +118,20 @@ ARM GAS  /tmp/cck3bTc8.s 			page 1
   78              		.global	__aeabi_ui2f
   79              		.section	.text.Temperature,"ax",%progbits
   80              		.align	1
+ARM GAS  /tmp/ccdtPmnO.s 			page 3
+
+
   81              		.global	Temperature
-ARM GAS  /tmp/cck3bTc8.s 			page 3
-
-
   82              		.syntax unified
   83              		.code	16
   84              		.thumb_func
   85              		.fpu softvfp
   87              	Temperature:
   88              	.LFB38:
-  36:Dsp/table.c   **** 
-  37:Dsp/table.c   **** float Temperature(uint16_t arr[], uint16_t Value, uint8_t len)
-  38:Dsp/table.c   **** {
-  89              		.loc 1 38 0
+  37:Dsp/table.c   **** 
+  38:Dsp/table.c   **** float Temperature(uint16_t arr[], uint16_t Value, uint8_t len)
+  39:Dsp/table.c   **** {
+  89              		.loc 1 39 0
   90              		.cfi_startproc
   91              		@ args = 0, pretend = 0, frame = 0
   92              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -145,80 +146,81 @@ ARM GAS  /tmp/cck3bTc8.s 			page 1
  101              		.cfi_offset 7, -8
  102              		.cfi_offset 14, -4
  103              	.LVL9:
-  39:Dsp/table.c   **** 	uint16_t max, mid, min;
-  40:Dsp/table.c   **** 	min = 0;
-  41:Dsp/table.c   **** 	max = len - 1;
- 104              		.loc 1 41 0
+  40:Dsp/table.c   **** 	uint16_t max, mid, min;
+  41:Dsp/table.c   **** 
+  42:Dsp/table.c   **** 	min = 0;
+  43:Dsp/table.c   **** 	max = len - 1;
+ 104              		.loc 1 43 0
  105 0002 013A     		subs	r2, r2, #1
  106              	.LVL10:
  107 0004 96B2     		uxth	r6, r2
  108              	.LVL11:
-  42:Dsp/table.c   **** 	mid = (max + min) / 2;
- 109              		.loc 1 42 0
+  44:Dsp/table.c   **** 	mid = (max + min) / 2;
+ 109              		.loc 1 44 0
  110 0006 7408     		lsrs	r4, r6, #1
  111              	.LVL12:
-  43:Dsp/table.c   **** 	if (Value == mid)
- 112              		.loc 1 43 0
+  45:Dsp/table.c   **** 	if (Value == mid)
+ 112              		.loc 1 45 0
  113 0008 8C42     		cmp	r4, r1
  114 000a 01D0     		beq	.L12
-  40:Dsp/table.c   **** 	max = len - 1;
- 115              		.loc 1 40 0
+  42:Dsp/table.c   **** 	max = len - 1;
+ 115              		.loc 1 42 0
  116 000c 0027     		movs	r7, #0
  117 000e 0DE0     		b	.L3
  118              	.L12:
-  44:Dsp/table.c   **** 	{
-  45:Dsp/table.c   **** 		return mid;
- 119              		.loc 1 45 0
+  46:Dsp/table.c   **** 	{
+  47:Dsp/table.c   **** 		return mid;
+ 119              		.loc 1 47 0
  120 0010 2000     		movs	r0, r4
  121              	.LVL13:
  122 0012 FFF7FEFF 		bl	__aeabi_ui2f
  123              	.LVL14:
  124              	.L2:
-  46:Dsp/table.c   **** 	}
-  47:Dsp/table.c   **** 	
-  48:Dsp/table.c   **** 	while (Value != arr[mid])
-  49:Dsp/table.c   **** 	{
-ARM GAS  /tmp/cck3bTc8.s 			page 4
+  48:Dsp/table.c   **** 	}
+  49:Dsp/table.c   **** 	
+ARM GAS  /tmp/ccdtPmnO.s 			page 4
 
 
-  50:Dsp/table.c   **** 		mid = (max + min) / 2;
-  51:Dsp/table.c   **** 		if (Value == arr[mid])
-  52:Dsp/table.c   **** 		{
-  53:Dsp/table.c   **** 			return mid;
-  54:Dsp/table.c   **** 		}
-  55:Dsp/table.c   **** 		else if (Value > arr[mid] && Value < arr[mid + 1])
-  56:Dsp/table.c   **** 		{
-  57:Dsp/table.c   **** 			return LinearValue(ad, Value, mid);
-  58:Dsp/table.c   **** 		}
-  59:Dsp/table.c   **** 		else if (Value > arr[mid])
-  60:Dsp/table.c   **** 		{
-  61:Dsp/table.c   **** 			min = mid + 1;
-  62:Dsp/table.c   **** 		}
-  63:Dsp/table.c   **** 		else if (Value < arr[mid])
-  64:Dsp/table.c   **** 		{
-  65:Dsp/table.c   **** 			max = mid - 1;
-  66:Dsp/table.c   **** 		}
-  67:Dsp/table.c   **** 		else
-  68:Dsp/table.c   **** 		{
-  69:Dsp/table.c   **** 		}
-  70:Dsp/table.c   **** 
-  71:Dsp/table.c   **** 		if (max < min)
-  72:Dsp/table.c   **** 		{
-  73:Dsp/table.c   **** 			return 254;
-  74:Dsp/table.c   **** 		}
-  75:Dsp/table.c   **** 	}
-  76:Dsp/table.c   **** 
-  77:Dsp/table.c   **** 	return 255;
+  50:Dsp/table.c   **** 	while (Value != arr[mid])
+  51:Dsp/table.c   **** 	{
+  52:Dsp/table.c   **** 		mid = (max + min) / 2;
+  53:Dsp/table.c   **** 		if (Value == arr[mid])
+  54:Dsp/table.c   **** 		{
+  55:Dsp/table.c   **** 			return mid;
+  56:Dsp/table.c   **** 		}
+  57:Dsp/table.c   **** 		else if (Value > arr[mid] && Value < arr[mid + 1])
+  58:Dsp/table.c   **** 		{
+  59:Dsp/table.c   **** 			return LinearValue(ad, Value, mid);
+  60:Dsp/table.c   **** 		}
+  61:Dsp/table.c   **** 		else if (Value > arr[mid])
+  62:Dsp/table.c   **** 		{
+  63:Dsp/table.c   **** 			min = mid + 1;
+  64:Dsp/table.c   **** 		}
+  65:Dsp/table.c   **** 		else if (Value < arr[mid])
+  66:Dsp/table.c   **** 		{
+  67:Dsp/table.c   **** 			max = mid - 1;
+  68:Dsp/table.c   **** 		}
+  69:Dsp/table.c   **** 		else
+  70:Dsp/table.c   **** 		{
+  71:Dsp/table.c   **** 		}
+  72:Dsp/table.c   **** 
+  73:Dsp/table.c   **** 		if (max < min)
+  74:Dsp/table.c   **** 		{
+  75:Dsp/table.c   **** 			return 254;
+  76:Dsp/table.c   **** 		}
+  77:Dsp/table.c   **** 	}
   78:Dsp/table.c   **** 
-  79:Dsp/table.c   **** }
- 125              		.loc 1 79 0
+  79:Dsp/table.c   **** 	return 255;
+  80:Dsp/table.c   **** 
+  81:Dsp/table.c   **** }
+ 125              		.loc 1 81 0
  126              		@ sp needed
  127              	.LVL15:
  128 0016 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
  129              	.LVL16:
  130              	.L15:
-  53:Dsp/table.c   **** 		}
- 131              		.loc 1 53 0
+  55:Dsp/table.c   **** 		}
+ 131              		.loc 1 55 0
  132 0018 2000     		movs	r0, r4
  133              	.LVL17:
  134 001a FFF7FEFF 		bl	__aeabi_ui2f
@@ -226,61 +228,61 @@ ARM GAS  /tmp/cck3bTc8.s 			page 1
  136 001e FAE7     		b	.L2
  137              	.LVL19:
  138              	.L6:
-  59:Dsp/table.c   **** 		{
- 139              		.loc 1 59 0
+  61:Dsp/table.c   **** 		{
+ 139              		.loc 1 61 0
  140 0020 8D42     		cmp	r5, r1
  141 0022 1DD2     		bcs	.L7
-  61:Dsp/table.c   **** 		}
- 142              		.loc 1 61 0
+  63:Dsp/table.c   **** 		}
+ 142              		.loc 1 63 0
  143 0024 671C     		adds	r7, r4, #1
  144              	.LVL20:
  145 0026 BFB2     		uxth	r7, r7
  146              	.LVL21:
+ARM GAS  /tmp/ccdtPmnO.s 			page 5
+
+
  147              	.L8:
-  71:Dsp/table.c   **** 		{
-ARM GAS  /tmp/cck3bTc8.s 			page 5
-
-
- 148              		.loc 1 71 0
+  73:Dsp/table.c   **** 		{
+ 148              		.loc 1 73 0
  149 0028 BE42     		cmp	r6, r7
  150 002a 20D3     		bcc	.L13
  151              	.LVL22:
  152              	.L3:
-  48:Dsp/table.c   **** 	{
- 153              		.loc 1 48 0
+  50:Dsp/table.c   **** 	{
+ 153              		.loc 1 50 0
  154 002c 6400     		lsls	r4, r4, #1
  155              	.LVL23:
  156 002e 235A     		ldrh	r3, [r4, r0]
  157 0030 8B42     		cmp	r3, r1
  158 0032 1AD0     		beq	.L14
-  50:Dsp/table.c   **** 		if (Value == arr[mid])
- 159              		.loc 1 50 0
+  52:Dsp/table.c   **** 		if (Value == arr[mid])
+ 159              		.loc 1 52 0
  160 0034 F319     		adds	r3, r6, r7
  161 0036 DA0F     		lsrs	r2, r3, #31
  162 0038 D218     		adds	r2, r2, r3
  163 003a 5210     		asrs	r2, r2, #1
  164 003c 94B2     		uxth	r4, r2
  165              	.LVL24:
-  51:Dsp/table.c   **** 		{
- 166              		.loc 1 51 0
+  53:Dsp/table.c   **** 		{
+ 166              		.loc 1 53 0
  167 003e 1304     		lsls	r3, r2, #16
  168 0040 1B0C     		lsrs	r3, r3, #16
  169 0042 5D00     		lsls	r5, r3, #1
  170 0044 2D5A     		ldrh	r5, [r5, r0]
  171 0046 8D42     		cmp	r5, r1
  172 0048 E6D0     		beq	.L15
-  55:Dsp/table.c   **** 		{
- 173              		.loc 1 55 0
+  57:Dsp/table.c   **** 		{
+ 173              		.loc 1 57 0
  174 004a E9D2     		bcs	.L6
-  55:Dsp/table.c   **** 		{
- 175              		.loc 1 55 0 is_stmt 0 discriminator 1
+  57:Dsp/table.c   **** 		{
+ 175              		.loc 1 57 0 is_stmt 0 discriminator 1
  176 004c 0133     		adds	r3, r3, #1
  177 004e 5B00     		lsls	r3, r3, #1
  178 0050 1B5A     		ldrh	r3, [r3, r0]
  179 0052 8B42     		cmp	r3, r1
  180 0054 E4D9     		bls	.L6
-  57:Dsp/table.c   **** 		}
- 181              		.loc 1 57 0 is_stmt 1
+  59:Dsp/table.c   **** 		}
+ 181              		.loc 1 59 0 is_stmt 1
  182 0056 D2B2     		uxtb	r2, r2
  183 0058 0648     		ldr	r0, .L16
  184              	.LVL25:
@@ -289,31 +291,31 @@ ARM GAS  /tmp/cck3bTc8.s 			page 1
  187 005e DAE7     		b	.L2
  188              	.LVL27:
  189              	.L7:
-  63:Dsp/table.c   **** 		{
- 190              		.loc 1 63 0
+  65:Dsp/table.c   **** 		{
+ 190              		.loc 1 65 0
  191 0060 8D42     		cmp	r5, r1
  192 0062 E1D9     		bls	.L8
-  65:Dsp/table.c   **** 		}
- 193              		.loc 1 65 0
+  67:Dsp/table.c   **** 		}
+ 193              		.loc 1 67 0
  194 0064 661E     		subs	r6, r4, #1
+ARM GAS  /tmp/ccdtPmnO.s 			page 6
+
+
  195              	.LVL28:
  196 0066 B6B2     		uxth	r6, r6
-ARM GAS  /tmp/cck3bTc8.s 			page 6
-
-
  197              	.LVL29:
  198 0068 DEE7     		b	.L8
  199              	.LVL30:
  200              	.L14:
-  77:Dsp/table.c   **** 
- 201              		.loc 1 77 0
+  79:Dsp/table.c   **** 
+ 201              		.loc 1 79 0
  202 006a 0348     		ldr	r0, .L16+4
  203              	.LVL31:
  204 006c D3E7     		b	.L2
  205              	.LVL32:
  206              	.L13:
-  73:Dsp/table.c   **** 		}
- 207              		.loc 1 73 0
+  75:Dsp/table.c   **** 		}
+ 207              		.loc 1 75 0
  208 006e 0348     		ldr	r0, .L16+8
  209              	.LVL33:
  210 0070 D1E7     		b	.L2
@@ -332,940 +334,1028 @@ ARM GAS  /tmp/cck3bTc8.s 			page 1
  224              		.global	__aeabi_d2iz
  225              		.global	__aeabi_fmul
  226              		.global	__aeabi_f2uiz
- 227              		.global	__aeabi_uidiv
- 228              		.section	.text.adc_entry,"ax",%progbits
- 229              		.align	1
- 230              		.global	adc_entry
- 231              		.syntax unified
- 232              		.code	16
- 233              		.thumb_func
- 234              		.fpu softvfp
- 236              	adc_entry:
- 237              	.LFB39:
-  80:Dsp/table.c   **** 
-  81:Dsp/table.c   **** /*
-  82:Dsp/table.c   **** float adc_filtering(float dr)
-  83:Dsp/table.c   **** {
-  84:Dsp/table.c   **** 	float t = 0, t1 = 0;
-  85:Dsp/table.c   **** 	t = dr * 0.7 + t1 * 0.3;
-  86:Dsp/table.c   **** 	t1 = dr;
-  87:Dsp/table.c   **** 
-  88:Dsp/table.c   **** 	
-  89:Dsp/table.c   **** 	return t;
-  90:Dsp/table.c   **** }
-  91:Dsp/table.c   **** 
-  92:Dsp/table.c   **** void adc_k(void)
-  93:Dsp/table.c   **** {
-  94:Dsp/table.c   **** 	static uint8_t c = 0;
-  95:Dsp/table.c   **** 	at[c] = ADC1->DR;
-ARM GAS  /tmp/cck3bTc8.s 			page 7
+ 227              		.section	.text.adc_entry,"ax",%progbits
+ 228              		.align	1
+ 229              		.global	adc_entry
+ 230              		.syntax unified
+ 231              		.code	16
+ 232              		.thumb_func
+ 233              		.fpu softvfp
+ 235              	adc_entry:
+ 236              	.LFB39:
+  82:Dsp/table.c   **** 
+  83:Dsp/table.c   **** /*
+  84:Dsp/table.c   **** float adc_filtering(float dr)
+  85:Dsp/table.c   **** {
+  86:Dsp/table.c   **** 	float t = 0, t1 = 0;
+  87:Dsp/table.c   **** 	t = dr * 0.7 + t1 * 0.3;
+  88:Dsp/table.c   **** 	t1 = dr;
+  89:Dsp/table.c   **** 
+  90:Dsp/table.c   **** 	
+  91:Dsp/table.c   **** 	return t;
+  92:Dsp/table.c   **** }
+  93:Dsp/table.c   **** 
+  94:Dsp/table.c   **** void adc_k(void)
+  95:Dsp/table.c   **** {
+  96:Dsp/table.c   **** 	static uint8_t c = 0;
+ARM GAS  /tmp/ccdtPmnO.s 			page 7
 
 
-  96:Dsp/table.c   **** 	c++;
-  97:Dsp/table.c   **** 	if (c == 10)
-  98:Dsp/table.c   **** 	{
-  99:Dsp/table.c   **** 		c = 0;
- 100:Dsp/table.c   **** 	}
- 101:Dsp/table.c   **** }
- 102:Dsp/table.c   **** 
- 103:Dsp/table.c   **** void insert_sort(void)
- 104:Dsp/table.c   **** {
- 105:Dsp/table.c   **** 	uint8_t i, j, t;
- 106:Dsp/table.c   **** 	uint16_t temp = 0;
- 107:Dsp/table.c   **** 	uint32_t sum = 0;
- 108:Dsp/table.c   **** 
- 109:Dsp/table.c   **** 	for (i = 1; i < 10; i++)
- 110:Dsp/table.c   **** 	{
- 111:Dsp/table.c   **** 		temp = at[i];
- 112:Dsp/table.c   **** 	
- 113:Dsp/table.c   **** 		for (j = i; j > 0 && temp < at[j - 1]; j--)
- 114:Dsp/table.c   **** 		{
- 115:Dsp/table.c   **** 			if (temp < at[j - 1])
- 116:Dsp/table.c   **** 			{
- 117:Dsp/table.c   **** 				at[j] = at[j - 1];
- 118:Dsp/table.c   **** 			}
- 119:Dsp/table.c   **** 		}
- 120:Dsp/table.c   **** 	
- 121:Dsp/table.c   **** 		at[j] = temp;
- 122:Dsp/table.c   **** 	}
- 123:Dsp/table.c   **** 	
- 124:Dsp/table.c   **** 	for (t = 1; t < 9; t++)
- 125:Dsp/table.c   **** 	{
- 126:Dsp/table.c   **** 		sum += at[t];
- 127:Dsp/table.c   **** 	}
- 128:Dsp/table.c   **** 	
- 129:Dsp/table.c   **** 	value = sum / 8;
- 130:Dsp/table.c   **** 
- 131:Dsp/table.c   **** }
- 132:Dsp/table.c   **** */
- 133:Dsp/table.c   **** 
- 134:Dsp/table.c   **** 
+  97:Dsp/table.c   **** 	at[c] = ADC1->DR;
+  98:Dsp/table.c   **** 	c++;
+  99:Dsp/table.c   **** 	if (c == 10)
+ 100:Dsp/table.c   **** 	{
+ 101:Dsp/table.c   **** 		c = 0;
+ 102:Dsp/table.c   **** 	}
+ 103:Dsp/table.c   **** }
+ 104:Dsp/table.c   **** 
+ 105:Dsp/table.c   **** void insert_sort(void)
+ 106:Dsp/table.c   **** {
+ 107:Dsp/table.c   **** 	uint8_t i, j, t;
+ 108:Dsp/table.c   **** 	uint16_t temp = 0;
+ 109:Dsp/table.c   **** 	uint32_t sum = 0;
+ 110:Dsp/table.c   **** 
+ 111:Dsp/table.c   **** 	for (i = 1; i < 10; i++)
+ 112:Dsp/table.c   **** 	{
+ 113:Dsp/table.c   **** 		temp = at[i];
+ 114:Dsp/table.c   **** 	
+ 115:Dsp/table.c   **** 		for (j = i; j > 0 && temp < at[j - 1]; j--)
+ 116:Dsp/table.c   **** 		{
+ 117:Dsp/table.c   **** 			if (temp < at[j - 1])
+ 118:Dsp/table.c   **** 			{
+ 119:Dsp/table.c   **** 				at[j] = at[j - 1];
+ 120:Dsp/table.c   **** 			}
+ 121:Dsp/table.c   **** 		}
+ 122:Dsp/table.c   **** 	
+ 123:Dsp/table.c   **** 		at[j] = temp;
+ 124:Dsp/table.c   **** 	}
+ 125:Dsp/table.c   **** 	
+ 126:Dsp/table.c   **** 	for (t = 1; t < 9; t++)
+ 127:Dsp/table.c   **** 	{
+ 128:Dsp/table.c   **** 		sum += at[t];
+ 129:Dsp/table.c   **** 	}
+ 130:Dsp/table.c   **** 	
+ 131:Dsp/table.c   **** 	value = sum / 8;
+ 132:Dsp/table.c   **** 
+ 133:Dsp/table.c   **** }
+ 134:Dsp/table.c   **** */
  135:Dsp/table.c   **** 
- 136:Dsp/table.c   **** void adc_entry(void)
- 137:Dsp/table.c   **** {
- 238              		.loc 1 137 0
- 239              		.cfi_startproc
- 240              		@ args = 0, pretend = 0, frame = 0
- 241              		@ frame_needed = 0, uses_anonymous_args = 0
- 242 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
- 243              	.LCFI2:
- 244              		.cfi_def_cfa_offset 24
- 245              		.cfi_offset 3, -24
- 246              		.cfi_offset 4, -20
- 247              		.cfi_offset 5, -16
- 248              		.cfi_offset 6, -12
- 249              		.cfi_offset 7, -8
- 250              		.cfi_offset 14, -4
- 251              	.LVL34:
- 138:Dsp/table.c   **** 	static int16_t m1 = 0;
-ARM GAS  /tmp/cck3bTc8.s 			page 8
+ 136:Dsp/table.c   **** 
+ 137:Dsp/table.c   **** 
+ 138:Dsp/table.c   **** void adc_entry(void)
+ 139:Dsp/table.c   **** {
+ 237              		.loc 1 139 0
+ 238              		.cfi_startproc
+ 239              		@ args = 0, pretend = 0, frame = 0
+ 240              		@ frame_needed = 0, uses_anonymous_args = 0
+ 241 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 242              	.LCFI2:
+ 243              		.cfi_def_cfa_offset 24
+ 244              		.cfi_offset 3, -24
+ 245              		.cfi_offset 4, -20
+ 246              		.cfi_offset 5, -16
+ 247              		.cfi_offset 6, -12
+ 248              		.cfi_offset 7, -8
+ 249              		.cfi_offset 14, -4
+ 250              	.LVL34:
+ARM GAS  /tmp/ccdtPmnO.s 			page 8
 
 
- 139:Dsp/table.c   **** 	int16_t m = 0; 
- 140:Dsp/table.c   **** 	m = ADC1->DR * 0.8 + m1 * 0.2;
- 252              		.loc 1 140 0
- 253 0002 184D     		ldr	r5, .L19
- 254 0004 286C     		ldr	r0, [r5, #64]
- 255 0006 FFF7FEFF 		bl	__aeabi_ui2d
- 256              	.LVL35:
- 257 000a 174A     		ldr	r2, .L19+4
- 258 000c 174B     		ldr	r3, .L19+8
- 259 000e FFF7FEFF 		bl	__aeabi_dmul
- 260              	.LVL36:
- 261 0012 0600     		movs	r6, r0
- 262 0014 0F00     		movs	r7, r1
- 263 0016 164C     		ldr	r4, .L19+12
- 264 0018 0023     		movs	r3, #0
- 265 001a E05E     		ldrsh	r0, [r4, r3]
- 266 001c FFF7FEFF 		bl	__aeabi_i2d
- 267              	.LVL37:
- 268 0020 114A     		ldr	r2, .L19+4
- 269 0022 144B     		ldr	r3, .L19+16
- 270 0024 FFF7FEFF 		bl	__aeabi_dmul
- 271              	.LVL38:
- 272 0028 0200     		movs	r2, r0
- 273 002a 0B00     		movs	r3, r1
- 274 002c 3000     		movs	r0, r6
- 275 002e 3900     		movs	r1, r7
- 276 0030 FFF7FEFF 		bl	__aeabi_dadd
- 277              	.LVL39:
- 278 0034 FFF7FEFF 		bl	__aeabi_d2iz
- 279              	.LVL40:
- 141:Dsp/table.c   **** 	m1 = ADC1->DR;
- 280              		.loc 1 141 0
- 281 0038 2B6C     		ldr	r3, [r5, #64]
- 282 003a 2380     		strh	r3, [r4]
- 142:Dsp/table.c   **** 	adc_cont = Temperature(ad, m, 101) * 10;
- 283              		.loc 1 142 0
- 284 003c 81B2     		uxth	r1, r0
- 285 003e 6522     		movs	r2, #101
- 286 0040 0D48     		ldr	r0, .L19+20
- 287              	.LVL41:
- 288 0042 FFF7FEFF 		bl	Temperature
- 289              	.LVL42:
- 290 0046 0D49     		ldr	r1, .L19+24
- 291 0048 FFF7FEFF 		bl	__aeabi_fmul
- 292              	.LVL43:
- 293 004c FFF7FEFF 		bl	__aeabi_f2uiz
- 294              	.LVL44:
- 295 0050 80B2     		uxth	r0, r0
- 296 0052 0B4B     		ldr	r3, .L19+28
- 297 0054 1880     		strh	r0, [r3]
- 143:Dsp/table.c   **** 	I2c_Write = adc_cont / 10;
- 298              		.loc 1 143 0
- 299 0056 0A21     		movs	r1, #10
- 300 0058 FFF7FEFF 		bl	__aeabi_uidiv
- 301              	.LVL45:
- 302 005c 094B     		ldr	r3, .L19+32
- 303 005e 1870     		strb	r0, [r3]
-ARM GAS  /tmp/cck3bTc8.s 			page 9
+ 140:Dsp/table.c   **** 	static int16_t m1 = 0, cn = 0;
+ 141:Dsp/table.c   **** 	static int16_t a = 0;
+ 142:Dsp/table.c   **** 	static int16_t a_stat = 0;
+ 143:Dsp/table.c   **** 	int16_t m = 0; 
+ 144:Dsp/table.c   **** 
+ 145:Dsp/table.c   **** 	m = ADC1->DR * 0.8 + m1 * 0.2;
+ 251              		.loc 1 145 0
+ 252 0002 254D     		ldr	r5, .L22
+ 253 0004 286C     		ldr	r0, [r5, #64]
+ 254 0006 FFF7FEFF 		bl	__aeabi_ui2d
+ 255              	.LVL35:
+ 256 000a 244A     		ldr	r2, .L22+4
+ 257 000c 244B     		ldr	r3, .L22+8
+ 258 000e FFF7FEFF 		bl	__aeabi_dmul
+ 259              	.LVL36:
+ 260 0012 0600     		movs	r6, r0
+ 261 0014 0F00     		movs	r7, r1
+ 262 0016 234C     		ldr	r4, .L22+12
+ 263 0018 0023     		movs	r3, #0
+ 264 001a E05E     		ldrsh	r0, [r4, r3]
+ 265 001c FFF7FEFF 		bl	__aeabi_i2d
+ 266              	.LVL37:
+ 267 0020 1E4A     		ldr	r2, .L22+4
+ 268 0022 214B     		ldr	r3, .L22+16
+ 269 0024 FFF7FEFF 		bl	__aeabi_dmul
+ 270              	.LVL38:
+ 271 0028 0200     		movs	r2, r0
+ 272 002a 0B00     		movs	r3, r1
+ 273 002c 3000     		movs	r0, r6
+ 274 002e 3900     		movs	r1, r7
+ 275 0030 FFF7FEFF 		bl	__aeabi_dadd
+ 276              	.LVL39:
+ 277 0034 FFF7FEFF 		bl	__aeabi_d2iz
+ 278              	.LVL40:
+ 146:Dsp/table.c   **** 	m1 = ADC1->DR;
+ 279              		.loc 1 146 0
+ 280 0038 2B6C     		ldr	r3, [r5, #64]
+ 281 003a 2380     		strh	r3, [r4]
+ 147:Dsp/table.c   **** 	adc_cont = Temperature(ad, m, 101) * 10;
+ 282              		.loc 1 147 0
+ 283 003c 81B2     		uxth	r1, r0
+ 284 003e 6522     		movs	r2, #101
+ 285 0040 1A48     		ldr	r0, .L22+20
+ 286              	.LVL41:
+ 287 0042 FFF7FEFF 		bl	Temperature
+ 288              	.LVL42:
+ 289 0046 1A49     		ldr	r1, .L22+24
+ 290 0048 FFF7FEFF 		bl	__aeabi_fmul
+ 291              	.LVL43:
+ 292 004c FFF7FEFF 		bl	__aeabi_f2uiz
+ 293              	.LVL44:
+ 294 0050 83B2     		uxth	r3, r0
+ 295 0052 184A     		ldr	r2, .L22+28
+ 296 0054 1380     		strh	r3, [r2]
+ 148:Dsp/table.c   **** 
+ 149:Dsp/table.c   **** 	a = adc_target - adc_cont;
+ 297              		.loc 1 149 0
+ARM GAS  /tmp/ccdtPmnO.s 			page 9
 
 
- 144:Dsp/table.c   **** }
- 304              		.loc 1 144 0
- 305              		@ sp needed
- 306 0060 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
- 307              	.L20:
- 308 0062 C046     		.align	2
- 309              	.L19:
- 310 0064 00240140 		.word	1073816576
- 311 0068 9A999999 		.word	-1717986918
- 312 006c 9999E93F 		.word	1072273817
- 313 0070 00000000 		.word	.LANCHOR0
- 314 0074 9999C93F 		.word	1070176665
- 315 0078 00000000 		.word	ad
- 316 007c 00002041 		.word	1092616192
- 317 0080 00000000 		.word	adc_cont
- 318 0084 00000000 		.word	.LANCHOR1
- 319              		.cfi_endproc
- 320              	.LFE39:
- 322              		.global	__aeabi_f2iz
- 323              		.section	.text.adc_pid,"ax",%progbits
- 324              		.align	1
- 325              		.global	adc_pid
- 326              		.syntax unified
- 327              		.code	16
- 328              		.thumb_func
- 329              		.fpu softvfp
- 331              	adc_pid:
- 332              	.LFB40:
- 145:Dsp/table.c   **** 
- 146:Dsp/table.c   **** 
- 147:Dsp/table.c   **** 
- 148:Dsp/table.c   **** void adc_pid(void)
- 149:Dsp/table.c   **** {
- 333              		.loc 1 149 0
- 334              		.cfi_startproc
- 335              		@ args = 0, pretend = 0, frame = 0
- 336              		@ frame_needed = 0, uses_anonymous_args = 0
- 337 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
- 338              	.LCFI3:
- 339              		.cfi_def_cfa_offset 24
- 340              		.cfi_offset 3, -24
- 341              		.cfi_offset 4, -20
- 342              		.cfi_offset 5, -16
- 343              		.cfi_offset 6, -12
- 344              		.cfi_offset 7, -8
- 345              		.cfi_offset 14, -4
- 346              	.LVL46:
- 150:Dsp/table.c   **** 	static int16_t iError = 0, sumError = 0, dError = 0, LastError = 0;
- 151:Dsp/table.c   **** 	static uint16_t  SetPoint = 0, SetPoint1 = 710;
- 152:Dsp/table.c   **** 	//int16_t kp_c = 130, ki_c = 650;
- 153:Dsp/table.c   **** 	//static int16_t k = 0;
- 154:Dsp/table.c   **** 	static uint16_t kp = 0;
- 155:Dsp/table.c   **** 	static float ki = 0, kd = 0.136;
- 156:Dsp/table.c   **** 	static int16_t t1 = 0;
- 157:Dsp/table.c   **** 	int16_t t = 0; 
- 158:Dsp/table.c   **** 	int16_t	adc_value = 0, NextPoint = 0; 
- 159:Dsp/table.c   **** 	
-ARM GAS  /tmp/cck3bTc8.s 			page 10
+ 298 0056 184A     		ldr	r2, .L22+32
+ 299 0058 1088     		ldrh	r0, [r2]
+ 300 005a C01A     		subs	r0, r0, r3
+ 301 005c 00B2     		sxth	r0, r0
+ 150:Dsp/table.c   **** 	cn++;
+ 302              		.loc 1 150 0
+ 303 005e 174A     		ldr	r2, .L22+36
+ 304 0060 1388     		ldrh	r3, [r2]
+ 305 0062 0133     		adds	r3, r3, #1
+ 306 0064 1BB2     		sxth	r3, r3
+ 307 0066 1380     		strh	r3, [r2]
+ 151:Dsp/table.c   **** 
+ 152:Dsp/table.c   **** 	switch (a_stat)
+ 308              		.loc 1 152 0
+ 309 0068 154A     		ldr	r2, .L22+40
+ 310 006a 0021     		movs	r1, #0
+ 311 006c 525E     		ldrsh	r2, [r2, r1]
+ 312 006e 002A     		cmp	r2, #0
+ 313 0070 02D0     		beq	.L20
+ 314 0072 012A     		cmp	r2, #1
+ 315 0074 09D0     		beq	.L21
+ 316              	.L18:
+ 153:Dsp/table.c   **** 	{
+ 154:Dsp/table.c   **** 		case 0:
+ 155:Dsp/table.c   **** 			if (2 < cn)
+ 156:Dsp/table.c   **** 			{
+ 157:Dsp/table.c   **** 				a_stat = 1;
+ 158:Dsp/table.c   **** 				cn = 0;
+ 159:Dsp/table.c   **** 			}
+ 160:Dsp/table.c   **** 			break;
+ 161:Dsp/table.c   **** 		case 1:
+ 162:Dsp/table.c   **** 			if (a < -10)
+ 163:Dsp/table.c   **** 			{
+ 164:Dsp/table.c   **** 				GPIOA->BSRR = 1 << 0;   //beep
+ 165:Dsp/table.c   **** 			}
+ 166:Dsp/table.c   **** 			break;
+ 167:Dsp/table.c   **** 		default:
+ 168:Dsp/table.c   **** 			break;
+ 169:Dsp/table.c   **** 	}
+ 170:Dsp/table.c   **** 
+ 171:Dsp/table.c   **** }
+ 317              		.loc 1 171 0
+ 318              		@ sp needed
+ 319 0076 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 320              	.L20:
+ 155:Dsp/table.c   **** 			{
+ 321              		.loc 1 155 0
+ 322 0078 022B     		cmp	r3, #2
+ 323 007a FCDD     		ble	.L18
+ 157:Dsp/table.c   **** 				cn = 0;
+ 324              		.loc 1 157 0
+ 325 007c 104B     		ldr	r3, .L22+40
+ 326 007e 0122     		movs	r2, #1
+ 327 0080 1A80     		strh	r2, [r3]
+ 158:Dsp/table.c   **** 			}
+ 328              		.loc 1 158 0
+ 329 0082 0E4B     		ldr	r3, .L22+36
+ARM GAS  /tmp/ccdtPmnO.s 			page 10
 
 
- 160:Dsp/table.c   **** 	SetPoint = SetPoint1 + add + add_t; // + add_h;
- 347              		.loc 1 160 0
- 348 0002 7F4B     		ldr	r3, .L38
- 349 0004 1B88     		ldrh	r3, [r3]
- 350 0006 7F4A     		ldr	r2, .L38+4
- 351 0008 1288     		ldrh	r2, [r2]
- 352 000a 9B18     		adds	r3, r3, r2
- 353 000c 9BB2     		uxth	r3, r3
- 354 000e 7E4A     		ldr	r2, .L38+8
- 355 0010 1288     		ldrh	r2, [r2]
- 356 0012 9B18     		adds	r3, r3, r2
- 357 0014 9BB2     		uxth	r3, r3
- 358 0016 7D4A     		ldr	r2, .L38+12
- 359 0018 1380     		strh	r3, [r2]
- 161:Dsp/table.c   **** 
- 162:Dsp/table.c   **** 	if (1000 < SetPoint)
- 360              		.loc 1 162 0
- 361 001a FA22     		movs	r2, #250
- 362 001c 9200     		lsls	r2, r2, #2
- 363 001e 9342     		cmp	r3, r2
- 364 0020 08D9     		bls	.L22
- 163:Dsp/table.c   **** 	{
- 164:Dsp/table.c   **** 		SetPoint1 = 1000;
- 365              		.loc 1 164 0
- 366 0022 774A     		ldr	r2, .L38
- 367 0024 FA21     		movs	r1, #250
- 368 0026 8900     		lsls	r1, r1, #2
- 369 0028 1180     		strh	r1, [r2]
- 165:Dsp/table.c   **** 		add = 0;
- 370              		.loc 1 165 0
- 371 002a 0022     		movs	r2, #0
- 372 002c 7549     		ldr	r1, .L38+4
- 373 002e 0A80     		strh	r2, [r1]
- 166:Dsp/table.c   **** 		add_t = 0;
- 374              		.loc 1 166 0
- 375 0030 7549     		ldr	r1, .L38+8
- 376 0032 0A80     		strh	r2, [r1]
- 377              	.L22:
- 167:Dsp/table.c   **** 		//add_h = 0;
- 168:Dsp/table.c   **** 	}
- 169:Dsp/table.c   **** 	if (100 > SetPoint)
- 378              		.loc 1 169 0
- 379 0034 632B     		cmp	r3, #99
- 380 0036 07D8     		bhi	.L23
- 170:Dsp/table.c   **** 	{
- 171:Dsp/table.c   **** 		SetPoint1 = 100;
- 381              		.loc 1 171 0
- 382 0038 714A     		ldr	r2, .L38
- 383 003a 6421     		movs	r1, #100
- 384 003c 1180     		strh	r1, [r2]
- 172:Dsp/table.c   **** 		add = 0;
- 385              		.loc 1 172 0
- 386 003e 0022     		movs	r2, #0
- 387 0040 7049     		ldr	r1, .L38+4
- 388 0042 0A80     		strh	r2, [r1]
- 173:Dsp/table.c   **** 		add_t = 0;
- 389              		.loc 1 173 0
-ARM GAS  /tmp/cck3bTc8.s 			page 11
+ 330 0084 0022     		movs	r2, #0
+ 331 0086 1A80     		strh	r2, [r3]
+ 332 0088 F5E7     		b	.L18
+ 333              	.L21:
+ 162:Dsp/table.c   **** 			{
+ 334              		.loc 1 162 0
+ 335 008a 0A30     		adds	r0, r0, #10
+ 336 008c F3DA     		bge	.L18
+ 164:Dsp/table.c   **** 			}
+ 337              		.loc 1 164 0
+ 338 008e 9023     		movs	r3, #144
+ 339 0090 DB05     		lsls	r3, r3, #23
+ 340 0092 0122     		movs	r2, #1
+ 341 0094 9A61     		str	r2, [r3, #24]
+ 342              		.loc 1 171 0
+ 343 0096 EEE7     		b	.L18
+ 344              	.L23:
+ 345              		.align	2
+ 346              	.L22:
+ 347 0098 00240140 		.word	1073816576
+ 348 009c 9A999999 		.word	-1717986918
+ 349 00a0 9999E93F 		.word	1072273817
+ 350 00a4 00000000 		.word	.LANCHOR0
+ 351 00a8 9999C93F 		.word	1070176665
+ 352 00ac 00000000 		.word	ad
+ 353 00b0 00002041 		.word	1092616192
+ 354 00b4 00000000 		.word	adc_cont
+ 355 00b8 00000000 		.word	adc_target
+ 356 00bc 00000000 		.word	.LANCHOR1
+ 357 00c0 00000000 		.word	.LANCHOR2
+ 358              		.cfi_endproc
+ 359              	.LFE39:
+ 361              		.global	__aeabi_f2iz
+ 362              		.section	.text.adc_pid,"ax",%progbits
+ 363              		.align	1
+ 364              		.global	adc_pid
+ 365              		.syntax unified
+ 366              		.code	16
+ 367              		.thumb_func
+ 368              		.fpu softvfp
+ 370              	adc_pid:
+ 371              	.LFB40:
+ 172:Dsp/table.c   **** 
+ 173:Dsp/table.c   **** 
+ 174:Dsp/table.c   **** void adc_pid(void)
+ 175:Dsp/table.c   **** {
+ 372              		.loc 1 175 0
+ 373              		.cfi_startproc
+ 374              		@ args = 0, pretend = 0, frame = 8
+ 375              		@ frame_needed = 0, uses_anonymous_args = 0
+ 376 0000 70B5     		push	{r4, r5, r6, lr}
+ 377              	.LCFI3:
+ 378              		.cfi_def_cfa_offset 16
+ 379              		.cfi_offset 4, -16
+ 380              		.cfi_offset 5, -12
+ 381              		.cfi_offset 6, -8
+ 382              		.cfi_offset 14, -4
+ARM GAS  /tmp/ccdtPmnO.s 			page 11
 
 
- 390 0044 7049     		ldr	r1, .L38+8
- 391 0046 0A80     		strh	r2, [r1]
- 392              	.L23:
- 174:Dsp/table.c   **** 		//add_h = 0;
- 175:Dsp/table.c   **** 	}
- 176:Dsp/table.c   **** 	adc_target = SetPoint;
- 393              		.loc 1 176 0
- 394 0048 714A     		ldr	r2, .L38+16
- 395 004a 1380     		strh	r3, [r2]
- 177:Dsp/table.c   **** 	
- 178:Dsp/table.c   **** /*
- 179:Dsp/table.c   **** 	if (t_pid == 1)
- 180:Dsp/table.c   **** 	{
- 181:Dsp/table.c   **** 		kp = kp_c + add;
- 182:Dsp/table.c   **** 		adc_target = kp;
- 183:Dsp/table.c   **** 	}
- 184:Dsp/table.c   **** 	if (t_pid == 0)
- 185:Dsp/table.c   **** 	{
- 186:Dsp/table.c   **** 		k = ki_c + add_t;
- 187:Dsp/table.c   **** 		adc_target = k;
- 188:Dsp/table.c   **** 	}
- 189:Dsp/table.c   **** 	ki = k / 1000;
- 190:Dsp/table.c   **** */
- 191:Dsp/table.c   **** 	t = ADC1->DR * 0.8 + t1 * 0.2;
- 396              		.loc 1 191 0
- 397 004c 714D     		ldr	r5, .L38+20
- 398 004e 286C     		ldr	r0, [r5, #64]
- 399 0050 FFF7FEFF 		bl	__aeabi_ui2d
- 400              	.LVL47:
- 401 0054 704A     		ldr	r2, .L38+24
- 402 0056 714B     		ldr	r3, .L38+28
- 403 0058 FFF7FEFF 		bl	__aeabi_dmul
- 404              	.LVL48:
- 405 005c 0600     		movs	r6, r0
- 406 005e 0F00     		movs	r7, r1
- 407 0060 6F4C     		ldr	r4, .L38+32
- 408 0062 0023     		movs	r3, #0
- 409 0064 E05E     		ldrsh	r0, [r4, r3]
- 410 0066 FFF7FEFF 		bl	__aeabi_i2d
- 411              	.LVL49:
- 412 006a 6B4A     		ldr	r2, .L38+24
- 413 006c 6D4B     		ldr	r3, .L38+36
- 414 006e FFF7FEFF 		bl	__aeabi_dmul
- 415              	.LVL50:
- 416 0072 0200     		movs	r2, r0
- 417 0074 0B00     		movs	r3, r1
- 418 0076 3000     		movs	r0, r6
- 419 0078 3900     		movs	r1, r7
- 420 007a FFF7FEFF 		bl	__aeabi_dadd
- 421              	.LVL51:
- 422 007e FFF7FEFF 		bl	__aeabi_d2iz
- 423              	.LVL52:
- 192:Dsp/table.c   **** 	t1 = ADC1->DR;
- 424              		.loc 1 192 0
- 425 0082 2B6C     		ldr	r3, [r5, #64]
- 426 0084 2380     		strh	r3, [r4]
- 193:Dsp/table.c   **** 	NextPoint = Temperature(ad, t, 101) * 10;
-ARM GAS  /tmp/cck3bTc8.s 			page 12
+ 383 0002 82B0     		sub	sp, sp, #8
+ 384              	.LCFI4:
+ 385              		.cfi_def_cfa_offset 24
+ 386              	.LVL45:
+ 176:Dsp/table.c   **** 	static int16_t iError = 0, sumError = 0, dError = 0, LastError = 0;
+ 177:Dsp/table.c   **** 	static uint16_t  SetPoint = 0;
+ 178:Dsp/table.c   **** 	//int16_t kp_c = 130, ki_c = 650;
+ 179:Dsp/table.c   **** 	//static int16_t k = 0;
+ 180:Dsp/table.c   **** 	static uint16_t kp = 0;
+ 181:Dsp/table.c   **** 	static float ki = 0, kd = 0.136;
+ 182:Dsp/table.c   **** 	static int16_t t1 = 0;
+ 183:Dsp/table.c   **** 	int16_t t = 0; 
+ 184:Dsp/table.c   **** 	int16_t	adc_value = 0, NextPoint = 0; 
+ 185:Dsp/table.c   **** 	
+ 186:Dsp/table.c   **** 	SetPoint = I2c_last + add + add_t; 
+ 387              		.loc 1 186 0
+ 388 0004 814B     		ldr	r3, .L41
+ 389 0006 1C88     		ldrh	r4, [r3]
+ 390 0008 814B     		ldr	r3, .L41+4
+ 391 000a 1B88     		ldrh	r3, [r3]
+ 392 000c E418     		adds	r4, r4, r3
+ 393 000e A4B2     		uxth	r4, r4
+ 394 0010 804B     		ldr	r3, .L41+8
+ 395 0012 1888     		ldrh	r0, [r3]
+ 396 0014 2418     		adds	r4, r4, r0
+ 397 0016 A4B2     		uxth	r4, r4
+ 187:Dsp/table.c   **** 
+ 188:Dsp/table.c   **** 	if (1000 < SetPoint)
+ 398              		.loc 1 188 0
+ 399 0018 FA23     		movs	r3, #250
+ 400 001a 9B00     		lsls	r3, r3, #2
+ 401 001c 9C42     		cmp	r4, r3
+ 402 001e 08D9     		bls	.L25
+ 189:Dsp/table.c   **** 	{
+ 190:Dsp/table.c   **** 		I2c_last = 1000;
+ 403              		.loc 1 190 0
+ 404 0020 7A4B     		ldr	r3, .L41
+ 405 0022 FA22     		movs	r2, #250
+ 406 0024 9200     		lsls	r2, r2, #2
+ 407 0026 1A80     		strh	r2, [r3]
+ 191:Dsp/table.c   **** 		add = 0;
+ 408              		.loc 1 191 0
+ 409 0028 0023     		movs	r3, #0
+ 410 002a 794A     		ldr	r2, .L41+4
+ 411 002c 1380     		strh	r3, [r2]
+ 192:Dsp/table.c   **** 		add_t = 0;
+ 412              		.loc 1 192 0
+ 413 002e 794A     		ldr	r2, .L41+8
+ 414 0030 1380     		strh	r3, [r2]
+ 415              	.L25:
+ 193:Dsp/table.c   **** 	}
+ 194:Dsp/table.c   **** 	if (100 > SetPoint)
+ 416              		.loc 1 194 0
+ 417 0032 632C     		cmp	r4, #99
+ 418 0034 07D8     		bhi	.L26
+ 195:Dsp/table.c   **** 	{
+ 196:Dsp/table.c   **** 		I2c_last = 100;
+ARM GAS  /tmp/ccdtPmnO.s 			page 12
 
 
- 427              		.loc 1 193 0
- 428 0086 81B2     		uxth	r1, r0
- 429 0088 6522     		movs	r2, #101
- 430 008a 6748     		ldr	r0, .L38+40
- 431              	.LVL53:
- 432 008c FFF7FEFF 		bl	Temperature
- 433              	.LVL54:
- 434 0090 6649     		ldr	r1, .L38+44
- 435 0092 FFF7FEFF 		bl	__aeabi_fmul
- 436              	.LVL55:
- 437 0096 FFF7FEFF 		bl	__aeabi_f2iz
- 438              	.LVL56:
- 194:Dsp/table.c   **** //	I2c_Write = NextPoint / 10;
- 195:Dsp/table.c   **** 
- 196:Dsp/table.c   **** 	if (400 >= NextPoint && 200 < NextPoint)
- 439              		.loc 1 196 0
- 440 009a 80B2     		uxth	r0, r0
- 441 009c 0300     		movs	r3, r0
- 442 009e C93B     		subs	r3, r3, #201
- 443 00a0 9BB2     		uxth	r3, r3
- 444 00a2 C72B     		cmp	r3, #199
- 445 00a4 4AD8     		bhi	.L24
- 197:Dsp/table.c   **** 	{
- 198:Dsp/table.c   **** 		kp = 35, ki = 0.147;
- 446              		.loc 1 198 0
- 447 00a6 624B     		ldr	r3, .L38+48
- 448 00a8 2322     		movs	r2, #35
- 449 00aa 1A80     		strh	r2, [r3]
- 450 00ac 614B     		ldr	r3, .L38+52
- 451 00ae 624A     		ldr	r2, .L38+56
- 452 00b0 1A60     		str	r2, [r3]
- 453              	.L25:
+ 419              		.loc 1 196 0
+ 420 0036 754B     		ldr	r3, .L41
+ 421 0038 6422     		movs	r2, #100
+ 422 003a 1A80     		strh	r2, [r3]
+ 197:Dsp/table.c   **** 		add = 0;
+ 423              		.loc 1 197 0
+ 424 003c 0023     		movs	r3, #0
+ 425 003e 744A     		ldr	r2, .L41+4
+ 426 0040 1380     		strh	r3, [r2]
+ 198:Dsp/table.c   **** 		add_t = 0;
+ 427              		.loc 1 198 0
+ 428 0042 744A     		ldr	r2, .L41+8
+ 429 0044 1380     		strh	r3, [r2]
+ 430              	.L26:
  199:Dsp/table.c   **** 	}
- 200:Dsp/table.c   **** 	else if (500 >= NextPoint && 400 < NextPoint)
- 201:Dsp/table.c   **** 	{
- 202:Dsp/table.c   **** 		kp = 30, ki = 0.154;
- 203:Dsp/table.c   **** 	}
- 204:Dsp/table.c   **** 	else if (600 >= NextPoint && 500 < NextPoint)
+ 200:Dsp/table.c   **** 	adc_target = SetPoint;
+ 431              		.loc 1 200 0
+ 432 0046 744B     		ldr	r3, .L41+12
+ 433 0048 1C80     		strh	r4, [r3]
+ 201:Dsp/table.c   **** 	I2c_Write = SetPoint;
+ 434              		.loc 1 201 0
+ 435 004a 744B     		ldr	r3, .L41+16
+ 436 004c 1C80     		strh	r4, [r3]
+ 202:Dsp/table.c   **** 	
+ 203:Dsp/table.c   **** /*
+ 204:Dsp/table.c   **** 	if (t_pid == 1)
  205:Dsp/table.c   **** 	{
- 206:Dsp/table.c   **** 		kp = 25, ki = 0.175;
- 207:Dsp/table.c   **** 	}
- 208:Dsp/table.c   **** 	else if (700 >= NextPoint && 600 < NextPoint)
- 209:Dsp/table.c   **** 	{
- 210:Dsp/table.c   **** 		kp = 20, ki = 0.185;
- 211:Dsp/table.c   **** 	}
- 212:Dsp/table.c   **** 	else if (800 >= NextPoint && 700 < NextPoint)
- 213:Dsp/table.c   **** 	{
- 214:Dsp/table.c   **** 		kp = 16, ki = 0.195;
- 215:Dsp/table.c   **** 	}
- 216:Dsp/table.c   **** 	else if (900 >= NextPoint && 800 < NextPoint)
- 217:Dsp/table.c   **** 	{
- 218:Dsp/table.c   **** 		kp = 15, ki = 0.205;
- 219:Dsp/table.c   **** 	}
- 220:Dsp/table.c   **** 	else if (950 >= NextPoint && 900 < NextPoint)
+ 206:Dsp/table.c   **** 		kp = kp_c + add;
+ 207:Dsp/table.c   **** 		adc_target = kp;
+ 208:Dsp/table.c   **** 	}
+ 209:Dsp/table.c   **** 	if (t_pid == 0)
+ 210:Dsp/table.c   **** 	{
+ 211:Dsp/table.c   **** 		k = ki_c + add_t;
+ 212:Dsp/table.c   **** 		adc_target = k;
+ 213:Dsp/table.c   **** 	}
+ 214:Dsp/table.c   **** 	ki = k / 1000;
+ 215:Dsp/table.c   **** */
+ 216:Dsp/table.c   **** 	t = ADC1->DR * 0.8 + t1 * 0.2;
+ 437              		.loc 1 216 0
+ 438 004e 744E     		ldr	r6, .L41+20
+ 439 0050 306C     		ldr	r0, [r6, #64]
+ 440 0052 FFF7FEFF 		bl	__aeabi_ui2d
+ 441              	.LVL46:
+ 442 0056 734A     		ldr	r2, .L41+24
+ 443 0058 734B     		ldr	r3, .L41+28
+ 444 005a FFF7FEFF 		bl	__aeabi_dmul
+ 445              	.LVL47:
+ 446 005e 0090     		str	r0, [sp]
+ 447 0060 0191     		str	r1, [sp, #4]
+ 448 0062 724D     		ldr	r5, .L41+32
+ 449 0064 0023     		movs	r3, #0
+ 450 0066 E85E     		ldrsh	r0, [r5, r3]
+ 451 0068 FFF7FEFF 		bl	__aeabi_i2d
+ 452              	.LVL48:
+ 453 006c 6D4A     		ldr	r2, .L41+24
+ 454 006e 704B     		ldr	r3, .L41+36
+ 455 0070 FFF7FEFF 		bl	__aeabi_dmul
+ARM GAS  /tmp/ccdtPmnO.s 			page 13
+
+
+ 456              	.LVL49:
+ 457 0074 0200     		movs	r2, r0
+ 458 0076 0B00     		movs	r3, r1
+ 459 0078 0098     		ldr	r0, [sp]
+ 460 007a 0199     		ldr	r1, [sp, #4]
+ 461 007c FFF7FEFF 		bl	__aeabi_dadd
+ 462              	.LVL50:
+ 463 0080 FFF7FEFF 		bl	__aeabi_d2iz
+ 464              	.LVL51:
+ 217:Dsp/table.c   **** 	t1 = ADC1->DR;
+ 465              		.loc 1 217 0
+ 466 0084 336C     		ldr	r3, [r6, #64]
+ 467 0086 2B80     		strh	r3, [r5]
+ 218:Dsp/table.c   **** 	NextPoint = Temperature(ad, t, 101) * 10;
+ 468              		.loc 1 218 0
+ 469 0088 81B2     		uxth	r1, r0
+ 470 008a 6522     		movs	r2, #101
+ 471 008c 6948     		ldr	r0, .L41+40
+ 472              	.LVL52:
+ 473 008e FFF7FEFF 		bl	Temperature
+ 474              	.LVL53:
+ 475 0092 6949     		ldr	r1, .L41+44
+ 476 0094 FFF7FEFF 		bl	__aeabi_fmul
+ 477              	.LVL54:
+ 478 0098 FFF7FEFF 		bl	__aeabi_f2iz
+ 479              	.LVL55:
+ 219:Dsp/table.c   **** 
+ 220:Dsp/table.c   **** 	if (300 >= NextPoint && 150 < NextPoint)
+ 480              		.loc 1 220 0
+ 481 009c 80B2     		uxth	r0, r0
+ 482 009e 0300     		movs	r3, r0
+ 483 00a0 973B     		subs	r3, r3, #151
+ 484 00a2 9BB2     		uxth	r3, r3
+ 485 00a4 952B     		cmp	r3, #149
+ 486 00a6 05D8     		bhi	.L27
  221:Dsp/table.c   **** 	{
- 222:Dsp/table.c   **** 		kp = 8, ki = 0.210;
+ 222:Dsp/table.c   **** 		kp = 27.5, ki = 0.130;
+ 487              		.loc 1 222 0
+ 488 00a8 644B     		ldr	r3, .L41+48
+ 489 00aa 1B22     		movs	r2, #27
+ 490 00ac 1A80     		strh	r2, [r3]
+ 491 00ae 644B     		ldr	r3, .L41+52
+ 492 00b0 644A     		ldr	r2, .L41+56
+ 493 00b2 1A60     		str	r2, [r3]
+ 494              	.L27:
  223:Dsp/table.c   **** 	}
-ARM GAS  /tmp/cck3bTc8.s 			page 13
-
-
- 224:Dsp/table.c   **** 	else if (1000 >= NextPoint && 950 < NextPoint)
+ 224:Dsp/table.c   **** 	if (400 >= NextPoint && 300 < NextPoint)
+ 495              		.loc 1 224 0
+ 496 00b4 0300     		movs	r3, r0
+ 497 00b6 2E3B     		subs	r3, r3, #46
+ 498 00b8 FF3B     		subs	r3, r3, #255
+ 499 00ba 9BB2     		uxth	r3, r3
+ 500 00bc 632B     		cmp	r3, #99
+ 501 00be 48D8     		bhi	.L28
  225:Dsp/table.c   **** 	{
- 226:Dsp/table.c   **** 		kp = 8, ki = 0.240;
+ 226:Dsp/table.c   **** 		kp = 25.0, ki = 0.132;
+ 502              		.loc 1 226 0
+ARM GAS  /tmp/ccdtPmnO.s 			page 14
+
+
+ 503 00c0 5E4B     		ldr	r3, .L41+48
+ 504 00c2 1922     		movs	r2, #25
+ 505 00c4 1A80     		strh	r2, [r3]
+ 506 00c6 5E4B     		ldr	r3, .L41+52
+ 507 00c8 5F4A     		ldr	r2, .L41+60
+ 508 00ca 1A60     		str	r2, [r3]
+ 509              	.L29:
  227:Dsp/table.c   **** 	}
- 228:Dsp/table.c   **** 	else
+ 228:Dsp/table.c   **** 	else if (500 >= NextPoint && 400 < NextPoint)
  229:Dsp/table.c   **** 	{
- 230:Dsp/table.c   **** 		kp = 0, ki = 0;
+ 230:Dsp/table.c   **** 		kp = 24.0, ki = 0.145;
  231:Dsp/table.c   **** 	}
- 232:Dsp/table.c   **** 
- 233:Dsp/table.c   **** 	iError = SetPoint - NextPoint;
- 454              		.loc 1 233 0
- 455 00b2 564B     		ldr	r3, .L38+12
- 456 00b4 1B88     		ldrh	r3, [r3]
- 457 00b6 181A     		subs	r0, r3, r0
- 458              	.LVL57:
- 459 00b8 80B2     		uxth	r0, r0
- 460 00ba 05B2     		sxth	r5, r0
- 234:Dsp/table.c   **** 	sumError += iError;
- 461              		.loc 1 234 0
- 462 00bc 5F49     		ldr	r1, .L38+60
- 463 00be 0A88     		ldrh	r2, [r1]
- 464 00c0 8218     		adds	r2, r0, r2
- 465 00c2 12B2     		sxth	r2, r2
- 466 00c4 0A80     		strh	r2, [r1]
- 235:Dsp/table.c   **** 
- 236:Dsp/table.c   **** 	if (AMPLITUDE_MAX < sumError)
- 467              		.loc 1 236 0
- 468 00c6 5E49     		ldr	r1, .L38+64
- 469 00c8 8A42     		cmp	r2, r1
- 470 00ca 01DD     		ble	.L33
+ 232:Dsp/table.c   **** 	else if (600 >= NextPoint && 500 < NextPoint)
+ 233:Dsp/table.c   **** 	{
+ 234:Dsp/table.c   **** 		kp = 20, ki = 0.145;
+ 235:Dsp/table.c   **** 	}
+ 236:Dsp/table.c   **** 	else if (700 >= NextPoint && 600 < NextPoint)
  237:Dsp/table.c   **** 	{
- 238:Dsp/table.c   **** 		sumError = AMPLITUDE_MAX;
- 471              		.loc 1 238 0
- 472 00cc 5B4A     		ldr	r2, .L38+60
- 473 00ce 1180     		strh	r1, [r2]
- 474              	.L33:
+ 238:Dsp/table.c   **** 		kp = 16.5, ki = 0.145;
  239:Dsp/table.c   **** 	}
- 240:Dsp/table.c   **** 
- 241:Dsp/table.c   **** 	if (AMPLITUDE_MIM > sumError)
- 475              		.loc 1 241 0
- 476 00d0 5A4A     		ldr	r2, .L38+60
- 477 00d2 0023     		movs	r3, #0
- 478 00d4 D15E     		ldrsh	r1, [r2, r3]
- 479 00d6 5B4A     		ldr	r2, .L38+68
- 480 00d8 9142     		cmp	r1, r2
- 481 00da 02DA     		bge	.L34
- 242:Dsp/table.c   **** 	{
- 243:Dsp/table.c   **** 		sumError = AMPLITUDE_MIM;
- 482              		.loc 1 243 0
- 483 00dc 574A     		ldr	r2, .L38+60
- 484 00de 5949     		ldr	r1, .L38+68
- 485 00e0 1180     		strh	r1, [r2]
- 486              	.L34:
- 244:Dsp/table.c   **** 	}
- 245:Dsp/table.c   **** 
- 246:Dsp/table.c   **** 	dError = iError - LastError;
- 487              		.loc 1 246 0
-ARM GAS  /tmp/cck3bTc8.s 			page 14
-
-
- 488 00e2 594A     		ldr	r2, .L38+72
- 489 00e4 1488     		ldrh	r4, [r2]
- 490 00e6 041B     		subs	r4, r0, r4
- 491 00e8 24B2     		sxth	r4, r4
- 247:Dsp/table.c   **** 	LastError = iError;
- 492              		.loc 1 247 0
- 493 00ea 1580     		strh	r5, [r2]
- 248:Dsp/table.c   **** 	
- 249:Dsp/table.c   **** 	adc_value = kp * iError + ki * sumError + kd * dError;
- 494              		.loc 1 249 0
- 495 00ec 504B     		ldr	r3, .L38+48
- 496 00ee 1B88     		ldrh	r3, [r3]
- 497 00f0 5D43     		muls	r5, r3
- 498 00f2 524B     		ldr	r3, .L38+60
- 499 00f4 0020     		movs	r0, #0
- 500 00f6 185E     		ldrsh	r0, [r3, r0]
- 501 00f8 FFF7FEFF 		bl	__aeabi_i2f
- 502              	.LVL58:
- 503 00fc 4D4B     		ldr	r3, .L38+52
- 504 00fe 1968     		ldr	r1, [r3]
- 505 0100 FFF7FEFF 		bl	__aeabi_fmul
- 506              	.LVL59:
- 507 0104 061C     		adds	r6, r0, #0
- 508 0106 2800     		movs	r0, r5
- 509 0108 FFF7FEFF 		bl	__aeabi_i2f
- 510              	.LVL60:
- 511 010c 311C     		adds	r1, r6, #0
- 512 010e FFF7FEFF 		bl	__aeabi_fadd
- 513              	.LVL61:
- 514 0112 051C     		adds	r5, r0, #0
- 515 0114 2000     		movs	r0, r4
- 516 0116 FFF7FEFF 		bl	__aeabi_i2f
- 517              	.LVL62:
- 518 011a 4C49     		ldr	r1, .L38+76
- 519 011c FFF7FEFF 		bl	__aeabi_fmul
- 520              	.LVL63:
- 521 0120 011C     		adds	r1, r0, #0
- 522 0122 281C     		adds	r0, r5, #0
- 523 0124 FFF7FEFF 		bl	__aeabi_fadd
- 524              	.LVL64:
- 525 0128 FFF7FEFF 		bl	__aeabi_f2iz
- 526              	.LVL65:
- 527 012c 00B2     		sxth	r0, r0
- 528              	.LVL66:
- 250:Dsp/table.c   **** 	//printf("adc_va:%d\r\n", adc_value);
- 251:Dsp/table.c   **** 	if (4700 < adc_value)
- 529              		.loc 1 251 0
- 530 012e 444B     		ldr	r3, .L38+64
- 531 0130 9842     		cmp	r0, r3
- 532 0132 60DC     		bgt	.L36
- 252:Dsp/table.c   **** 	{
- 253:Dsp/table.c   **** 		adc_value = 4700;
- 254:Dsp/table.c   **** 	}
- 255:Dsp/table.c   **** 	
- 256:Dsp/table.c   **** 	if (0 >= adc_value)
- 533              		.loc 1 256 0
- 534 0134 0028     		cmp	r0, #0
-ARM GAS  /tmp/cck3bTc8.s 			page 15
-
-
- 535 0136 5FDC     		bgt	.L35
+ 240:Dsp/table.c   **** 	else if (800 >= NextPoint && 700 < NextPoint)
+ 241:Dsp/table.c   **** 	{
+ 242:Dsp/table.c   **** 		kp = 13.5, ki = 0.155;
+ 243:Dsp/table.c   **** 	}
+ 244:Dsp/table.c   **** 	else if (900 >= NextPoint && 800 < NextPoint)
+ 245:Dsp/table.c   **** 	{
+ 246:Dsp/table.c   **** 		kp = 9.5, ki = 0.158;
+ 247:Dsp/table.c   **** 	}
+ 248:Dsp/table.c   **** 	else if (950 >= NextPoint && 900 < NextPoint)
+ 249:Dsp/table.c   **** 	{
+ 250:Dsp/table.c   **** 		kp = 8.5, ki = 0.170;
+ 251:Dsp/table.c   **** 	}
+ 252:Dsp/table.c   **** 	else if (1000 >= NextPoint && 950 < NextPoint)
+ 253:Dsp/table.c   **** 	{
+ 254:Dsp/table.c   **** 		kp = 8, ki = 0.175;
+ 255:Dsp/table.c   **** 	}
+ 256:Dsp/table.c   **** 	else
  257:Dsp/table.c   **** 	{
- 258:Dsp/table.c   **** 		adc_value = 0;
- 536              		.loc 1 258 0
- 537 0138 0020     		movs	r0, #0
- 538              	.LVL67:
- 539 013a 5DE0     		b	.L35
- 540              	.LVL68:
- 541              	.L24:
- 200:Dsp/table.c   **** 	{
- 542              		.loc 1 200 0
- 543 013c 0300     		movs	r3, r0
- 544 013e 923B     		subs	r3, r3, #146
- 545 0140 FF3B     		subs	r3, r3, #255
- 546 0142 9BB2     		uxth	r3, r3
- 547 0144 632B     		cmp	r3, #99
- 548 0146 06D8     		bhi	.L26
- 202:Dsp/table.c   **** 	}
- 549              		.loc 1 202 0
- 550 0148 394B     		ldr	r3, .L38+48
- 551 014a 1E22     		movs	r2, #30
- 552 014c 1A80     		strh	r2, [r3]
- 553 014e 394B     		ldr	r3, .L38+52
- 554 0150 3F4A     		ldr	r2, .L38+80
- 555 0152 1A60     		str	r2, [r3]
- 556 0154 ADE7     		b	.L25
- 557              	.L26:
- 204:Dsp/table.c   **** 	{
- 558              		.loc 1 204 0
- 559 0156 0300     		movs	r3, r0
- 560 0158 F63B     		subs	r3, r3, #246
- 561 015a FF3B     		subs	r3, r3, #255
- 562 015c 9BB2     		uxth	r3, r3
- 563 015e 632B     		cmp	r3, #99
- 564 0160 06D8     		bhi	.L27
- 206:Dsp/table.c   **** 	}
- 565              		.loc 1 206 0
- 566 0162 334B     		ldr	r3, .L38+48
- 567 0164 1922     		movs	r2, #25
- 568 0166 1A80     		strh	r2, [r3]
- 569 0168 324B     		ldr	r3, .L38+52
- 570 016a 3A4A     		ldr	r2, .L38+84
- 571 016c 1A60     		str	r2, [r3]
- 572 016e A0E7     		b	.L25
- 573              	.L27:
- 208:Dsp/table.c   **** 	{
- 574              		.loc 1 208 0
- 575 0170 394B     		ldr	r3, .L38+88
- 576 0172 C318     		adds	r3, r0, r3
- 577 0174 9BB2     		uxth	r3, r3
- 578 0176 632B     		cmp	r3, #99
- 579 0178 06D8     		bhi	.L28
- 210:Dsp/table.c   **** 	}
- 580              		.loc 1 210 0
- 581 017a 2D4B     		ldr	r3, .L38+48
- 582 017c 1422     		movs	r2, #20
- 583 017e 1A80     		strh	r2, [r3]
-ARM GAS  /tmp/cck3bTc8.s 			page 16
+ 258:Dsp/table.c   **** 	//	kp = 0, ki = 0;
+ 259:Dsp/table.c   **** 	//	printf("re\r\n");
+ 260:Dsp/table.c   **** 	}
+ 261:Dsp/table.c   **** 
+ 262:Dsp/table.c   **** 	iError = SetPoint - NextPoint;
+ 510              		.loc 1 262 0
+ 511 00cc 241A     		subs	r4, r4, r0
+ 512 00ce A4B2     		uxth	r4, r4
+ 513 00d0 22B2     		sxth	r2, r4
+ 263:Dsp/table.c   **** 	sumError += iError;
+ 514              		.loc 1 263 0
+ 515 00d2 5E49     		ldr	r1, .L41+64
+ 516 00d4 0B88     		ldrh	r3, [r1]
+ 517 00d6 E318     		adds	r3, r4, r3
+ 518 00d8 1BB2     		sxth	r3, r3
+ 519 00da 0B80     		strh	r3, [r1]
+ 264:Dsp/table.c   **** 
+ 265:Dsp/table.c   **** 	if (AMPLITUDE_MAX < sumError)
+ 520              		.loc 1 265 0
+ARM GAS  /tmp/ccdtPmnO.s 			page 15
 
 
- 584 0180 2C4B     		ldr	r3, .L38+52
- 585 0182 364A     		ldr	r2, .L38+92
- 586 0184 1A60     		str	r2, [r3]
- 587 0186 94E7     		b	.L25
- 588              	.L28:
- 212:Dsp/table.c   **** 	{
- 589              		.loc 1 212 0
- 590 0188 354B     		ldr	r3, .L38+96
- 591 018a C318     		adds	r3, r0, r3
- 592 018c 9BB2     		uxth	r3, r3
- 593 018e 632B     		cmp	r3, #99
- 594 0190 06D8     		bhi	.L29
- 214:Dsp/table.c   **** 	}
- 595              		.loc 1 214 0
- 596 0192 274B     		ldr	r3, .L38+48
- 597 0194 1022     		movs	r2, #16
- 598 0196 1A80     		strh	r2, [r3]
- 599 0198 264B     		ldr	r3, .L38+52
- 600 019a 324A     		ldr	r2, .L38+100
- 601 019c 1A60     		str	r2, [r3]
- 602 019e 88E7     		b	.L25
- 603              	.L29:
- 216:Dsp/table.c   **** 	{
- 604              		.loc 1 216 0
- 605 01a0 314B     		ldr	r3, .L38+104
- 606 01a2 C318     		adds	r3, r0, r3
- 607 01a4 9BB2     		uxth	r3, r3
- 608 01a6 632B     		cmp	r3, #99
- 609 01a8 06D8     		bhi	.L30
- 218:Dsp/table.c   **** 	}
- 610              		.loc 1 218 0
- 611 01aa 214B     		ldr	r3, .L38+48
- 612 01ac 0F22     		movs	r2, #15
- 613 01ae 1A80     		strh	r2, [r3]
- 614 01b0 204B     		ldr	r3, .L38+52
- 615 01b2 2E4A     		ldr	r2, .L38+108
- 616 01b4 1A60     		str	r2, [r3]
- 617 01b6 7CE7     		b	.L25
- 618              	.L30:
- 220:Dsp/table.c   **** 	{
- 619              		.loc 1 220 0
- 620 01b8 2D4B     		ldr	r3, .L38+112
- 621 01ba C318     		adds	r3, r0, r3
- 622 01bc 9BB2     		uxth	r3, r3
- 623 01be 312B     		cmp	r3, #49
- 624 01c0 06D8     		bhi	.L31
- 222:Dsp/table.c   **** 	}
- 625              		.loc 1 222 0
- 626 01c2 1B4B     		ldr	r3, .L38+48
- 627 01c4 0822     		movs	r2, #8
- 628 01c6 1A80     		strh	r2, [r3]
- 629 01c8 1A4B     		ldr	r3, .L38+52
- 630 01ca 2A4A     		ldr	r2, .L38+116
- 631 01cc 1A60     		str	r2, [r3]
- 632 01ce 70E7     		b	.L25
- 633              	.L31:
- 224:Dsp/table.c   **** 	{
-ARM GAS  /tmp/cck3bTc8.s 			page 17
+ 521 00dc 5C49     		ldr	r1, .L41+68
+ 522 00de 8B42     		cmp	r3, r1
+ 523 00e0 01DD     		ble	.L36
+ 266:Dsp/table.c   **** 	{
+ 267:Dsp/table.c   **** 		sumError = AMPLITUDE_MAX;
+ 524              		.loc 1 267 0
+ 525 00e2 5A4B     		ldr	r3, .L41+64
+ 526 00e4 1980     		strh	r1, [r3]
+ 527              	.L36:
+ 268:Dsp/table.c   **** 	}
+ 269:Dsp/table.c   **** 
+ 270:Dsp/table.c   **** 	if (AMPLITUDE_MIM > sumError)
+ 528              		.loc 1 270 0
+ 529 00e6 594B     		ldr	r3, .L41+64
+ 530 00e8 0021     		movs	r1, #0
+ 531 00ea 595E     		ldrsh	r1, [r3, r1]
+ 532 00ec 594B     		ldr	r3, .L41+72
+ 533 00ee 9942     		cmp	r1, r3
+ 534 00f0 02DA     		bge	.L37
+ 271:Dsp/table.c   **** 	{
+ 272:Dsp/table.c   **** 		sumError = AMPLITUDE_MIM;
+ 535              		.loc 1 272 0
+ 536 00f2 564B     		ldr	r3, .L41+64
+ 537 00f4 5749     		ldr	r1, .L41+72
+ 538 00f6 1980     		strh	r1, [r3]
+ 539              	.L37:
+ 273:Dsp/table.c   **** 	}
+ 274:Dsp/table.c   **** 
+ 275:Dsp/table.c   **** 	dError = iError - LastError;
+ 540              		.loc 1 275 0
+ 541 00f8 574B     		ldr	r3, .L41+76
+ 542 00fa 1888     		ldrh	r0, [r3]
+ 543              	.LVL56:
+ 544 00fc 241A     		subs	r4, r4, r0
+ 545 00fe 24B2     		sxth	r4, r4
+ 276:Dsp/table.c   **** 	LastError = iError;
+ 546              		.loc 1 276 0
+ 547 0100 1A80     		strh	r2, [r3]
+ 277:Dsp/table.c   **** 	
+ 278:Dsp/table.c   **** 	adc_value = kp * iError + ki * sumError + kd * dError;
+ 548              		.loc 1 278 0
+ 549 0102 4E4B     		ldr	r3, .L41+48
+ 550 0104 1D88     		ldrh	r5, [r3]
+ 551 0106 5543     		muls	r5, r2
+ 552 0108 504B     		ldr	r3, .L41+64
+ 553 010a 0020     		movs	r0, #0
+ 554 010c 185E     		ldrsh	r0, [r3, r0]
+ 555 010e FFF7FEFF 		bl	__aeabi_i2f
+ 556              	.LVL57:
+ 557 0112 4B4B     		ldr	r3, .L41+52
+ 558 0114 1968     		ldr	r1, [r3]
+ 559 0116 FFF7FEFF 		bl	__aeabi_fmul
+ 560              	.LVL58:
+ 561 011a 061C     		adds	r6, r0, #0
+ 562 011c 2800     		movs	r0, r5
+ 563 011e FFF7FEFF 		bl	__aeabi_i2f
+ 564              	.LVL59:
+ARM GAS  /tmp/ccdtPmnO.s 			page 16
 
 
- 634              		.loc 1 224 0
- 635 01d0 294B     		ldr	r3, .L38+120
- 636 01d2 C318     		adds	r3, r0, r3
- 637 01d4 9BB2     		uxth	r3, r3
- 638 01d6 312B     		cmp	r3, #49
- 639 01d8 06D8     		bhi	.L32
- 226:Dsp/table.c   **** 	}
- 640              		.loc 1 226 0
- 641 01da 154B     		ldr	r3, .L38+48
- 642 01dc 0822     		movs	r2, #8
- 643 01de 1A80     		strh	r2, [r3]
- 644 01e0 144B     		ldr	r3, .L38+52
- 645 01e2 264A     		ldr	r2, .L38+124
- 646 01e4 1A60     		str	r2, [r3]
- 647 01e6 64E7     		b	.L25
- 648              	.L32:
+ 565 0122 311C     		adds	r1, r6, #0
+ 566 0124 FFF7FEFF 		bl	__aeabi_fadd
+ 567              	.LVL60:
+ 568 0128 051C     		adds	r5, r0, #0
+ 569 012a 2000     		movs	r0, r4
+ 570 012c FFF7FEFF 		bl	__aeabi_i2f
+ 571              	.LVL61:
+ 572 0130 4A49     		ldr	r1, .L41+80
+ 573 0132 FFF7FEFF 		bl	__aeabi_fmul
+ 574              	.LVL62:
+ 575 0136 011C     		adds	r1, r0, #0
+ 576 0138 281C     		adds	r0, r5, #0
+ 577 013a FFF7FEFF 		bl	__aeabi_fadd
+ 578              	.LVL63:
+ 579 013e FFF7FEFF 		bl	__aeabi_f2iz
+ 580              	.LVL64:
+ 581 0142 00B2     		sxth	r0, r0
+ 582              	.LVL65:
+ 279:Dsp/table.c   **** 	if (4700 < adc_value)
+ 583              		.loc 1 279 0
+ 584 0144 424B     		ldr	r3, .L41+68
+ 585 0146 9842     		cmp	r0, r3
+ 586 0148 5ADC     		bgt	.L39
+ 280:Dsp/table.c   **** 	{
+ 281:Dsp/table.c   **** 		adc_value = 4700;
+ 282:Dsp/table.c   **** 	}
+ 283:Dsp/table.c   **** 	
+ 284:Dsp/table.c   **** 	if (0 >= adc_value)
+ 587              		.loc 1 284 0
+ 588 014a 0028     		cmp	r0, #0
+ 589 014c 59DC     		bgt	.L38
+ 285:Dsp/table.c   **** 	{
+ 286:Dsp/table.c   **** 		adc_value = 0;
+ 590              		.loc 1 286 0
+ 591 014e 0020     		movs	r0, #0
+ 592              	.LVL66:
+ 593 0150 57E0     		b	.L38
+ 594              	.LVL67:
+ 595              	.L28:
+ 228:Dsp/table.c   **** 	{
+ 596              		.loc 1 228 0
+ 597 0152 0300     		movs	r3, r0
+ 598 0154 923B     		subs	r3, r3, #146
+ 599 0156 FF3B     		subs	r3, r3, #255
+ 600 0158 9BB2     		uxth	r3, r3
+ 601 015a 632B     		cmp	r3, #99
+ 602 015c 06D8     		bhi	.L30
  230:Dsp/table.c   **** 	}
- 649              		.loc 1 230 0
- 650 01e8 114B     		ldr	r3, .L38+48
- 651 01ea 0022     		movs	r2, #0
- 652 01ec 1A80     		strh	r2, [r3]
- 653 01ee 114B     		ldr	r3, .L38+52
- 654 01f0 0022     		movs	r2, #0
- 655 01f2 1A60     		str	r2, [r3]
- 656 01f4 5DE7     		b	.L25
- 657              	.LVL69:
- 658              	.L36:
- 253:Dsp/table.c   **** 	}
- 659              		.loc 1 253 0
- 660 01f6 1248     		ldr	r0, .L38+64
- 661              	.LVL70:
- 662              	.L35:
- 259:Dsp/table.c   **** 	} 
- 260:Dsp/table.c   **** 
- 261:Dsp/table.c   **** 	//printf("pid:%d\r\n", adc_value);	
- 262:Dsp/table.c   **** 	TIM3->CCR4 = adc_value;
- 663              		.loc 1 262 0
- 664 01f8 214B     		ldr	r3, .L38+128
- 665 01fa 1864     		str	r0, [r3, #64]
- 263:Dsp/table.c   **** }
- 666              		.loc 1 263 0
- 667              		@ sp needed
- 668 01fc F8BD     		pop	{r3, r4, r5, r6, r7, pc}
- 669              	.L39:
- 670 01fe C046     		.align	2
- 671              	.L38:
- 672 0200 00000000 		.word	.LANCHOR2
- 673 0204 00000000 		.word	.LANCHOR3
- 674 0208 00000000 		.word	.LANCHOR4
- 675 020c 00000000 		.word	.LANCHOR5
- 676 0210 00000000 		.word	adc_target
- 677 0214 00240140 		.word	1073816576
- 678 0218 9A999999 		.word	-1717986918
- 679 021c 9999E93F 		.word	1072273817
- 680 0220 00000000 		.word	.LANCHOR6
- 681 0224 9999C93F 		.word	1070176665
- 682 0228 00000000 		.word	ad
-ARM GAS  /tmp/cck3bTc8.s 			page 18
+ 603              		.loc 1 230 0
+ 604 015e 374B     		ldr	r3, .L41+48
+ 605 0160 1822     		movs	r2, #24
+ 606 0162 1A80     		strh	r2, [r3]
+ 607 0164 364B     		ldr	r3, .L41+52
+ 608 0166 3E4A     		ldr	r2, .L41+84
+ 609 0168 1A60     		str	r2, [r3]
+ 610 016a AFE7     		b	.L29
+ 611              	.L30:
+ARM GAS  /tmp/ccdtPmnO.s 			page 17
 
 
- 683 022c 00002041 		.word	1092616192
- 684 0230 00000000 		.word	.LANCHOR7
- 685 0234 00000000 		.word	.LANCHOR8
- 686 0238 2B87163E 		.word	1041663787
- 687 023c 00000000 		.word	.LANCHOR9
- 688 0240 5C120000 		.word	4700
- 689 0244 A4EDFFFF 		.word	-4700
- 690 0248 00000000 		.word	.LANCHOR10
- 691 024c 96430B3E 		.word	1040925590
- 692 0250 2DB21D3E 		.word	1042133549
- 693 0254 3333333E 		.word	1043542835
- 694 0258 A7FDFFFF 		.word	-601
- 695 025c A4703D3E 		.word	1044213924
- 696 0260 43FDFFFF 		.word	-701
- 697 0264 14AE473E 		.word	1044885012
- 698 0268 DFFCFFFF 		.word	-801
- 699 026c 85EB513E 		.word	1045556101
- 700 0270 7BFCFFFF 		.word	-901
- 701 0274 3D0A573E 		.word	1045891645
- 702 0278 49FCFFFF 		.word	-951
- 703 027c 8FC2753E 		.word	1047904911
- 704 0280 00040040 		.word	1073742848
- 705              		.cfi_endproc
- 706              	.LFE40:
- 708              		.global	ad
- 709              		.global	add_t
- 710              		.global	add
- 711              		.global	I2c_Write
- 712              		.section	.bss.I2c_Write,"aw",%nobits
- 713              		.set	.LANCHOR1,. + 0
- 716              	I2c_Write:
- 717 0000 00       		.space	1
- 718              		.section	.bss.LastError.6980,"aw",%nobits
- 719              		.align	1
- 720              		.set	.LANCHOR10,. + 0
- 723              	LastError.6980:
- 724 0000 0000     		.space	2
- 725              		.section	.bss.SetPoint.6981,"aw",%nobits
- 726              		.align	1
- 727              		.set	.LANCHOR5,. + 0
- 730              	SetPoint.6981:
- 731 0000 0000     		.space	2
- 732              		.section	.bss.add,"aw",%nobits
- 733              		.align	1
- 734              		.set	.LANCHOR3,. + 0
- 737              	add:
- 738 0000 0000     		.space	2
- 739              		.section	.bss.add_t,"aw",%nobits
- 740              		.align	1
- 741              		.set	.LANCHOR4,. + 0
- 744              	add_t:
- 745 0000 0000     		.space	2
- 746              		.section	.bss.ki.6984,"aw",%nobits
- 747              		.align	2
- 748              		.set	.LANCHOR8,. + 0
- 751              	ki.6984:
- 752 0000 00000000 		.space	4
-ARM GAS  /tmp/cck3bTc8.s 			page 19
+ 232:Dsp/table.c   **** 	{
+ 612              		.loc 1 232 0
+ 613 016c 0300     		movs	r3, r0
+ 614 016e F63B     		subs	r3, r3, #246
+ 615 0170 FF3B     		subs	r3, r3, #255
+ 616 0172 9BB2     		uxth	r3, r3
+ 617 0174 632B     		cmp	r3, #99
+ 618 0176 06D8     		bhi	.L31
+ 234:Dsp/table.c   **** 	}
+ 619              		.loc 1 234 0
+ 620 0178 304B     		ldr	r3, .L41+48
+ 621 017a 1422     		movs	r2, #20
+ 622 017c 1A80     		strh	r2, [r3]
+ 623 017e 304B     		ldr	r3, .L41+52
+ 624 0180 374A     		ldr	r2, .L41+84
+ 625 0182 1A60     		str	r2, [r3]
+ 626 0184 A2E7     		b	.L29
+ 627              	.L31:
+ 236:Dsp/table.c   **** 	{
+ 628              		.loc 1 236 0
+ 629 0186 374B     		ldr	r3, .L41+88
+ 630 0188 C318     		adds	r3, r0, r3
+ 631 018a 9BB2     		uxth	r3, r3
+ 632 018c 632B     		cmp	r3, #99
+ 633 018e 06D8     		bhi	.L32
+ 238:Dsp/table.c   **** 	}
+ 634              		.loc 1 238 0
+ 635 0190 2A4B     		ldr	r3, .L41+48
+ 636 0192 1022     		movs	r2, #16
+ 637 0194 1A80     		strh	r2, [r3]
+ 638 0196 2A4B     		ldr	r3, .L41+52
+ 639 0198 314A     		ldr	r2, .L41+84
+ 640 019a 1A60     		str	r2, [r3]
+ 641 019c 96E7     		b	.L29
+ 642              	.L32:
+ 240:Dsp/table.c   **** 	{
+ 643              		.loc 1 240 0
+ 644 019e 324B     		ldr	r3, .L41+92
+ 645 01a0 C318     		adds	r3, r0, r3
+ 646 01a2 9BB2     		uxth	r3, r3
+ 647 01a4 632B     		cmp	r3, #99
+ 648 01a6 06D8     		bhi	.L33
+ 242:Dsp/table.c   **** 	}
+ 649              		.loc 1 242 0
+ 650 01a8 244B     		ldr	r3, .L41+48
+ 651 01aa 0D22     		movs	r2, #13
+ 652 01ac 1A80     		strh	r2, [r3]
+ 653 01ae 244B     		ldr	r3, .L41+52
+ 654 01b0 2E4A     		ldr	r2, .L41+96
+ 655 01b2 1A60     		str	r2, [r3]
+ 656 01b4 8AE7     		b	.L29
+ 657              	.L33:
+ 244:Dsp/table.c   **** 	{
+ 658              		.loc 1 244 0
+ 659 01b6 2E4B     		ldr	r3, .L41+100
+ 660 01b8 C318     		adds	r3, r0, r3
+ 661 01ba 9BB2     		uxth	r3, r3
+ARM GAS  /tmp/ccdtPmnO.s 			page 18
 
 
- 753              		.section	.bss.kp.6983,"aw",%nobits
- 754              		.align	1
- 755              		.set	.LANCHOR7,. + 0
- 758              	kp.6983:
- 759 0000 0000     		.space	2
- 760              		.section	.bss.m1.6972,"aw",%nobits
+ 662 01bc 632B     		cmp	r3, #99
+ 663 01be 06D8     		bhi	.L34
+ 246:Dsp/table.c   **** 	}
+ 664              		.loc 1 246 0
+ 665 01c0 1E4B     		ldr	r3, .L41+48
+ 666 01c2 0922     		movs	r2, #9
+ 667 01c4 1A80     		strh	r2, [r3]
+ 668 01c6 1E4B     		ldr	r3, .L41+52
+ 669 01c8 2A4A     		ldr	r2, .L41+104
+ 670 01ca 1A60     		str	r2, [r3]
+ 671 01cc 7EE7     		b	.L29
+ 672              	.L34:
+ 248:Dsp/table.c   **** 	{
+ 673              		.loc 1 248 0
+ 674 01ce 2A4B     		ldr	r3, .L41+108
+ 675 01d0 C318     		adds	r3, r0, r3
+ 676 01d2 9BB2     		uxth	r3, r3
+ 677 01d4 312B     		cmp	r3, #49
+ 678 01d6 06D8     		bhi	.L35
+ 250:Dsp/table.c   **** 	}
+ 679              		.loc 1 250 0
+ 680 01d8 184B     		ldr	r3, .L41+48
+ 681 01da 0822     		movs	r2, #8
+ 682 01dc 1A80     		strh	r2, [r3]
+ 683 01de 184B     		ldr	r3, .L41+52
+ 684 01e0 264A     		ldr	r2, .L41+112
+ 685 01e2 1A60     		str	r2, [r3]
+ 686 01e4 72E7     		b	.L29
+ 687              	.L35:
+ 252:Dsp/table.c   **** 	{
+ 688              		.loc 1 252 0
+ 689 01e6 264B     		ldr	r3, .L41+116
+ 690 01e8 C318     		adds	r3, r0, r3
+ 691 01ea 9BB2     		uxth	r3, r3
+ 692 01ec 312B     		cmp	r3, #49
+ 693 01ee 00D9     		bls	.LCB649
+ 694 01f0 6CE7     		b	.L29	@long jump
+ 695              	.LCB649:
+ 254:Dsp/table.c   **** 	}
+ 696              		.loc 1 254 0
+ 697 01f2 124B     		ldr	r3, .L41+48
+ 698 01f4 0822     		movs	r2, #8
+ 699 01f6 1A80     		strh	r2, [r3]
+ 700 01f8 114B     		ldr	r3, .L41+52
+ 701 01fa 224A     		ldr	r2, .L41+120
+ 702 01fc 1A60     		str	r2, [r3]
+ 703 01fe 65E7     		b	.L29
+ 704              	.LVL68:
+ 705              	.L39:
+ 281:Dsp/table.c   **** 	}
+ 706              		.loc 1 281 0
+ 707 0200 1348     		ldr	r0, .L41+68
+ 708              	.LVL69:
+ 709              	.L38:
+ 287:Dsp/table.c   **** 	} 
+ 288:Dsp/table.c   **** 
+ 289:Dsp/table.c   **** 	TIM3->CCR4 = adc_value;
+ARM GAS  /tmp/ccdtPmnO.s 			page 19
+
+
+ 710              		.loc 1 289 0
+ 711 0202 214B     		ldr	r3, .L41+124
+ 712 0204 1864     		str	r0, [r3, #64]
+ 290:Dsp/table.c   **** }
+ 713              		.loc 1 290 0
+ 714 0206 02B0     		add	sp, sp, #8
+ 715              		@ sp needed
+ 716 0208 70BD     		pop	{r4, r5, r6, pc}
+ 717              	.L42:
+ 718 020a C046     		.align	2
+ 719              	.L41:
+ 720 020c 00000000 		.word	.LANCHOR3
+ 721 0210 00000000 		.word	.LANCHOR4
+ 722 0214 00000000 		.word	.LANCHOR5
+ 723 0218 00000000 		.word	adc_target
+ 724 021c 00000000 		.word	.LANCHOR6
+ 725 0220 00240140 		.word	1073816576
+ 726 0224 9A999999 		.word	-1717986918
+ 727 0228 9999E93F 		.word	1072273817
+ 728 022c 00000000 		.word	.LANCHOR7
+ 729 0230 9999C93F 		.word	1070176665
+ 730 0234 00000000 		.word	ad
+ 731 0238 00002041 		.word	1092616192
+ 732 023c 00000000 		.word	.LANCHOR8
+ 733 0240 00000000 		.word	.LANCHOR9
+ 734 0244 B81E053E 		.word	1040522936
+ 735 0248 022B073E 		.word	1040657154
+ 736 024c 00000000 		.word	.LANCHOR10
+ 737 0250 5C120000 		.word	4700
+ 738 0254 A4EDFFFF 		.word	-4700
+ 739 0258 00000000 		.word	.LANCHOR11
+ 740 025c 96430B3E 		.word	1040925590
+ 741 0260 E17A143E 		.word	1041529569
+ 742 0264 A7FDFFFF 		.word	-601
+ 743 0268 43FDFFFF 		.word	-701
+ 744 026c 52B81E3E 		.word	1042200658
+ 745 0270 DFFCFFFF 		.word	-801
+ 746 0274 C1CA213E 		.word	1042401985
+ 747 0278 7BFCFFFF 		.word	-901
+ 748 027c 7B142E3E 		.word	1043207291
+ 749 0280 49FCFFFF 		.word	-951
+ 750 0284 3333333E 		.word	1043542835
+ 751 0288 00040040 		.word	1073742848
+ 752              		.cfi_endproc
+ 753              	.LFE40:
+ 755              		.global	ad
+ 756              		.global	add_t
+ 757              		.global	add
+ 758              		.global	I2c_Write
+ 759              		.global	I2c_last
+ 760              		.section	.bss.I2c_Write,"aw",%nobits
  761              		.align	1
- 762              		.set	.LANCHOR0,. + 0
- 765              	m1.6972:
+ 762              		.set	.LANCHOR6,. + 0
+ 765              	I2c_Write:
  766 0000 0000     		.space	2
- 767              		.section	.bss.sumError.6978,"aw",%nobits
+ 767              		.section	.bss.I2c_last,"aw",%nobits
  768              		.align	1
- 769              		.set	.LANCHOR9,. + 0
- 772              	sumError.6978:
+ARM GAS  /tmp/ccdtPmnO.s 			page 20
+
+
+ 769              		.set	.LANCHOR3,. + 0
+ 772              	I2c_last:
  773 0000 0000     		.space	2
- 774              		.section	.bss.t1.6986,"aw",%nobits
+ 774              		.section	.bss.LastError.6988,"aw",%nobits
  775              		.align	1
- 776              		.set	.LANCHOR6,. + 0
- 779              	t1.6986:
+ 776              		.set	.LANCHOR11,. + 0
+ 779              	LastError.6988:
  780 0000 0000     		.space	2
- 781              		.section	.data.SetPoint1.6982,"aw",%progbits
+ 781              		.section	.bss.a_stat.6976,"aw",%nobits
  782              		.align	1
  783              		.set	.LANCHOR2,. + 0
- 786              	SetPoint1.6982:
- 787 0000 C602     		.short	710
- 788              		.section	.data.ad,"aw",%progbits
- 789              		.align	2
- 792              	ad:
- 793 0000 DB03     		.short	987
- 794 0002 0204     		.short	1026
- 795 0004 2A04     		.short	1066
- 796 0006 5304     		.short	1107
- 797 0008 7C04     		.short	1148
- 798 000a A604     		.short	1190
- 799 000c D104     		.short	1233
- 800 000e FC04     		.short	1276
- 801 0010 2805     		.short	1320
- 802 0012 5505     		.short	1365
- 803 0014 8205     		.short	1410
- 804 0016 AF05     		.short	1455
- 805 0018 DD05     		.short	1501
- 806 001a 0B06     		.short	1547
- 807 001c 3906     		.short	1593
- 808 001e 6806     		.short	1640
- 809 0020 9706     		.short	1687
- 810 0022 C606     		.short	1734
- 811 0024 F506     		.short	1781
- 812 0026 2407     		.short	1828
- 813 0028 5307     		.short	1875
- 814 002a 8307     		.short	1923
- 815 002c B207     		.short	1970
- 816 002e E107     		.short	2017
- 817 0030 0F08     		.short	2063
- 818 0032 3E08     		.short	2110
- 819 0034 6C08     		.short	2156
- 820 0036 9A08     		.short	2202
- 821 0038 C808     		.short	2248
-ARM GAS  /tmp/cck3bTc8.s 			page 20
+ 786              	a_stat.6976:
+ 787 0000 0000     		.space	2
+ 788              		.section	.bss.add,"aw",%nobits
+ 789              		.align	1
+ 790              		.set	.LANCHOR4,. + 0
+ 793              	add:
+ 794 0000 0000     		.space	2
+ 795              		.section	.bss.add_t,"aw",%nobits
+ 796              		.align	1
+ 797              		.set	.LANCHOR5,. + 0
+ 800              	add_t:
+ 801 0000 0000     		.space	2
+ 802              		.section	.bss.cn.6974,"aw",%nobits
+ 803              		.align	1
+ 804              		.set	.LANCHOR1,. + 0
+ 807              	cn.6974:
+ 808 0000 0000     		.space	2
+ 809              		.section	.bss.ki.6991,"aw",%nobits
+ 810              		.align	2
+ 811              		.set	.LANCHOR9,. + 0
+ 814              	ki.6991:
+ 815 0000 00000000 		.space	4
+ 816              		.section	.bss.kp.6990,"aw",%nobits
+ 817              		.align	1
+ 818              		.set	.LANCHOR8,. + 0
+ 821              	kp.6990:
+ 822 0000 0000     		.space	2
+ 823              		.section	.bss.m1.6973,"aw",%nobits
+ 824              		.align	1
+ 825              		.set	.LANCHOR0,. + 0
+ 828              	m1.6973:
+ 829 0000 0000     		.space	2
+ 830              		.section	.bss.sumError.6986,"aw",%nobits
+ 831              		.align	1
+ 832              		.set	.LANCHOR10,. + 0
+ 835              	sumError.6986:
+ 836 0000 0000     		.space	2
+ 837              		.section	.bss.t1.6993,"aw",%nobits
+ 838              		.align	1
+ 839              		.set	.LANCHOR7,. + 0
+ 842              	t1.6993:
+ 843 0000 0000     		.space	2
+ 844              		.section	.data.ad,"aw",%progbits
+ 845              		.align	2
+ 848              	ad:
+ 849 0000 DB03     		.short	987
+ARM GAS  /tmp/ccdtPmnO.s 			page 21
 
 
- 822 003a F508     		.short	2293
- 823 003c 2209     		.short	2338
- 824 003e 4E09     		.short	2382
- 825 0040 7A09     		.short	2426
- 826 0042 A509     		.short	2469
- 827 0044 D009     		.short	2512
- 828 0046 FA09     		.short	2554
- 829 0048 240A     		.short	2596
- 830 004a 4D0A     		.short	2637
- 831 004c 750A     		.short	2677
- 832 004e 9C0A     		.short	2716
- 833 0050 C30A     		.short	2755
- 834 0052 EA0A     		.short	2794
- 835 0054 0F0B     		.short	2831
- 836 0056 340B     		.short	2868
- 837 0058 580B     		.short	2904
- 838 005a 7B0B     		.short	2939
- 839 005c 9E0B     		.short	2974
- 840 005e C00B     		.short	3008
- 841 0060 E10B     		.short	3041
- 842 0062 020C     		.short	3074
- 843 0064 210C     		.short	3105
- 844 0066 400C     		.short	3136
- 845 0068 5E0C     		.short	3166
- 846 006a 7C0C     		.short	3196
- 847 006c 990C     		.short	3225
- 848 006e B50C     		.short	3253
- 849 0070 D00C     		.short	3280
- 850 0072 EB0C     		.short	3307
- 851 0074 050D     		.short	3333
- 852 0076 1E0D     		.short	3358
- 853 0078 370D     		.short	3383
- 854 007a 4E0D     		.short	3406
- 855 007c 660D     		.short	3430
- 856 007e 7C0D     		.short	3452
- 857 0080 920D     		.short	3474
- 858 0082 A80D     		.short	3496
- 859 0084 BD0D     		.short	3517
- 860 0086 D10D     		.short	3537
- 861 0088 E40D     		.short	3556
- 862 008a F80D     		.short	3576
- 863 008c 0A0E     		.short	3594
- 864 008e 1C0E     		.short	3612
- 865 0090 2E0E     		.short	3630
- 866 0092 3F0E     		.short	3647
- 867 0094 4F0E     		.short	3663
- 868 0096 5F0E     		.short	3679
- 869 0098 6E0E     		.short	3694
- 870 009a 7D0E     		.short	3709
- 871 009c 8C0E     		.short	3724
- 872 009e 9A0E     		.short	3738
- 873 00a0 A80E     		.short	3752
- 874 00a2 B50E     		.short	3765
- 875 00a4 C20E     		.short	3778
- 876 00a6 CF0E     		.short	3791
- 877 00a8 DB0E     		.short	3803
- 878 00aa E70E     		.short	3815
-ARM GAS  /tmp/cck3bTc8.s 			page 21
+ 850 0002 0204     		.short	1026
+ 851 0004 2A04     		.short	1066
+ 852 0006 5304     		.short	1107
+ 853 0008 7C04     		.short	1148
+ 854 000a A604     		.short	1190
+ 855 000c D104     		.short	1233
+ 856 000e FC04     		.short	1276
+ 857 0010 2805     		.short	1320
+ 858 0012 5505     		.short	1365
+ 859 0014 8205     		.short	1410
+ 860 0016 AF05     		.short	1455
+ 861 0018 DD05     		.short	1501
+ 862 001a 0B06     		.short	1547
+ 863 001c 3906     		.short	1593
+ 864 001e 6806     		.short	1640
+ 865 0020 9706     		.short	1687
+ 866 0022 C606     		.short	1734
+ 867 0024 F506     		.short	1781
+ 868 0026 2407     		.short	1828
+ 869 0028 5307     		.short	1875
+ 870 002a 8307     		.short	1923
+ 871 002c B207     		.short	1970
+ 872 002e E107     		.short	2017
+ 873 0030 0F08     		.short	2063
+ 874 0032 3E08     		.short	2110
+ 875 0034 6C08     		.short	2156
+ 876 0036 9A08     		.short	2202
+ 877 0038 C808     		.short	2248
+ 878 003a F508     		.short	2293
+ 879 003c 2209     		.short	2338
+ 880 003e 4E09     		.short	2382
+ 881 0040 7A09     		.short	2426
+ 882 0042 A509     		.short	2469
+ 883 0044 D009     		.short	2512
+ 884 0046 FA09     		.short	2554
+ 885 0048 240A     		.short	2596
+ 886 004a 4D0A     		.short	2637
+ 887 004c 750A     		.short	2677
+ 888 004e 9C0A     		.short	2716
+ 889 0050 C30A     		.short	2755
+ 890 0052 EA0A     		.short	2794
+ 891 0054 0F0B     		.short	2831
+ 892 0056 340B     		.short	2868
+ 893 0058 580B     		.short	2904
+ 894 005a 7B0B     		.short	2939
+ 895 005c 9E0B     		.short	2974
+ 896 005e C00B     		.short	3008
+ 897 0060 E10B     		.short	3041
+ 898 0062 020C     		.short	3074
+ 899 0064 210C     		.short	3105
+ 900 0066 400C     		.short	3136
+ 901 0068 5E0C     		.short	3166
+ 902 006a 7C0C     		.short	3196
+ 903 006c 990C     		.short	3225
+ 904 006e B50C     		.short	3253
+ 905 0070 D00C     		.short	3280
+ 906 0072 EB0C     		.short	3307
+ARM GAS  /tmp/ccdtPmnO.s 			page 22
 
 
- 879 00ac F20E     		.short	3826
- 880 00ae FD0E     		.short	3837
- 881 00b0 080F     		.short	3848
- 882 00b2 120F     		.short	3858
- 883 00b4 1C0F     		.short	3868
- 884 00b6 260F     		.short	3878
- 885 00b8 300F     		.short	3888
- 886 00ba 390F     		.short	3897
- 887 00bc 420F     		.short	3906
- 888 00be 4A0F     		.short	3914
- 889 00c0 530F     		.short	3923
- 890 00c2 5B0F     		.short	3931
- 891 00c4 630F     		.short	3939
- 892 00c6 6B0F     		.short	3947
- 893 00c8 720F     		.short	3954
- 894              		.text
- 895              	.Letext0:
- 896              		.file 2 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/machine/_default_
- 897              		.file 3 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/_stdint.h"
- 898              		.file 4 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
- 899              		.file 5 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/stm32f030x6.h"
- 900              		.file 6 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/lock.h"
- 901              		.file 7 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/_types.h"
- 902              		.file 8 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/lib/gcc/arm-none-eabi/7.2.1/include/std
- 903              		.file 9 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/reent.h"
-ARM GAS  /tmp/cck3bTc8.s 			page 22
+ 907 0074 050D     		.short	3333
+ 908 0076 1E0D     		.short	3358
+ 909 0078 370D     		.short	3383
+ 910 007a 4E0D     		.short	3406
+ 911 007c 660D     		.short	3430
+ 912 007e 7C0D     		.short	3452
+ 913 0080 920D     		.short	3474
+ 914 0082 A80D     		.short	3496
+ 915 0084 BD0D     		.short	3517
+ 916 0086 D10D     		.short	3537
+ 917 0088 E40D     		.short	3556
+ 918 008a F80D     		.short	3576
+ 919 008c 0A0E     		.short	3594
+ 920 008e 1C0E     		.short	3612
+ 921 0090 2E0E     		.short	3630
+ 922 0092 3F0E     		.short	3647
+ 923 0094 4F0E     		.short	3663
+ 924 0096 5F0E     		.short	3679
+ 925 0098 6E0E     		.short	3694
+ 926 009a 7D0E     		.short	3709
+ 927 009c 8C0E     		.short	3724
+ 928 009e 9A0E     		.short	3738
+ 929 00a0 A80E     		.short	3752
+ 930 00a2 B50E     		.short	3765
+ 931 00a4 C20E     		.short	3778
+ 932 00a6 CF0E     		.short	3791
+ 933 00a8 DB0E     		.short	3803
+ 934 00aa E70E     		.short	3815
+ 935 00ac F20E     		.short	3826
+ 936 00ae FD0E     		.short	3837
+ 937 00b0 080F     		.short	3848
+ 938 00b2 120F     		.short	3858
+ 939 00b4 1C0F     		.short	3868
+ 940 00b6 260F     		.short	3878
+ 941 00b8 300F     		.short	3888
+ 942 00ba 390F     		.short	3897
+ 943 00bc 420F     		.short	3906
+ 944 00be 4A0F     		.short	3914
+ 945 00c0 530F     		.short	3923
+ 946 00c2 5B0F     		.short	3931
+ 947 00c4 630F     		.short	3939
+ 948 00c6 6B0F     		.short	3947
+ 949 00c8 720F     		.short	3954
+ 950              		.text
+ 951              	.Letext0:
+ 952              		.file 2 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/machine/_default_
+ 953              		.file 3 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/_stdint.h"
+ 954              		.file 4 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
+ 955              		.file 5 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/stm32f030x6.h"
+ 956              		.file 6 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/lock.h"
+ 957              		.file 7 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/_types.h"
+ 958              		.file 8 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/lib/gcc/arm-none-eabi/7.2.1/include/std
+ 959              		.file 9 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/reent.h"
+ARM GAS  /tmp/ccdtPmnO.s 			page 23
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 table.c
-     /tmp/cck3bTc8.s:19     .text.LinearValue:0000000000000000 $t
-     /tmp/cck3bTc8.s:26     .text.LinearValue:0000000000000000 LinearValue
-     /tmp/cck3bTc8.s:80     .text.Temperature:0000000000000000 $t
-     /tmp/cck3bTc8.s:87     .text.Temperature:0000000000000000 Temperature
-     /tmp/cck3bTc8.s:214    .text.Temperature:0000000000000074 $d
-     /tmp/cck3bTc8.s:792    .data.ad:0000000000000000 ad
-     /tmp/cck3bTc8.s:229    .text.adc_entry:0000000000000000 $t
-     /tmp/cck3bTc8.s:236    .text.adc_entry:0000000000000000 adc_entry
-     /tmp/cck3bTc8.s:310    .text.adc_entry:0000000000000064 $d
-     /tmp/cck3bTc8.s:324    .text.adc_pid:0000000000000000 $t
-     /tmp/cck3bTc8.s:331    .text.adc_pid:0000000000000000 adc_pid
-     /tmp/cck3bTc8.s:672    .text.adc_pid:0000000000000200 $d
-     /tmp/cck3bTc8.s:744    .bss.add_t:0000000000000000 add_t
-     /tmp/cck3bTc8.s:737    .bss.add:0000000000000000 add
-     /tmp/cck3bTc8.s:716    .bss.I2c_Write:0000000000000000 I2c_Write
-     /tmp/cck3bTc8.s:717    .bss.I2c_Write:0000000000000000 $d
-     /tmp/cck3bTc8.s:719    .bss.LastError.6980:0000000000000000 $d
-     /tmp/cck3bTc8.s:723    .bss.LastError.6980:0000000000000000 LastError.6980
-     /tmp/cck3bTc8.s:726    .bss.SetPoint.6981:0000000000000000 $d
-     /tmp/cck3bTc8.s:730    .bss.SetPoint.6981:0000000000000000 SetPoint.6981
-     /tmp/cck3bTc8.s:733    .bss.add:0000000000000000 $d
-     /tmp/cck3bTc8.s:740    .bss.add_t:0000000000000000 $d
-     /tmp/cck3bTc8.s:747    .bss.ki.6984:0000000000000000 $d
-     /tmp/cck3bTc8.s:751    .bss.ki.6984:0000000000000000 ki.6984
-     /tmp/cck3bTc8.s:754    .bss.kp.6983:0000000000000000 $d
-     /tmp/cck3bTc8.s:758    .bss.kp.6983:0000000000000000 kp.6983
-     /tmp/cck3bTc8.s:761    .bss.m1.6972:0000000000000000 $d
-     /tmp/cck3bTc8.s:765    .bss.m1.6972:0000000000000000 m1.6972
-     /tmp/cck3bTc8.s:768    .bss.sumError.6978:0000000000000000 $d
-     /tmp/cck3bTc8.s:772    .bss.sumError.6978:0000000000000000 sumError.6978
-     /tmp/cck3bTc8.s:775    .bss.t1.6986:0000000000000000 $d
-     /tmp/cck3bTc8.s:779    .bss.t1.6986:0000000000000000 t1.6986
-     /tmp/cck3bTc8.s:782    .data.SetPoint1.6982:0000000000000000 $d
-     /tmp/cck3bTc8.s:786    .data.SetPoint1.6982:0000000000000000 SetPoint1.6982
-     /tmp/cck3bTc8.s:789    .data.ad:0000000000000000 $d
+     /tmp/ccdtPmnO.s:19     .text.LinearValue:0000000000000000 $t
+     /tmp/ccdtPmnO.s:26     .text.LinearValue:0000000000000000 LinearValue
+     /tmp/ccdtPmnO.s:80     .text.Temperature:0000000000000000 $t
+     /tmp/ccdtPmnO.s:87     .text.Temperature:0000000000000000 Temperature
+     /tmp/ccdtPmnO.s:214    .text.Temperature:0000000000000074 $d
+     /tmp/ccdtPmnO.s:848    .data.ad:0000000000000000 ad
+     /tmp/ccdtPmnO.s:228    .text.adc_entry:0000000000000000 $t
+     /tmp/ccdtPmnO.s:235    .text.adc_entry:0000000000000000 adc_entry
+     /tmp/ccdtPmnO.s:347    .text.adc_entry:0000000000000098 $d
+     /tmp/ccdtPmnO.s:363    .text.adc_pid:0000000000000000 $t
+     /tmp/ccdtPmnO.s:370    .text.adc_pid:0000000000000000 adc_pid
+     /tmp/ccdtPmnO.s:720    .text.adc_pid:000000000000020c $d
+     /tmp/ccdtPmnO.s:800    .bss.add_t:0000000000000000 add_t
+     /tmp/ccdtPmnO.s:793    .bss.add:0000000000000000 add
+     /tmp/ccdtPmnO.s:765    .bss.I2c_Write:0000000000000000 I2c_Write
+     /tmp/ccdtPmnO.s:772    .bss.I2c_last:0000000000000000 I2c_last
+     /tmp/ccdtPmnO.s:761    .bss.I2c_Write:0000000000000000 $d
+     /tmp/ccdtPmnO.s:768    .bss.I2c_last:0000000000000000 $d
+     /tmp/ccdtPmnO.s:775    .bss.LastError.6988:0000000000000000 $d
+     /tmp/ccdtPmnO.s:779    .bss.LastError.6988:0000000000000000 LastError.6988
+     /tmp/ccdtPmnO.s:782    .bss.a_stat.6976:0000000000000000 $d
+     /tmp/ccdtPmnO.s:786    .bss.a_stat.6976:0000000000000000 a_stat.6976
+     /tmp/ccdtPmnO.s:789    .bss.add:0000000000000000 $d
+     /tmp/ccdtPmnO.s:796    .bss.add_t:0000000000000000 $d
+     /tmp/ccdtPmnO.s:803    .bss.cn.6974:0000000000000000 $d
+     /tmp/ccdtPmnO.s:807    .bss.cn.6974:0000000000000000 cn.6974
+     /tmp/ccdtPmnO.s:810    .bss.ki.6991:0000000000000000 $d
+     /tmp/ccdtPmnO.s:814    .bss.ki.6991:0000000000000000 ki.6991
+     /tmp/ccdtPmnO.s:817    .bss.kp.6990:0000000000000000 $d
+     /tmp/ccdtPmnO.s:821    .bss.kp.6990:0000000000000000 kp.6990
+     /tmp/ccdtPmnO.s:824    .bss.m1.6973:0000000000000000 $d
+     /tmp/ccdtPmnO.s:828    .bss.m1.6973:0000000000000000 m1.6973
+     /tmp/ccdtPmnO.s:831    .bss.sumError.6986:0000000000000000 $d
+     /tmp/ccdtPmnO.s:835    .bss.sumError.6986:0000000000000000 sumError.6986
+     /tmp/ccdtPmnO.s:838    .bss.t1.6993:0000000000000000 $d
+     /tmp/ccdtPmnO.s:842    .bss.t1.6993:0000000000000000 t1.6993
+     /tmp/ccdtPmnO.s:845    .data.ad:0000000000000000 $d
 
 UNDEFINED SYMBOLS
 __aeabi_i2f
@@ -1279,7 +1369,6 @@ __aeabi_dadd
 __aeabi_d2iz
 __aeabi_fmul
 __aeabi_f2uiz
-__aeabi_uidiv
 adc_cont
-__aeabi_f2iz
 adc_target
+__aeabi_f2iz

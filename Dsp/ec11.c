@@ -10,7 +10,6 @@
 
 extern uint16_t add;
 extern uint16_t add_t;
-//extern uint16_t add_h;
 //extern uint8_t t_pid;
 extern uint8_t flag_ec11;
 static uint8_t t = 1;
@@ -27,12 +26,6 @@ void ec11_irq_handler(void)
 			{
 				add_t += 10;
 			}
-/*
-			else if (t == 2)
-			{
-				add_h += 100;
-			}
-*/
 			else
 			{
 			    add++;
@@ -137,7 +130,6 @@ void key_scanning(void)
 					k_data = S5;
 				}
 
-				printf("S4\r\n");
 			}
 			break;
 
@@ -150,7 +142,6 @@ void key_scanning(void)
 			{
 				press_l = 0;
 				flag_ec11 = 1;
-				printf("S5\r\n");
 				GPIOA->BRR = 1 << 12;
 			}
 		default:

@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccbKX7Q4.s 			page 1
+ARM GAS  /tmp/cckJgD9H.s 			page 1
 
 
    1              		.cpu cortex-m0
@@ -37,116 +37,109 @@ ARM GAS  /tmp/ccbKX7Q4.s 			page 1
   10:Dsp/ec11.c    **** 
   11:Dsp/ec11.c    **** extern uint16_t add;
   12:Dsp/ec11.c    **** extern uint16_t add_t;
-  13:Dsp/ec11.c    **** //extern uint16_t add_h;
-  14:Dsp/ec11.c    **** //extern uint8_t t_pid;
-  15:Dsp/ec11.c    **** extern uint8_t flag_ec11;
-  16:Dsp/ec11.c    **** static uint8_t t = 1;
+  13:Dsp/ec11.c    **** //extern uint8_t t_pid;
+  14:Dsp/ec11.c    **** extern uint8_t flag_ec11;
+  15:Dsp/ec11.c    **** static uint8_t t = 1;
+  16:Dsp/ec11.c    **** 
   17:Dsp/ec11.c    **** 
-  18:Dsp/ec11.c    **** 
-  19:Dsp/ec11.c    **** void ec11_irq_handler(void)
-  20:Dsp/ec11.c    **** {
-  26              		.loc 1 20 0
+  18:Dsp/ec11.c    **** void ec11_irq_handler(void)
+  19:Dsp/ec11.c    **** {
+  26              		.loc 1 19 0
   27              		.cfi_startproc
   28              		@ args = 0, pretend = 0, frame = 0
   29              		@ frame_needed = 0, uses_anonymous_args = 0
   30              		@ link register save eliminated.
-  21:Dsp/ec11.c    **** 	if (EXTI->PR & (0x000000001 << 9))
-  31              		.loc 1 21 0
+  20:Dsp/ec11.c    **** 	if (EXTI->PR & (0x000000001 << 9))
+  31              		.loc 1 20 0
   32 0000 154B     		ldr	r3, .L7
   33 0002 5B69     		ldr	r3, [r3, #20]
   34 0004 9B05     		lsls	r3, r3, #22
   35 0006 1AD5     		bpl	.L2
-  22:Dsp/ec11.c    **** 	{
-  23:Dsp/ec11.c    **** 		if (GPIOA->IDR&GPIO_PIN_10)
-ARM GAS  /tmp/ccbKX7Q4.s 			page 2
+  21:Dsp/ec11.c    **** 	{
+  22:Dsp/ec11.c    **** 		if (GPIOA->IDR&GPIO_PIN_10)
+  36              		.loc 1 22 0
+ARM GAS  /tmp/cckJgD9H.s 			page 2
 
 
-  36              		.loc 1 23 0
   37 0008 9023     		movs	r3, #144
   38 000a DB05     		lsls	r3, r3, #23
   39 000c 1B69     		ldr	r3, [r3, #16]
   40 000e 5B05     		lsls	r3, r3, #21
   41 0010 0DD5     		bpl	.L3
-  24:Dsp/ec11.c    **** 		{
-  25:Dsp/ec11.c    **** 
-  26:Dsp/ec11.c    **** 			if (t == 0)
-  42              		.loc 1 26 0
+  23:Dsp/ec11.c    **** 		{
+  24:Dsp/ec11.c    **** 
+  25:Dsp/ec11.c    **** 			if (t == 0)
+  42              		.loc 1 25 0
   43 0012 124B     		ldr	r3, .L7+4
   44 0014 1B78     		ldrb	r3, [r3]
   45 0016 002B     		cmp	r3, #0
   46 0018 04D1     		bne	.L4
-  27:Dsp/ec11.c    **** 			{
-  28:Dsp/ec11.c    **** 				add_t += 10;
-  47              		.loc 1 28 0
+  26:Dsp/ec11.c    **** 			{
+  27:Dsp/ec11.c    **** 				add_t += 10;
+  47              		.loc 1 27 0
   48 001a 114A     		ldr	r2, .L7+8
   49 001c 1388     		ldrh	r3, [r2]
   50 001e 0A33     		adds	r3, r3, #10
   51 0020 1380     		strh	r3, [r2]
   52 0022 0CE0     		b	.L2
   53              	.L4:
-  29:Dsp/ec11.c    **** 			}
-  30:Dsp/ec11.c    **** /*
-  31:Dsp/ec11.c    **** 			else if (t == 2)
-  32:Dsp/ec11.c    **** 			{
-  33:Dsp/ec11.c    **** 				add_h += 100;
-  34:Dsp/ec11.c    **** 			}
-  35:Dsp/ec11.c    **** */
-  36:Dsp/ec11.c    **** 			else
-  37:Dsp/ec11.c    **** 			{
-  38:Dsp/ec11.c    **** 			    add++;
-  54              		.loc 1 38 0
+  28:Dsp/ec11.c    **** 			}
+  29:Dsp/ec11.c    **** 			else
+  30:Dsp/ec11.c    **** 			{
+  31:Dsp/ec11.c    **** 			    add++;
+  54              		.loc 1 31 0
   55 0024 0F4A     		ldr	r2, .L7+12
   56 0026 1388     		ldrh	r3, [r2]
   57 0028 0133     		adds	r3, r3, #1
   58 002a 1380     		strh	r3, [r2]
   59 002c 07E0     		b	.L2
   60              	.L3:
-  39:Dsp/ec11.c    **** 			}
-  40:Dsp/ec11.c    **** 		}
-  41:Dsp/ec11.c    **** 		else
-  42:Dsp/ec11.c    **** 		{
-  43:Dsp/ec11.c    **** 
-  44:Dsp/ec11.c    **** 			if (t == 0)
-  61              		.loc 1 44 0
+  32:Dsp/ec11.c    **** 			}
+  33:Dsp/ec11.c    **** 		}
+  34:Dsp/ec11.c    **** 		else
+  35:Dsp/ec11.c    **** 		{
+  36:Dsp/ec11.c    **** 
+  37:Dsp/ec11.c    **** 			if (t == 0)
+  61              		.loc 1 37 0
   62 002e 0B4B     		ldr	r3, .L7+4
   63 0030 1B78     		ldrb	r3, [r3]
   64 0032 002B     		cmp	r3, #0
   65 0034 0AD0     		beq	.L6
-  45:Dsp/ec11.c    **** 			{
-  46:Dsp/ec11.c    **** 				add_t -= 10;
-  47:Dsp/ec11.c    **** 			}
-  48:Dsp/ec11.c    **** 			else
-  49:Dsp/ec11.c    **** 			{
-  50:Dsp/ec11.c    **** 				add--;
-ARM GAS  /tmp/ccbKX7Q4.s 			page 3
-
-
-  66              		.loc 1 50 0
+  38:Dsp/ec11.c    **** 			{
+  39:Dsp/ec11.c    **** 				add_t -= 10;
+  40:Dsp/ec11.c    **** 			}
+  41:Dsp/ec11.c    **** 			else
+  42:Dsp/ec11.c    **** 			{
+  43:Dsp/ec11.c    **** 				add--;
+  66              		.loc 1 43 0
   67 0036 0B4A     		ldr	r2, .L7+12
   68 0038 1388     		ldrh	r3, [r2]
   69 003a 013B     		subs	r3, r3, #1
   70 003c 1380     		strh	r3, [r2]
   71              	.L2:
-  51:Dsp/ec11.c    **** 			}
-  52:Dsp/ec11.c    **** 		}
-  53:Dsp/ec11.c    **** 
-  54:Dsp/ec11.c    **** 	}
-  55:Dsp/ec11.c    **** 	EXTI->PR |= (0x00000001 << 9);
-  72              		.loc 1 55 0
+  44:Dsp/ec11.c    **** 			}
+ARM GAS  /tmp/cckJgD9H.s 			page 3
+
+
+  45:Dsp/ec11.c    **** 		}
+  46:Dsp/ec11.c    **** 
+  47:Dsp/ec11.c    **** 	}
+  48:Dsp/ec11.c    **** 	EXTI->PR |= (0x00000001 << 9);
+  72              		.loc 1 48 0
   73 003e 064A     		ldr	r2, .L7
   74 0040 5169     		ldr	r1, [r2, #20]
   75 0042 8023     		movs	r3, #128
   76 0044 9B00     		lsls	r3, r3, #2
   77 0046 0B43     		orrs	r3, r1
   78 0048 5361     		str	r3, [r2, #20]
-  56:Dsp/ec11.c    **** 
-  57:Dsp/ec11.c    **** }
-  79              		.loc 1 57 0
+  49:Dsp/ec11.c    **** 
+  50:Dsp/ec11.c    **** }
+  79              		.loc 1 50 0
   80              		@ sp needed
   81 004a 7047     		bx	lr
   82              	.L6:
-  46:Dsp/ec11.c    **** 			}
-  83              		.loc 1 46 0
+  39:Dsp/ec11.c    **** 			}
+  83              		.loc 1 39 0
   84 004c 044A     		ldr	r2, .L7+8
   85 004e 1388     		ldrh	r3, [r2]
   86 0050 0A3B     		subs	r3, r3, #10
@@ -170,28 +163,28 @@ ARM GAS  /tmp/ccbKX7Q4.s 			page 1
  105              		.fpu softvfp
  107              	EXTI4_15_IRQHandler:
  108              	.LFB38:
-  58:Dsp/ec11.c    **** 
-  59:Dsp/ec11.c    **** 
-  60:Dsp/ec11.c    **** void EXTI4_15_IRQHandler(void)
-  61:Dsp/ec11.c    **** {
- 109              		.loc 1 61 0
+  51:Dsp/ec11.c    **** 
+  52:Dsp/ec11.c    **** 
+  53:Dsp/ec11.c    **** void EXTI4_15_IRQHandler(void)
+  54:Dsp/ec11.c    **** {
+ 109              		.loc 1 54 0
  110              		.cfi_startproc
  111              		@ args = 0, pretend = 0, frame = 0
  112              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  /tmp/ccbKX7Q4.s 			page 4
-
-
  113 0000 10B5     		push	{r4, lr}
  114              	.LCFI0:
  115              		.cfi_def_cfa_offset 8
  116              		.cfi_offset 4, -8
  117              		.cfi_offset 14, -4
-  62:Dsp/ec11.c    **** 	ec11_irq_handler();	
- 118              		.loc 1 62 0
+  55:Dsp/ec11.c    **** 	ec11_irq_handler();	
+ 118              		.loc 1 55 0
+ARM GAS  /tmp/cckJgD9H.s 			page 4
+
+
  119 0002 FFF7FEFF 		bl	ec11_irq_handler
  120              	.LVL0:
-  63:Dsp/ec11.c    **** }
- 121              		.loc 1 63 0
+  56:Dsp/ec11.c    **** }
+ 121              		.loc 1 56 0
  122              		@ sp needed
  123 0006 10BD     		pop	{r4, pc}
  124              		.cfi_endproc
@@ -205,411 +198,375 @@ ARM GAS  /tmp/ccbKX7Q4.s 			page 1
  133              		.fpu softvfp
  135              	key_scanning:
  136              	.LFB39:
-  64:Dsp/ec11.c    **** 
-  65:Dsp/ec11.c    **** 
-  66:Dsp/ec11.c    **** void key_scanning(void)
-  67:Dsp/ec11.c    **** {
- 137              		.loc 1 67 0
+  57:Dsp/ec11.c    **** 
+  58:Dsp/ec11.c    **** 
+  59:Dsp/ec11.c    **** void key_scanning(void)
+  60:Dsp/ec11.c    **** {
+ 137              		.loc 1 60 0
  138              		.cfi_startproc
  139              		@ args = 0, pretend = 0, frame = 0
  140              		@ frame_needed = 0, uses_anonymous_args = 0
- 141 0000 10B5     		push	{r4, lr}
- 142              	.LCFI1:
- 143              		.cfi_def_cfa_offset 8
- 144              		.cfi_offset 4, -8
- 145              		.cfi_offset 14, -4
-  68:Dsp/ec11.c    **** 	static uint8_t k_data = S0;
-  69:Dsp/ec11.c    **** 	static uint8_t press = 0;
-  70:Dsp/ec11.c    **** 	static uint8_t press_l = 0;
-  71:Dsp/ec11.c    **** 	
-  72:Dsp/ec11.c    **** 	switch (k_data)
- 146              		.loc 1 72 0
- 147 0002 454B     		ldr	r3, .L30
- 148 0004 1A78     		ldrb	r2, [r3]
- 149 0006 052A     		cmp	r2, #5
- 150 0008 6FD8     		bhi	.L11
- 151 000a 9300     		lsls	r3, r2, #2
- 152 000c 434A     		ldr	r2, .L30+4
- 153 000e D358     		ldr	r3, [r2, r3]
- 154 0010 9F46     		mov	pc, r3
- 155              		.section	.rodata.key_scanning,"a",%progbits
- 156              		.align	2
- 157              	.L13:
- 158 0000 12000000 		.word	.L12
- 159 0004 2C000000 		.word	.L14
- 160 0008 46000000 		.word	.L15
-ARM GAS  /tmp/ccbKX7Q4.s 			page 5
+ 141              		@ link register save eliminated.
+  61:Dsp/ec11.c    **** 	static uint8_t k_data = S0;
+  62:Dsp/ec11.c    **** 	static uint8_t press = 0;
+  63:Dsp/ec11.c    **** 	static uint8_t press_l = 0;
+  64:Dsp/ec11.c    **** 	
+  65:Dsp/ec11.c    **** 	switch (k_data)
+ 142              		.loc 1 65 0
+ 143 0000 404B     		ldr	r3, .L28
+ 144 0002 1A78     		ldrb	r2, [r3]
+ 145 0004 052A     		cmp	r2, #5
+ 146 0006 74D8     		bhi	.L11
+ 147 0008 9300     		lsls	r3, r2, #2
+ 148 000a 3F4A     		ldr	r2, .L28+4
+ 149 000c D358     		ldr	r3, [r2, r3]
+ 150 000e 9F46     		mov	pc, r3
+ 151              		.section	.rodata.key_scanning,"a",%progbits
+ 152              		.align	2
+ 153              	.L13:
+ 154 0000 10000000 		.word	.L12
+ 155 0004 2A000000 		.word	.L14
+ 156 0008 44000000 		.word	.L15
+ 157 000c 7C000000 		.word	.L16
+ 158 0010 96000000 		.word	.L17
+ 159 0014 D8000000 		.word	.L18
+ 160              		.section	.text.key_scanning
+ 161              	.L12:
+  66:Dsp/ec11.c    **** 	{
+  67:Dsp/ec11.c    **** 		case S0:
+  68:Dsp/ec11.c    **** 			if (GPIOA->IDR & GPIO_PIN_8)
+ 162              		.loc 1 68 0
+ 163 0010 9023     		movs	r3, #144
+ 164 0012 DB05     		lsls	r3, r3, #23
+ARM GAS  /tmp/cckJgD9H.s 			page 5
 
 
- 161 000c 7E000000 		.word	.L16
- 162 0010 98000000 		.word	.L17
- 163 0014 E0000000 		.word	.L18
- 164              		.section	.text.key_scanning
- 165              	.L12:
-  73:Dsp/ec11.c    **** 	{
-  74:Dsp/ec11.c    **** 		case S0:
-  75:Dsp/ec11.c    **** 			if (GPIOA->IDR & GPIO_PIN_8)
- 166              		.loc 1 75 0
- 167 0012 9023     		movs	r3, #144
- 168 0014 DB05     		lsls	r3, r3, #23
- 169 0016 1B69     		ldr	r3, [r3, #16]
- 170 0018 DB05     		lsls	r3, r3, #23
- 171 001a 03D5     		bpl	.L19
-  76:Dsp/ec11.c    **** 			{
-  77:Dsp/ec11.c    **** 				k_data = S0;
- 172              		.loc 1 77 0
- 173 001c 3E4B     		ldr	r3, .L30
- 174 001e 0022     		movs	r2, #0
- 175 0020 1A70     		strb	r2, [r3]
- 176 0022 69E0     		b	.L10
- 177              	.L19:
-  78:Dsp/ec11.c    **** 			}
-  79:Dsp/ec11.c    **** 			else
-  80:Dsp/ec11.c    **** 			{
-  81:Dsp/ec11.c    **** 				k_data = S1;
- 178              		.loc 1 81 0
- 179 0024 3C4B     		ldr	r3, .L30
- 180 0026 0122     		movs	r2, #1
- 181 0028 1A70     		strb	r2, [r3]
- 182 002a 65E0     		b	.L10
- 183              	.L14:
-  82:Dsp/ec11.c    **** 			}
-  83:Dsp/ec11.c    **** 			break;
-  84:Dsp/ec11.c    **** 		case S1:
-  85:Dsp/ec11.c    **** 			if (GPIOA->IDR & GPIO_PIN_8)
- 184              		.loc 1 85 0
- 185 002c 9023     		movs	r3, #144
- 186 002e DB05     		lsls	r3, r3, #23
- 187 0030 1B69     		ldr	r3, [r3, #16]
- 188 0032 DB05     		lsls	r3, r3, #23
- 189 0034 03D5     		bpl	.L21
-  86:Dsp/ec11.c    **** 			{
-  87:Dsp/ec11.c    **** 				k_data = S0;
- 190              		.loc 1 87 0
- 191 0036 384B     		ldr	r3, .L30
- 192 0038 0022     		movs	r2, #0
- 193 003a 1A70     		strb	r2, [r3]
- 194 003c 5CE0     		b	.L10
- 195              	.L21:
-  88:Dsp/ec11.c    **** 			}
-  89:Dsp/ec11.c    **** 			else 
-  90:Dsp/ec11.c    **** 			{
-  91:Dsp/ec11.c    **** 				k_data = S2;
- 196              		.loc 1 91 0
- 197 003e 364B     		ldr	r3, .L30
- 198 0040 0222     		movs	r2, #2
-ARM GAS  /tmp/ccbKX7Q4.s 			page 6
+ 165 0014 1B69     		ldr	r3, [r3, #16]
+ 166 0016 DB05     		lsls	r3, r3, #23
+ 167 0018 03D5     		bpl	.L19
+  69:Dsp/ec11.c    **** 			{
+  70:Dsp/ec11.c    **** 				k_data = S0;
+ 168              		.loc 1 70 0
+ 169 001a 3A4B     		ldr	r3, .L28
+ 170 001c 0022     		movs	r2, #0
+ 171 001e 1A70     		strb	r2, [r3]
+ 172 0020 6EE0     		b	.L10
+ 173              	.L19:
+  71:Dsp/ec11.c    **** 			}
+  72:Dsp/ec11.c    **** 			else
+  73:Dsp/ec11.c    **** 			{
+  74:Dsp/ec11.c    **** 				k_data = S1;
+ 174              		.loc 1 74 0
+ 175 0022 384B     		ldr	r3, .L28
+ 176 0024 0122     		movs	r2, #1
+ 177 0026 1A70     		strb	r2, [r3]
+ 178 0028 6AE0     		b	.L10
+ 179              	.L14:
+  75:Dsp/ec11.c    **** 			}
+  76:Dsp/ec11.c    **** 			break;
+  77:Dsp/ec11.c    **** 		case S1:
+  78:Dsp/ec11.c    **** 			if (GPIOA->IDR & GPIO_PIN_8)
+ 180              		.loc 1 78 0
+ 181 002a 9023     		movs	r3, #144
+ 182 002c DB05     		lsls	r3, r3, #23
+ 183 002e 1B69     		ldr	r3, [r3, #16]
+ 184 0030 DB05     		lsls	r3, r3, #23
+ 185 0032 03D5     		bpl	.L21
+  79:Dsp/ec11.c    **** 			{
+  80:Dsp/ec11.c    **** 				k_data = S0;
+ 186              		.loc 1 80 0
+ 187 0034 334B     		ldr	r3, .L28
+ 188 0036 0022     		movs	r2, #0
+ 189 0038 1A70     		strb	r2, [r3]
+ 190 003a 61E0     		b	.L10
+ 191              	.L21:
+  81:Dsp/ec11.c    **** 			}
+  82:Dsp/ec11.c    **** 			else 
+  83:Dsp/ec11.c    **** 			{
+  84:Dsp/ec11.c    **** 				k_data = S2;
+ 192              		.loc 1 84 0
+ 193 003c 314B     		ldr	r3, .L28
+ 194 003e 0222     		movs	r2, #2
+ 195 0040 1A70     		strb	r2, [r3]
+ 196 0042 5DE0     		b	.L10
+ 197              	.L15:
+  85:Dsp/ec11.c    **** 			}
+  86:Dsp/ec11.c    **** 			break;
+  87:Dsp/ec11.c    **** 		case S2:
+  88:Dsp/ec11.c    **** 			if (GPIOA->IDR & GPIO_PIN_8)
+ 198              		.loc 1 88 0
+ 199 0044 9023     		movs	r3, #144
+ 200 0046 DB05     		lsls	r3, r3, #23
+ 201 0048 1B69     		ldr	r3, [r3, #16]
+ARM GAS  /tmp/cckJgD9H.s 			page 6
 
 
- 199 0042 1A70     		strb	r2, [r3]
- 200 0044 58E0     		b	.L10
- 201              	.L15:
-  92:Dsp/ec11.c    **** 			}
-  93:Dsp/ec11.c    **** 			break;
-  94:Dsp/ec11.c    **** 		case S2:
-  95:Dsp/ec11.c    **** 			if (GPIOA->IDR & GPIO_PIN_8)
- 202              		.loc 1 95 0
- 203 0046 9023     		movs	r3, #144
- 204 0048 DB05     		lsls	r3, r3, #23
- 205 004a 1B69     		ldr	r3, [r3, #16]
- 206 004c DB05     		lsls	r3, r3, #23
- 207 004e 12D4     		bmi	.L27
-  96:Dsp/ec11.c    **** 			{
-  97:Dsp/ec11.c    **** 				k_data = S3;
-  98:Dsp/ec11.c    **** 			}
-  99:Dsp/ec11.c    **** 			else
- 100:Dsp/ec11.c    **** 			{
- 101:Dsp/ec11.c    **** 				press++;
- 208              		.loc 1 101 0
- 209 0050 334A     		ldr	r2, .L30+8
- 210 0052 1378     		ldrb	r3, [r2]
- 211 0054 0133     		adds	r3, r3, #1
- 212 0056 DBB2     		uxtb	r3, r3
- 213 0058 1370     		strb	r3, [r2]
- 102:Dsp/ec11.c    **** 				t = 1;
- 214              		.loc 1 102 0
- 215 005a 324A     		ldr	r2, .L30+12
- 216 005c 0121     		movs	r1, #1
- 217 005e 1170     		strb	r1, [r2]
- 103:Dsp/ec11.c    **** 				//t_pid = 1;
- 104:Dsp/ec11.c    **** 				if (20 < press)
- 218              		.loc 1 104 0
- 219 0060 142B     		cmp	r3, #20
- 220 0062 02D9     		bls	.L23
- 105:Dsp/ec11.c    **** 				{
- 106:Dsp/ec11.c    **** 					k_data = S4;
- 221              		.loc 1 106 0
- 222 0064 2C4B     		ldr	r3, .L30
- 223 0066 0422     		movs	r2, #4
- 224 0068 1A70     		strb	r2, [r3]
- 225              	.L23:
- 107:Dsp/ec11.c    **** 				}
- 108:Dsp/ec11.c    **** 				GPIOA->BSRR = 1 << 11;
- 226              		.loc 1 108 0
- 227 006a 9023     		movs	r3, #144
- 228 006c DB05     		lsls	r3, r3, #23
- 229 006e 8022     		movs	r2, #128
- 230 0070 1201     		lsls	r2, r2, #4
- 231 0072 9A61     		str	r2, [r3, #24]
- 232 0074 40E0     		b	.L10
- 233              	.L27:
-  97:Dsp/ec11.c    **** 			}
- 234              		.loc 1 97 0
- 235 0076 284B     		ldr	r3, .L30
- 236 0078 0322     		movs	r2, #3
- 237 007a 1A70     		strb	r2, [r3]
-ARM GAS  /tmp/ccbKX7Q4.s 			page 7
+ 202 004a DB05     		lsls	r3, r3, #23
+ 203 004c 12D4     		bmi	.L26
+  89:Dsp/ec11.c    **** 			{
+  90:Dsp/ec11.c    **** 				k_data = S3;
+  91:Dsp/ec11.c    **** 			}
+  92:Dsp/ec11.c    **** 			else
+  93:Dsp/ec11.c    **** 			{
+  94:Dsp/ec11.c    **** 				press++;
+ 204              		.loc 1 94 0
+ 205 004e 2F4A     		ldr	r2, .L28+8
+ 206 0050 1378     		ldrb	r3, [r2]
+ 207 0052 0133     		adds	r3, r3, #1
+ 208 0054 DBB2     		uxtb	r3, r3
+ 209 0056 1370     		strb	r3, [r2]
+  95:Dsp/ec11.c    **** 				t = 1;
+ 210              		.loc 1 95 0
+ 211 0058 2D4A     		ldr	r2, .L28+12
+ 212 005a 0121     		movs	r1, #1
+ 213 005c 1170     		strb	r1, [r2]
+  96:Dsp/ec11.c    **** 				//t_pid = 1;
+  97:Dsp/ec11.c    **** 				if (20 < press)
+ 214              		.loc 1 97 0
+ 215 005e 142B     		cmp	r3, #20
+ 216 0060 02D9     		bls	.L23
+  98:Dsp/ec11.c    **** 				{
+  99:Dsp/ec11.c    **** 					k_data = S4;
+ 217              		.loc 1 99 0
+ 218 0062 284B     		ldr	r3, .L28
+ 219 0064 0422     		movs	r2, #4
+ 220 0066 1A70     		strb	r2, [r3]
+ 221              	.L23:
+ 100:Dsp/ec11.c    **** 				}
+ 101:Dsp/ec11.c    **** 				GPIOA->BSRR = 1 << 11;
+ 222              		.loc 1 101 0
+ 223 0068 9023     		movs	r3, #144
+ 224 006a DB05     		lsls	r3, r3, #23
+ 225 006c 8022     		movs	r2, #128
+ 226 006e 1201     		lsls	r2, r2, #4
+ 227 0070 9A61     		str	r2, [r3, #24]
+ 228 0072 45E0     		b	.L10
+ 229              	.L26:
+  90:Dsp/ec11.c    **** 			}
+ 230              		.loc 1 90 0
+ 231 0074 234B     		ldr	r3, .L28
+ 232 0076 0322     		movs	r2, #3
+ 233 0078 1A70     		strb	r2, [r3]
+ 234 007a 41E0     		b	.L10
+ 235              	.L16:
+ 102:Dsp/ec11.c    **** 			}
+ 103:Dsp/ec11.c    **** 			break;
+ 104:Dsp/ec11.c    **** 		case S3:
+ 105:Dsp/ec11.c    **** 			if (GPIOA->IDR & GPIO_PIN_8)
+ 236              		.loc 1 105 0
+ 237 007c 9023     		movs	r3, #144
+ 238 007e DB05     		lsls	r3, r3, #23
+ 239 0080 1B69     		ldr	r3, [r3, #16]
+ 240 0082 DB05     		lsls	r3, r3, #23
+ARM GAS  /tmp/cckJgD9H.s 			page 7
 
 
- 238 007c 3CE0     		b	.L10
- 239              	.L16:
- 109:Dsp/ec11.c    **** 			}
- 110:Dsp/ec11.c    **** 			break;
- 111:Dsp/ec11.c    **** 		case S3:
- 112:Dsp/ec11.c    **** 			if (GPIOA->IDR & GPIO_PIN_8)
- 240              		.loc 1 112 0
- 241 007e 9023     		movs	r3, #144
- 242 0080 DB05     		lsls	r3, r3, #23
- 243 0082 1B69     		ldr	r3, [r3, #16]
- 244 0084 DB05     		lsls	r3, r3, #23
- 245 0086 03D5     		bpl	.L24
- 113:Dsp/ec11.c    **** 			{
- 114:Dsp/ec11.c    **** 				k_data = S0;
- 246              		.loc 1 114 0
- 247 0088 234B     		ldr	r3, .L30
- 248 008a 0022     		movs	r2, #0
- 249 008c 1A70     		strb	r2, [r3]
- 250 008e 33E0     		b	.L10
- 251              	.L24:
- 115:Dsp/ec11.c    **** 			}
- 116:Dsp/ec11.c    **** 			else
- 117:Dsp/ec11.c    **** 			{
- 118:Dsp/ec11.c    **** 				k_data = S1;
- 252              		.loc 1 118 0
- 253 0090 214B     		ldr	r3, .L30
- 254 0092 0122     		movs	r2, #1
- 255 0094 1A70     		strb	r2, [r3]
- 256 0096 2FE0     		b	.L10
- 257              	.L17:
- 119:Dsp/ec11.c    **** 			}
- 120:Dsp/ec11.c    **** 			break;
- 121:Dsp/ec11.c    **** 		case S4:
- 122:Dsp/ec11.c    **** 			if (GPIOA->IDR & GPIO_PIN_8)
- 258              		.loc 1 122 0
- 259 0098 9023     		movs	r3, #144
- 260 009a DB05     		lsls	r3, r3, #23
- 261 009c 1B69     		ldr	r3, [r3, #16]
- 262 009e DB05     		lsls	r3, r3, #23
- 263 00a0 1AD4     		bmi	.L28
- 123:Dsp/ec11.c    **** 			{
- 124:Dsp/ec11.c    **** 				k_data = S3;
- 125:Dsp/ec11.c    **** 			}
- 126:Dsp/ec11.c    **** 			else
- 127:Dsp/ec11.c    **** 			{
- 128:Dsp/ec11.c    **** 				press = 0;
- 264              		.loc 1 128 0
- 265 00a2 0023     		movs	r3, #0
- 266 00a4 1E4A     		ldr	r2, .L30+8
- 267 00a6 1370     		strb	r3, [r2]
- 129:Dsp/ec11.c    **** 				t = 0;
- 268              		.loc 1 129 0
- 269 00a8 1E4A     		ldr	r2, .L30+12
- 270 00aa 1370     		strb	r3, [r2]
- 130:Dsp/ec11.c    **** 				//t_pid = 0;
- 131:Dsp/ec11.c    **** 				GPIOA->BRR = 1 << 11;
- 271              		.loc 1 131 0
-ARM GAS  /tmp/ccbKX7Q4.s 			page 8
+ 241 0084 03D5     		bpl	.L24
+ 106:Dsp/ec11.c    **** 			{
+ 107:Dsp/ec11.c    **** 				k_data = S0;
+ 242              		.loc 1 107 0
+ 243 0086 1F4B     		ldr	r3, .L28
+ 244 0088 0022     		movs	r2, #0
+ 245 008a 1A70     		strb	r2, [r3]
+ 246 008c 38E0     		b	.L10
+ 247              	.L24:
+ 108:Dsp/ec11.c    **** 			}
+ 109:Dsp/ec11.c    **** 			else
+ 110:Dsp/ec11.c    **** 			{
+ 111:Dsp/ec11.c    **** 				k_data = S1;
+ 248              		.loc 1 111 0
+ 249 008e 1D4B     		ldr	r3, .L28
+ 250 0090 0122     		movs	r2, #1
+ 251 0092 1A70     		strb	r2, [r3]
+ 252 0094 34E0     		b	.L10
+ 253              	.L17:
+ 112:Dsp/ec11.c    **** 			}
+ 113:Dsp/ec11.c    **** 			break;
+ 114:Dsp/ec11.c    **** 		case S4:
+ 115:Dsp/ec11.c    **** 			if (GPIOA->IDR & GPIO_PIN_8)
+ 254              		.loc 1 115 0
+ 255 0096 9023     		movs	r3, #144
+ 256 0098 DB05     		lsls	r3, r3, #23
+ 257 009a 1B69     		ldr	r3, [r3, #16]
+ 258 009c DB05     		lsls	r3, r3, #23
+ 259 009e 17D4     		bmi	.L27
+ 116:Dsp/ec11.c    **** 			{
+ 117:Dsp/ec11.c    **** 				k_data = S3;
+ 118:Dsp/ec11.c    **** 			}
+ 119:Dsp/ec11.c    **** 			else
+ 120:Dsp/ec11.c    **** 			{
+ 121:Dsp/ec11.c    **** 				press = 0;
+ 260              		.loc 1 121 0
+ 261 00a0 0023     		movs	r3, #0
+ 262 00a2 1A4A     		ldr	r2, .L28+8
+ 263 00a4 1370     		strb	r3, [r2]
+ 122:Dsp/ec11.c    **** 				t = 0;
+ 264              		.loc 1 122 0
+ 265 00a6 1A4A     		ldr	r2, .L28+12
+ 266 00a8 1370     		strb	r3, [r2]
+ 123:Dsp/ec11.c    **** 				//t_pid = 0;
+ 124:Dsp/ec11.c    **** 				GPIOA->BRR = 1 << 11;
+ 267              		.loc 1 124 0
+ 268 00aa 9023     		movs	r3, #144
+ 269 00ac DB05     		lsls	r3, r3, #23
+ 270 00ae 8022     		movs	r2, #128
+ 271 00b0 1201     		lsls	r2, r2, #4
+ 272 00b2 9A62     		str	r2, [r3, #40]
+ 125:Dsp/ec11.c    **** 				GPIOA->BSRR = 1 << 12;
+ 273              		.loc 1 125 0
+ 274 00b4 8022     		movs	r2, #128
+ 275 00b6 5201     		lsls	r2, r2, #5
+ 276 00b8 9A61     		str	r2, [r3, #24]
+ 126:Dsp/ec11.c    **** 
+ARM GAS  /tmp/cckJgD9H.s 			page 8
 
 
- 272 00ac 9023     		movs	r3, #144
- 273 00ae DB05     		lsls	r3, r3, #23
- 274 00b0 8022     		movs	r2, #128
- 275 00b2 1201     		lsls	r2, r2, #4
- 276 00b4 9A62     		str	r2, [r3, #40]
- 132:Dsp/ec11.c    **** 				GPIOA->BSRR = 1 << 12;
- 277              		.loc 1 132 0
- 278 00b6 8022     		movs	r2, #128
- 279 00b8 5201     		lsls	r2, r2, #5
- 280 00ba 9A61     		str	r2, [r3, #24]
- 133:Dsp/ec11.c    **** 
- 134:Dsp/ec11.c    **** 				press_l++;
- 281              		.loc 1 134 0
- 282 00bc 1A4A     		ldr	r2, .L30+16
- 283 00be 1378     		ldrb	r3, [r2]
- 284 00c0 0133     		adds	r3, r3, #1
- 285 00c2 DBB2     		uxtb	r3, r3
- 286 00c4 1370     		strb	r3, [r2]
- 135:Dsp/ec11.c    **** 				if (20 < press_l)
- 287              		.loc 1 135 0
- 288 00c6 142B     		cmp	r3, #20
- 289 00c8 02D9     		bls	.L26
- 136:Dsp/ec11.c    **** 				{
- 137:Dsp/ec11.c    **** 					k_data = S5;
- 290              		.loc 1 137 0
- 291 00ca 134B     		ldr	r3, .L30
- 292 00cc 0522     		movs	r2, #5
- 293 00ce 1A70     		strb	r2, [r3]
- 294              	.L26:
- 138:Dsp/ec11.c    **** 				}
- 139:Dsp/ec11.c    **** 
- 140:Dsp/ec11.c    **** 				printf("S4\r\n");
- 295              		.loc 1 140 0
- 296 00d0 1648     		ldr	r0, .L30+20
- 297 00d2 FFF7FEFF 		bl	puts
- 298              	.LVL1:
- 299 00d6 0FE0     		b	.L10
- 300              	.L28:
- 124:Dsp/ec11.c    **** 			}
- 301              		.loc 1 124 0
- 302 00d8 0F4B     		ldr	r3, .L30
- 303 00da 0322     		movs	r2, #3
- 304 00dc 1A70     		strb	r2, [r3]
- 305 00de 0BE0     		b	.L10
- 306              	.L18:
- 141:Dsp/ec11.c    **** 			}
- 142:Dsp/ec11.c    **** 			break;
- 143:Dsp/ec11.c    **** 
- 144:Dsp/ec11.c    **** 		case S5:
- 145:Dsp/ec11.c    **** 			if (GPIOA->IDR & GPIO_PIN_8)
- 307              		.loc 1 145 0
- 308 00e0 9023     		movs	r3, #144
- 309 00e2 DB05     		lsls	r3, r3, #23
- 310 00e4 1B69     		ldr	r3, [r3, #16]
- 311 00e6 DB05     		lsls	r3, r3, #23
- 312 00e8 07D5     		bpl	.L29
- 313              	.L11:
-ARM GAS  /tmp/ccbKX7Q4.s 			page 9
+ 127:Dsp/ec11.c    **** 				press_l++;
+ 277              		.loc 1 127 0
+ 278 00ba 164A     		ldr	r2, .L28+16
+ 279 00bc 1378     		ldrb	r3, [r2]
+ 280 00be 0133     		adds	r3, r3, #1
+ 281 00c0 DBB2     		uxtb	r3, r3
+ 282 00c2 1370     		strb	r3, [r2]
+ 128:Dsp/ec11.c    **** 				if (20 < press_l)
+ 283              		.loc 1 128 0
+ 284 00c4 142B     		cmp	r3, #20
+ 285 00c6 1BD9     		bls	.L10
+ 129:Dsp/ec11.c    **** 				{
+ 130:Dsp/ec11.c    **** 					k_data = S5;
+ 286              		.loc 1 130 0
+ 287 00c8 0E4B     		ldr	r3, .L28
+ 288 00ca 0522     		movs	r2, #5
+ 289 00cc 1A70     		strb	r2, [r3]
+ 290 00ce 17E0     		b	.L10
+ 291              	.L27:
+ 117:Dsp/ec11.c    **** 			}
+ 292              		.loc 1 117 0
+ 293 00d0 0C4B     		ldr	r3, .L28
+ 294 00d2 0322     		movs	r2, #3
+ 295 00d4 1A70     		strb	r2, [r3]
+ 296 00d6 13E0     		b	.L10
+ 297              	.L18:
+ 131:Dsp/ec11.c    **** 				}
+ 132:Dsp/ec11.c    **** 
+ 133:Dsp/ec11.c    **** 			}
+ 134:Dsp/ec11.c    **** 			break;
+ 135:Dsp/ec11.c    **** 
+ 136:Dsp/ec11.c    **** 		case S5:
+ 137:Dsp/ec11.c    **** 			if (GPIOA->IDR & GPIO_PIN_8)
+ 298              		.loc 1 137 0
+ 299 00d8 9023     		movs	r3, #144
+ 300 00da DB05     		lsls	r3, r3, #23
+ 301 00dc 1B69     		ldr	r3, [r3, #16]
+ 302 00de DB05     		lsls	r3, r3, #23
+ 303 00e0 07D4     		bmi	.L11
+ 138:Dsp/ec11.c    **** 			{
+ 139:Dsp/ec11.c    **** 				k_data = S3;
+ 140:Dsp/ec11.c    **** 			}
+ 141:Dsp/ec11.c    **** 			else
+ 142:Dsp/ec11.c    **** 			{
+ 143:Dsp/ec11.c    **** 				press_l = 0;
+ 144:Dsp/ec11.c    **** 				flag_ec11 = 1;
+ 304              		.loc 1 144 0
+ 305 00e2 0D4B     		ldr	r3, .L28+20
+ 306 00e4 0122     		movs	r2, #1
+ 307 00e6 1A70     		strb	r2, [r3]
+ 145:Dsp/ec11.c    **** 				GPIOA->BRR = 1 << 12;
+ 308              		.loc 1 145 0
+ 309 00e8 9023     		movs	r3, #144
+ 310 00ea DB05     		lsls	r3, r3, #23
+ 311 00ec 8022     		movs	r2, #128
+ 312 00ee 5201     		lsls	r2, r2, #5
+ 313 00f0 9A62     		str	r2, [r3, #40]
+ARM GAS  /tmp/cckJgD9H.s 			page 9
 
 
- 146:Dsp/ec11.c    **** 			{
- 147:Dsp/ec11.c    **** 				k_data = S3;
- 148:Dsp/ec11.c    **** 			}
- 149:Dsp/ec11.c    **** 			else
- 150:Dsp/ec11.c    **** 			{
- 151:Dsp/ec11.c    **** 				press_l = 0;
- 152:Dsp/ec11.c    **** 				flag_ec11 = 1;
- 153:Dsp/ec11.c    **** 				printf("S5\r\n");
- 154:Dsp/ec11.c    **** 				GPIOA->BRR = 1 << 12;
- 155:Dsp/ec11.c    **** 			}
- 156:Dsp/ec11.c    **** 		default:
- 157:Dsp/ec11.c    **** 			k_data = S0;
- 314              		.loc 1 157 0
- 315 00ea 0023     		movs	r3, #0
- 316 00ec 0A4A     		ldr	r2, .L30
- 317 00ee 1370     		strb	r3, [r2]
- 158:Dsp/ec11.c    **** 			press = 0;
- 318              		.loc 1 158 0
- 319 00f0 0B4A     		ldr	r2, .L30+8
- 320 00f2 1370     		strb	r3, [r2]
- 159:Dsp/ec11.c    **** 			press_l = 0;
- 321              		.loc 1 159 0
- 322 00f4 0C4A     		ldr	r2, .L30+16
- 323 00f6 1370     		strb	r3, [r2]
- 324              	.L10:
- 160:Dsp/ec11.c    **** 			break;
- 161:Dsp/ec11.c    **** 	}
- 162:Dsp/ec11.c    **** }
- 325              		.loc 1 162 0
- 326              		@ sp needed
- 327 00f8 10BD     		pop	{r4, pc}
- 328              	.L29:
- 151:Dsp/ec11.c    **** 				flag_ec11 = 1;
- 329              		.loc 1 151 0
- 330 00fa 0B4B     		ldr	r3, .L30+16
- 331 00fc 0022     		movs	r2, #0
- 332 00fe 1A70     		strb	r2, [r3]
- 152:Dsp/ec11.c    **** 				printf("S5\r\n");
- 333              		.loc 1 152 0
- 334 0100 0B4B     		ldr	r3, .L30+24
- 335 0102 0132     		adds	r2, r2, #1
- 336 0104 1A70     		strb	r2, [r3]
- 153:Dsp/ec11.c    **** 				GPIOA->BRR = 1 << 12;
- 337              		.loc 1 153 0
- 338 0106 0B48     		ldr	r0, .L30+28
- 339 0108 FFF7FEFF 		bl	puts
- 340              	.LVL2:
- 154:Dsp/ec11.c    **** 			}
- 341              		.loc 1 154 0
- 342 010c 9023     		movs	r3, #144
- 343 010e DB05     		lsls	r3, r3, #23
- 344 0110 8022     		movs	r2, #128
- 345 0112 5201     		lsls	r2, r2, #5
- 346 0114 9A62     		str	r2, [r3, #40]
- 347 0116 E8E7     		b	.L11
- 348              	.L31:
- 349              		.align	2
-ARM GAS  /tmp/ccbKX7Q4.s 			page 10
+ 314              	.L11:
+ 146:Dsp/ec11.c    **** 			}
+ 147:Dsp/ec11.c    **** 		default:
+ 148:Dsp/ec11.c    **** 			k_data = S0;
+ 315              		.loc 1 148 0
+ 316 00f2 0023     		movs	r3, #0
+ 317 00f4 034A     		ldr	r2, .L28
+ 318 00f6 1370     		strb	r3, [r2]
+ 149:Dsp/ec11.c    **** 			press = 0;
+ 319              		.loc 1 149 0
+ 320 00f8 044A     		ldr	r2, .L28+8
+ 321 00fa 1370     		strb	r3, [r2]
+ 150:Dsp/ec11.c    **** 			press_l = 0;
+ 322              		.loc 1 150 0
+ 323 00fc 054A     		ldr	r2, .L28+16
+ 324 00fe 1370     		strb	r3, [r2]
+ 325              	.L10:
+ 151:Dsp/ec11.c    **** 			break;
+ 152:Dsp/ec11.c    **** 	}
+ 153:Dsp/ec11.c    **** }
+ 326              		.loc 1 153 0
+ 327              		@ sp needed
+ 328 0100 7047     		bx	lr
+ 329              	.L29:
+ 330 0102 C046     		.align	2
+ 331              	.L28:
+ 332 0104 00000000 		.word	.LANCHOR1
+ 333 0108 00000000 		.word	.L13
+ 334 010c 00000000 		.word	.LANCHOR2
+ 335 0110 00000000 		.word	.LANCHOR0
+ 336 0114 00000000 		.word	.LANCHOR3
+ 337 0118 00000000 		.word	flag_ec11
+ 338              		.cfi_endproc
+ 339              	.LFE39:
+ 341              		.section	.bss.k_data.6959,"aw",%nobits
+ 342              		.set	.LANCHOR1,. + 0
+ 345              	k_data.6959:
+ 346 0000 00       		.space	1
+ 347              		.section	.bss.press.6960,"aw",%nobits
+ 348              		.set	.LANCHOR2,. + 0
+ 351              	press.6960:
+ 352 0000 00       		.space	1
+ 353              		.section	.bss.press_l.6961,"aw",%nobits
+ 354              		.set	.LANCHOR3,. + 0
+ 357              	press_l.6961:
+ 358 0000 00       		.space	1
+ 359              		.section	.data.t,"aw",%progbits
+ 360              		.set	.LANCHOR0,. + 0
+ 363              	t:
+ 364 0000 01       		.byte	1
+ 365              		.text
+ 366              	.Letext0:
+ 367              		.file 2 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/machine/_default_
+ 368              		.file 3 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/_stdint.h"
+ 369              		.file 4 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
+ 370              		.file 5 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/stm32f030x6.h"
+ 371              		.file 6 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/lock.h"
+ARM GAS  /tmp/cckJgD9H.s 			page 10
 
 
- 350              	.L30:
- 351 0118 00000000 		.word	.LANCHOR1
- 352 011c 00000000 		.word	.L13
- 353 0120 00000000 		.word	.LANCHOR2
- 354 0124 00000000 		.word	.LANCHOR0
- 355 0128 00000000 		.word	.LANCHOR3
- 356 012c 00000000 		.word	.LC8
- 357 0130 00000000 		.word	flag_ec11
- 358 0134 04000000 		.word	.LC11
- 359              		.cfi_endproc
- 360              	.LFE39:
- 362              		.section	.bss.k_data.6959,"aw",%nobits
- 363              		.set	.LANCHOR1,. + 0
- 366              	k_data.6959:
- 367 0000 00       		.space	1
- 368              		.section	.bss.press.6960,"aw",%nobits
- 369              		.set	.LANCHOR2,. + 0
- 372              	press.6960:
- 373 0000 00       		.space	1
- 374              		.section	.bss.press_l.6961,"aw",%nobits
- 375              		.set	.LANCHOR3,. + 0
- 378              	press_l.6961:
- 379 0000 00       		.space	1
- 380              		.section	.data.t,"aw",%progbits
- 381              		.set	.LANCHOR0,. + 0
- 384              	t:
- 385 0000 01       		.byte	1
- 386              		.section	.rodata.key_scanning.str1.4,"aMS",%progbits,1
- 387              		.align	2
- 388              	.LC8:
- 389 0000 53340D00 		.ascii	"S4\015\000"
- 390              	.LC11:
- 391 0004 53350D00 		.ascii	"S5\015\000"
- 392              		.text
- 393              	.Letext0:
- 394              		.file 2 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/machine/_default_
- 395              		.file 3 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/_stdint.h"
- 396              		.file 4 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
- 397              		.file 5 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/stm32f030x6.h"
- 398              		.file 6 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/lock.h"
- 399              		.file 7 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/_types.h"
- 400              		.file 8 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/lib/gcc/arm-none-eabi/7.2.1/include/std
- 401              		.file 9 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/reent.h"
- 402              		.file 10 "<built-in>"
-ARM GAS  /tmp/ccbKX7Q4.s 			page 11
+ 372              		.file 7 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/_types.h"
+ 373              		.file 8 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/lib/gcc/arm-none-eabi/7.2.1/include/std
+ 374              		.file 9 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/reent.h"
+ARM GAS  /tmp/cckJgD9H.s 			page 11
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 ec11.c
-     /tmp/ccbKX7Q4.s:16     .text.ec11_irq_handler:0000000000000000 $t
-     /tmp/ccbKX7Q4.s:23     .text.ec11_irq_handler:0000000000000000 ec11_irq_handler
-     /tmp/ccbKX7Q4.s:92     .text.ec11_irq_handler:0000000000000058 $d
-     /tmp/ccbKX7Q4.s:100    .text.EXTI4_15_IRQHandler:0000000000000000 $t
-     /tmp/ccbKX7Q4.s:107    .text.EXTI4_15_IRQHandler:0000000000000000 EXTI4_15_IRQHandler
-     /tmp/ccbKX7Q4.s:128    .text.key_scanning:0000000000000000 $t
-     /tmp/ccbKX7Q4.s:135    .text.key_scanning:0000000000000000 key_scanning
-     /tmp/ccbKX7Q4.s:156    .rodata.key_scanning:0000000000000000 $d
-     /tmp/ccbKX7Q4.s:351    .text.key_scanning:0000000000000118 $d
-     /tmp/ccbKX7Q4.s:366    .bss.k_data.6959:0000000000000000 k_data.6959
-     /tmp/ccbKX7Q4.s:367    .bss.k_data.6959:0000000000000000 $d
-     /tmp/ccbKX7Q4.s:372    .bss.press.6960:0000000000000000 press.6960
-     /tmp/ccbKX7Q4.s:373    .bss.press.6960:0000000000000000 $d
-     /tmp/ccbKX7Q4.s:378    .bss.press_l.6961:0000000000000000 press_l.6961
-     /tmp/ccbKX7Q4.s:379    .bss.press_l.6961:0000000000000000 $d
-     /tmp/ccbKX7Q4.s:384    .data.t:0000000000000000 t
-     /tmp/ccbKX7Q4.s:387    .rodata.key_scanning.str1.4:0000000000000000 $d
+     /tmp/cckJgD9H.s:16     .text.ec11_irq_handler:0000000000000000 $t
+     /tmp/cckJgD9H.s:23     .text.ec11_irq_handler:0000000000000000 ec11_irq_handler
+     /tmp/cckJgD9H.s:92     .text.ec11_irq_handler:0000000000000058 $d
+     /tmp/cckJgD9H.s:100    .text.EXTI4_15_IRQHandler:0000000000000000 $t
+     /tmp/cckJgD9H.s:107    .text.EXTI4_15_IRQHandler:0000000000000000 EXTI4_15_IRQHandler
+     /tmp/cckJgD9H.s:128    .text.key_scanning:0000000000000000 $t
+     /tmp/cckJgD9H.s:135    .text.key_scanning:0000000000000000 key_scanning
+     /tmp/cckJgD9H.s:152    .rodata.key_scanning:0000000000000000 $d
+     /tmp/cckJgD9H.s:332    .text.key_scanning:0000000000000104 $d
+     /tmp/cckJgD9H.s:345    .bss.k_data.6959:0000000000000000 k_data.6959
+     /tmp/cckJgD9H.s:346    .bss.k_data.6959:0000000000000000 $d
+     /tmp/cckJgD9H.s:351    .bss.press.6960:0000000000000000 press.6960
+     /tmp/cckJgD9H.s:352    .bss.press.6960:0000000000000000 $d
+     /tmp/cckJgD9H.s:357    .bss.press_l.6961:0000000000000000 press_l.6961
+     /tmp/cckJgD9H.s:358    .bss.press_l.6961:0000000000000000 $d
+     /tmp/cckJgD9H.s:363    .data.t:0000000000000000 t
 
 UNDEFINED SYMBOLS
 add_t
 add
-puts
 flag_ec11

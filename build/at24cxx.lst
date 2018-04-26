@@ -1,4 +1,4 @@
-ARM GAS  /tmp/cce2CK4i.s 			page 1
+ARM GAS  /tmp/ccgD3NTS.s 			page 1
 
 
    1              		.cpu cortex-m0
@@ -25,196 +25,229 @@ ARM GAS  /tmp/cce2CK4i.s 			page 1
   23              	at24c02_adc_write:
   24              	.LFB37:
   25              		.file 1 "Dsp/at24cxx.c"
-   1:Dsp/at24cxx.c **** #include "stm32f0xx_hal.h"
-   2:Dsp/at24cxx.c **** #include "iic.h"
-   3:Dsp/at24cxx.c **** 
-   4:Dsp/at24cxx.c **** extern uint8_t flag;
-   5:Dsp/at24cxx.c **** extern uint8_t I2c_Write;
-   6:Dsp/at24cxx.c **** uint8_t I2c_Read = 0;
-   7:Dsp/at24cxx.c **** uint8_t flag_ec11 = 0; 
-   8:Dsp/at24cxx.c **** void at24c02_adc_write(void)
-   9:Dsp/at24cxx.c **** {
-  26              		.loc 1 9 0
+   1:Dsp/at24cxx.c **** #include <stdio.h>
+   2:Dsp/at24cxx.c **** #include <stdlib.h>
+   3:Dsp/at24cxx.c **** #include "stm32f0xx_hal.h"
+   4:Dsp/at24cxx.c **** #include "iic.h"
+   5:Dsp/at24cxx.c **** 
+   6:Dsp/at24cxx.c **** extern uint8_t flag;
+   7:Dsp/at24cxx.c **** extern uint16_t I2c_last;
+   8:Dsp/at24cxx.c **** extern uint16_t I2c_Write;
+   9:Dsp/at24cxx.c **** uint8_t flag_ec11 = 0; 
+  10:Dsp/at24cxx.c **** uint8_t I2c_Read[5];
+  11:Dsp/at24cxx.c **** uint8_t last = 1;
+  12:Dsp/at24cxx.c **** 
+  13:Dsp/at24cxx.c **** void at24c02_adc_write(void)
+  14:Dsp/at24cxx.c **** {
+  26              		.loc 1 14 0
   27              		.cfi_startproc
-  28              		@ args = 0, pretend = 0, frame = 0
+  28              		@ args = 0, pretend = 0, frame = 8
   29              		@ frame_needed = 0, uses_anonymous_args = 0
-  30 0000 10B5     		push	{r4, lr}
+  30 0000 00B5     		push	{lr}
   31              	.LCFI0:
-  32              		.cfi_def_cfa_offset 8
-  33              		.cfi_offset 4, -8
-  34              		.cfi_offset 14, -4
-  10:Dsp/at24cxx.c **** 	if (flag_ec11 == 1)
-  35              		.loc 1 10 0
-  36 0002 074B     		ldr	r3, .L4
-  37 0004 1B78     		ldrb	r3, [r3]
-  38 0006 012B     		cmp	r3, #1
-  39 0008 00D0     		beq	.L3
-  40              	.L1:
-  11:Dsp/at24cxx.c **** 	{
-  12:Dsp/at24cxx.c **** 		EEPROM_WriteBytes(&I2c_Write, 0, 256);
-  13:Dsp/at24cxx.c **** 		flag_ec11 = 0;
-  14:Dsp/at24cxx.c **** 	}
-  15:Dsp/at24cxx.c **** 	else
-  16:Dsp/at24cxx.c **** 	{
-  17:Dsp/at24cxx.c **** 	}
-  18:Dsp/at24cxx.c **** }
-ARM GAS  /tmp/cce2CK4i.s 			page 2
+  32              		.cfi_def_cfa_offset 4
+  33              		.cfi_offset 14, -4
+  34 0002 83B0     		sub	sp, sp, #12
+  35              	.LCFI1:
+  36              		.cfi_def_cfa_offset 16
+  15:Dsp/at24cxx.c **** 	char str[5];
+  16:Dsp/at24cxx.c **** 
+  17:Dsp/at24cxx.c **** 	if (flag_ec11 == 1)
+  37              		.loc 1 17 0
+  38 0004 0A4B     		ldr	r3, .L4
+  39 0006 1B78     		ldrb	r3, [r3]
+  40 0008 012B     		cmp	r3, #1
+  41 000a 01D0     		beq	.L3
+ARM GAS  /tmp/ccgD3NTS.s 			page 2
 
 
-  41              		.loc 1 18 0
-  42              		@ sp needed
-  43 000a 10BD     		pop	{r4, pc}
-  44              	.L3:
-  12:Dsp/at24cxx.c **** 		flag_ec11 = 0;
-  45              		.loc 1 12 0
-  46 000c 8022     		movs	r2, #128
-  47 000e 5200     		lsls	r2, r2, #1
-  48 0010 0021     		movs	r1, #0
-  49 0012 0448     		ldr	r0, .L4+4
-  50 0014 FFF7FEFF 		bl	EEPROM_WriteBytes
-  51              	.LVL0:
-  13:Dsp/at24cxx.c **** 	}
-  52              		.loc 1 13 0
-  53 0018 014B     		ldr	r3, .L4
-  54 001a 0022     		movs	r2, #0
-  55 001c 1A70     		strb	r2, [r3]
-  56              		.loc 1 18 0
-  57 001e F4E7     		b	.L1
-  58              	.L5:
-  59              		.align	2
-  60              	.L4:
-  61 0020 00000000 		.word	.LANCHOR0
-  62 0024 00000000 		.word	I2c_Write
-  63              		.cfi_endproc
-  64              	.LFE37:
-  66              		.section	.text.at24c02_adc_read,"ax",%progbits
-  67              		.align	1
-  68              		.global	at24c02_adc_read
-  69              		.syntax unified
-  70              		.code	16
-  71              		.thumb_func
-  72              		.fpu softvfp
-  74              	at24c02_adc_read:
-  75              	.LFB38:
-  19:Dsp/at24cxx.c **** 
-  20:Dsp/at24cxx.c **** void at24c02_adc_read(void)
-  21:Dsp/at24cxx.c **** {
-  76              		.loc 1 21 0
-  77              		.cfi_startproc
-  78              		@ args = 0, pretend = 0, frame = 0
-  79              		@ frame_needed = 0, uses_anonymous_args = 0
-  80 0000 10B5     		push	{r4, lr}
-  81              	.LCFI1:
-  82              		.cfi_def_cfa_offset 8
-  83              		.cfi_offset 4, -8
-  84              		.cfi_offset 14, -4
-  22:Dsp/at24cxx.c **** 	if (flag == 1)
-  85              		.loc 1 22 0
-  86 0002 0A4B     		ldr	r3, .L10
-  87 0004 1B78     		ldrb	r3, [r3]
-  88 0006 012B     		cmp	r3, #1
-  89 0008 03D0     		beq	.L9
-  23:Dsp/at24cxx.c **** 	{
-  24:Dsp/at24cxx.c **** 		EEPROM_ReadBytes(&I2c_Read, 0, 256);
-  25:Dsp/at24cxx.c **** 		printf("2c%d\r\n", I2c_Read);
-  26:Dsp/at24cxx.c **** 	}
-ARM GAS  /tmp/cce2CK4i.s 			page 3
-
-
-  27:Dsp/at24cxx.c **** 	else
-  28:Dsp/at24cxx.c **** 	{
-  29:Dsp/at24cxx.c **** 		printf("error\r\n");
-  90              		.loc 1 29 0
-  91 000a 0948     		ldr	r0, .L10+4
-  92 000c FFF7FEFF 		bl	puts
-  93              	.LVL1:
-  94              	.L6:
-  30:Dsp/at24cxx.c **** 	}
-  31:Dsp/at24cxx.c **** }
-  95              		.loc 1 31 0
-  96              		@ sp needed
-  97 0010 10BD     		pop	{r4, pc}
-  98              	.L9:
-  24:Dsp/at24cxx.c **** 		printf("2c%d\r\n", I2c_Read);
-  99              		.loc 1 24 0
- 100 0012 8022     		movs	r2, #128
- 101 0014 074C     		ldr	r4, .L10+8
- 102 0016 5200     		lsls	r2, r2, #1
- 103 0018 0021     		movs	r1, #0
- 104 001a 2000     		movs	r0, r4
- 105 001c FFF7FEFF 		bl	EEPROM_ReadBytes
- 106              	.LVL2:
+  42              	.L1:
+  18:Dsp/at24cxx.c **** 	{
+  19:Dsp/at24cxx.c **** 		itoa(I2c_Write, str, 10);
+  20:Dsp/at24cxx.c **** 		AT24CXX_Write(0, (uint8_t*)str, 5);
+  21:Dsp/at24cxx.c **** 		flag_ec11 = 0;
+  22:Dsp/at24cxx.c **** 	}
+  23:Dsp/at24cxx.c **** 	else
+  24:Dsp/at24cxx.c **** 	{
   25:Dsp/at24cxx.c **** 	}
- 107              		.loc 1 25 0
- 108 0020 2178     		ldrb	r1, [r4]
- 109 0022 0548     		ldr	r0, .L10+12
- 110 0024 FFF7FEFF 		bl	printf
- 111              	.LVL3:
- 112 0028 F2E7     		b	.L6
- 113              	.L11:
- 114 002a C046     		.align	2
- 115              	.L10:
- 116 002c 00000000 		.word	flag
- 117 0030 08000000 		.word	.LC6
- 118 0034 00000000 		.word	.LANCHOR1
- 119 0038 00000000 		.word	.LC4
- 120              		.cfi_endproc
- 121              	.LFE38:
- 123              		.global	flag_ec11
- 124              		.global	I2c_Read
- 125              		.section	.bss.I2c_Read,"aw",%nobits
- 126              		.set	.LANCHOR1,. + 0
- 129              	I2c_Read:
- 130 0000 00       		.space	1
- 131              		.section	.bss.flag_ec11,"aw",%nobits
- 132              		.set	.LANCHOR0,. + 0
- 135              	flag_ec11:
- 136 0000 00       		.space	1
- 137              		.section	.rodata.at24c02_adc_read.str1.4,"aMS",%progbits,1
- 138              		.align	2
- 139              	.LC4:
- 140 0000 32632564 		.ascii	"2c%d\015\012\000"
- 140      0D0A00
- 141 0007 00       		.space	1
- 142              	.LC6:
- 143 0008 6572726F 		.ascii	"error\015\000"
-ARM GAS  /tmp/cce2CK4i.s 			page 4
+  26:Dsp/at24cxx.c **** }
+  43              		.loc 1 26 0
+  44 000c 03B0     		add	sp, sp, #12
+  45              		@ sp needed
+  46 000e 00BD     		pop	{pc}
+  47              	.L3:
+  19:Dsp/at24cxx.c **** 		AT24CXX_Write(0, (uint8_t*)str, 5);
+  48              		.loc 1 19 0
+  49 0010 084B     		ldr	r3, .L4+4
+  50 0012 1888     		ldrh	r0, [r3]
+  51 0014 0A22     		movs	r2, #10
+  52 0016 6946     		mov	r1, sp
+  53 0018 FFF7FEFF 		bl	itoa
+  54              	.LVL0:
+  20:Dsp/at24cxx.c **** 		flag_ec11 = 0;
+  55              		.loc 1 20 0
+  56 001c 0522     		movs	r2, #5
+  57 001e 6946     		mov	r1, sp
+  58 0020 0020     		movs	r0, #0
+  59 0022 FFF7FEFF 		bl	AT24CXX_Write
+  60              	.LVL1:
+  21:Dsp/at24cxx.c **** 	}
+  61              		.loc 1 21 0
+  62 0026 024B     		ldr	r3, .L4
+  63 0028 0022     		movs	r2, #0
+  64 002a 1A70     		strb	r2, [r3]
+  65              		.loc 1 26 0
+  66 002c EEE7     		b	.L1
+  67              	.L5:
+  68 002e C046     		.align	2
+  69              	.L4:
+  70 0030 00000000 		.word	.LANCHOR0
+  71 0034 00000000 		.word	I2c_Write
+  72              		.cfi_endproc
+  73              	.LFE37:
+  75              		.section	.text.at24c02_adc_read,"ax",%progbits
+  76              		.align	1
+  77              		.global	at24c02_adc_read
+  78              		.syntax unified
+  79              		.code	16
+  80              		.thumb_func
+  81              		.fpu softvfp
+  83              	at24c02_adc_read:
+  84              	.LFB38:
+  27:Dsp/at24cxx.c **** 
+  28:Dsp/at24cxx.c **** void at24c02_adc_read(void)
+  29:Dsp/at24cxx.c **** {
+  85              		.loc 1 29 0
+ARM GAS  /tmp/ccgD3NTS.s 			page 3
 
 
- 143      720D00
- 144              		.text
- 145              	.Letext0:
- 146              		.file 2 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/machine/_default_
- 147              		.file 3 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/_stdint.h"
- 148              		.file 4 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
- 149              		.file 5 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/lock.h"
- 150              		.file 6 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/_types.h"
- 151              		.file 7 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/lib/gcc/arm-none-eabi/7.2.1/include/std
- 152              		.file 8 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/reent.h"
- 153              		.file 9 "Dsp/Inc/iic.h"
- 154              		.file 10 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/stdio.h"
- 155              		.file 11 "<built-in>"
-ARM GAS  /tmp/cce2CK4i.s 			page 5
+  86              		.cfi_startproc
+  87              		@ args = 0, pretend = 0, frame = 0
+  88              		@ frame_needed = 0, uses_anonymous_args = 0
+  89 0000 10B5     		push	{r4, lr}
+  90              	.LCFI2:
+  91              		.cfi_def_cfa_offset 8
+  92              		.cfi_offset 4, -8
+  93              		.cfi_offset 14, -4
+  30:Dsp/at24cxx.c **** 	static uint8_t last = 1;
+  31:Dsp/at24cxx.c **** 
+  32:Dsp/at24cxx.c **** 	if (flag == 1)
+  94              		.loc 1 32 0
+  95 0002 0E4B     		ldr	r3, .L9
+  96 0004 1B78     		ldrb	r3, [r3]
+  97 0006 012B     		cmp	r3, #1
+  98 0008 04D0     		beq	.L8
+  99              	.L7:
+  33:Dsp/at24cxx.c **** 	{
+  34:Dsp/at24cxx.c **** 		if (last)
+  35:Dsp/at24cxx.c **** 		{
+  36:Dsp/at24cxx.c **** 			AT24CXX_Read(0, I2c_Read, 5);
+  37:Dsp/at24cxx.c **** 			I2c_last = atoi((char*)I2c_Read);
+  38:Dsp/at24cxx.c **** 			last = 0;
+  39:Dsp/at24cxx.c **** 		}
+  40:Dsp/at24cxx.c **** 	}
+  41:Dsp/at24cxx.c **** 	else
+  42:Dsp/at24cxx.c **** 	{
+  43:Dsp/at24cxx.c **** 	}
+  44:Dsp/at24cxx.c **** 
+  45:Dsp/at24cxx.c **** 	GPIOA->BRR = 1 << 0;   //beep
+ 100              		.loc 1 45 0
+ 101 000a 9023     		movs	r3, #144
+ 102 000c DB05     		lsls	r3, r3, #23
+ 103 000e 0122     		movs	r2, #1
+ 104 0010 9A62     		str	r2, [r3, #40]
+  46:Dsp/at24cxx.c **** }
+ 105              		.loc 1 46 0
+ 106              		@ sp needed
+ 107 0012 10BD     		pop	{r4, pc}
+ 108              	.L8:
+  34:Dsp/at24cxx.c **** 		{
+ 109              		.loc 1 34 0
+ 110 0014 0A4B     		ldr	r3, .L9+4
+ 111 0016 1B78     		ldrb	r3, [r3]
+ 112 0018 002B     		cmp	r3, #0
+ 113 001a F6D0     		beq	.L7
+  36:Dsp/at24cxx.c **** 			I2c_last = atoi((char*)I2c_Read);
+ 114              		.loc 1 36 0
+ 115 001c 094C     		ldr	r4, .L9+8
+ 116 001e 0522     		movs	r2, #5
+ 117 0020 2100     		movs	r1, r4
+ 118 0022 0020     		movs	r0, #0
+ 119 0024 FFF7FEFF 		bl	AT24CXX_Read
+ 120              	.LVL2:
+  37:Dsp/at24cxx.c **** 			last = 0;
+ 121              		.loc 1 37 0
+ 122 0028 2000     		movs	r0, r4
+ARM GAS  /tmp/ccgD3NTS.s 			page 4
+
+
+ 123 002a FFF7FEFF 		bl	atoi
+ 124              	.LVL3:
+ 125 002e 064B     		ldr	r3, .L9+12
+ 126 0030 1880     		strh	r0, [r3]
+  38:Dsp/at24cxx.c **** 		}
+ 127              		.loc 1 38 0
+ 128 0032 034B     		ldr	r3, .L9+4
+ 129 0034 0022     		movs	r2, #0
+ 130 0036 1A70     		strb	r2, [r3]
+ 131 0038 E7E7     		b	.L7
+ 132              	.L10:
+ 133 003a C046     		.align	2
+ 134              	.L9:
+ 135 003c 00000000 		.word	flag
+ 136 0040 00000000 		.word	.LANCHOR1
+ 137 0044 00000000 		.word	I2c_Read
+ 138 0048 00000000 		.word	I2c_last
+ 139              		.cfi_endproc
+ 140              	.LFE38:
+ 142              		.global	last
+ 143              		.comm	I2c_Read,5,4
+ 144              		.global	flag_ec11
+ 145              		.section	.bss.flag_ec11,"aw",%nobits
+ 146              		.set	.LANCHOR0,. + 0
+ 149              	flag_ec11:
+ 150 0000 00       		.space	1
+ 151              		.section	.data.last,"aw",%progbits
+ 154              	last:
+ 155 0000 01       		.byte	1
+ 156              		.section	.data.last.7415,"aw",%progbits
+ 157              		.set	.LANCHOR1,. + 0
+ 160              	last.7415:
+ 161 0000 01       		.byte	1
+ 162              		.text
+ 163              	.Letext0:
+ 164              		.file 2 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/machine/_default_
+ 165              		.file 3 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/lock.h"
+ 166              		.file 4 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/_types.h"
+ 167              		.file 5 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/lib/gcc/arm-none-eabi/7.2.1/include/std
+ 168              		.file 6 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/reent.h"
+ 169              		.file 7 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/_stdint.h"
+ 170              		.file 8 "/home/xiao/Tool/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/stdlib.h"
+ 171              		.file 9 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
+ 172              		.file 10 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/stm32f030x6.h"
+ 173              		.file 11 "Dsp/Inc/iic.h"
+ARM GAS  /tmp/ccgD3NTS.s 			page 5
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 at24cxx.c
-     /tmp/cce2CK4i.s:16     .text.at24c02_adc_write:0000000000000000 $t
-     /tmp/cce2CK4i.s:23     .text.at24c02_adc_write:0000000000000000 at24c02_adc_write
-     /tmp/cce2CK4i.s:61     .text.at24c02_adc_write:0000000000000020 $d
-     /tmp/cce2CK4i.s:67     .text.at24c02_adc_read:0000000000000000 $t
-     /tmp/cce2CK4i.s:74     .text.at24c02_adc_read:0000000000000000 at24c02_adc_read
-     /tmp/cce2CK4i.s:116    .text.at24c02_adc_read:000000000000002c $d
-     /tmp/cce2CK4i.s:135    .bss.flag_ec11:0000000000000000 flag_ec11
-     /tmp/cce2CK4i.s:129    .bss.I2c_Read:0000000000000000 I2c_Read
-     /tmp/cce2CK4i.s:130    .bss.I2c_Read:0000000000000000 $d
-     /tmp/cce2CK4i.s:136    .bss.flag_ec11:0000000000000000 $d
-     /tmp/cce2CK4i.s:138    .rodata.at24c02_adc_read.str1.4:0000000000000000 $d
+     /tmp/ccgD3NTS.s:16     .text.at24c02_adc_write:0000000000000000 $t
+     /tmp/ccgD3NTS.s:23     .text.at24c02_adc_write:0000000000000000 at24c02_adc_write
+     /tmp/ccgD3NTS.s:70     .text.at24c02_adc_write:0000000000000030 $d
+     /tmp/ccgD3NTS.s:76     .text.at24c02_adc_read:0000000000000000 $t
+     /tmp/ccgD3NTS.s:83     .text.at24c02_adc_read:0000000000000000 at24c02_adc_read
+     /tmp/ccgD3NTS.s:135    .text.at24c02_adc_read:000000000000003c $d
+                            *COM*:0000000000000005 I2c_Read
+     /tmp/ccgD3NTS.s:154    .data.last:0000000000000000 last
+     /tmp/ccgD3NTS.s:149    .bss.flag_ec11:0000000000000000 flag_ec11
+     /tmp/ccgD3NTS.s:150    .bss.flag_ec11:0000000000000000 $d
+     /tmp/ccgD3NTS.s:160    .data.last.7415:0000000000000000 last.7415
 
 UNDEFINED SYMBOLS
-EEPROM_WriteBytes
+itoa
+AT24CXX_Write
 I2c_Write
-puts
-EEPROM_ReadBytes
-printf
+AT24CXX_Read
+atoi
 flag
+I2c_last

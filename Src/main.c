@@ -99,19 +99,19 @@ void Task_main(void)
 
 	if (Task_Delay[3] == 0)
 	{
-		adc_entry();
+		at24c02_adc_write();
 		Task_Delay[3] = 300;
 	}
 
 	if (Task_Delay[4] == 0)
 	{
-		at24c02_adc_write();
-		Task_Delay[4] = 800;
+		at24c02_adc_read();
+		Task_Delay[4] = 500;
 	}
 	if (Task_Delay[5] == 0)
 	{
-	//	at24c02_adc_read();
-		Task_Delay[5] = 1000;
+		adc_entry();
+		Task_Delay[5] = 800;
 	}
 }
 

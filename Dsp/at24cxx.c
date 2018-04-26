@@ -1,15 +1,23 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "stm32f0xx_hal.h"
 #include "iic.h"
 
 extern uint8_t flag;
-extern uint8_t I2c_Write;
-uint8_t I2c_Read = 0;
+extern uint16_t I2c_last;
+extern uint16_t I2c_Write;
 uint8_t flag_ec11 = 0; 
+uint8_t I2c_Read[5];
+uint8_t last = 1;
+
 void at24c02_adc_write(void)
 {
+	char str[5];
+
 	if (flag_ec11 == 1)
 	{
-		EEPROM_WriteBytes(&I2c_Write, 0, 256);
+		itoa(I2c_Write, str, 10);
+		AT24CXX_Write(0, (uint8_t*)str, 5);
 		flag_ec11 = 0;
 	}
 	else
@@ -19,13 +27,23 @@ void at24c02_adc_write(void)
 
 void at24c02_adc_read(void)
 {
+	static uint8_t last = 1;
+
 	if (flag == 1)
 	{
-		EEPROM_ReadBytes(&I2c_Read, 0, 256);
-		printf("2c%d\r\n", I2c_Read);
+		if (last)
+		{
+			AT24CXX_Read(0, I2c_Read, 5);
+			I2c_last = atoi((char*)I2c_Read);
+			last = 0;
+		}
 	}
 	else
 	{
-		printf("error\r\n");
 	}
+
+	GPIOA->BRR = 1 << 0;   //beep
 }
+
+
+

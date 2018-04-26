@@ -44,6 +44,7 @@ void branches_bt(void)
 {
 	uint16_t store = 0, nu = 0, store_t = 0, nu_t = 0;
 	uint8_t i;
+
 	store = adc_cont;
 	store_t = adc_target;
 	

@@ -6,7 +6,8 @@
 
 extern uint16_t adc_cont;
 extern uint16_t adc_target;
-uint8_t I2c_Write = 0;
+uint16_t I2c_last = 0;
+uint16_t I2c_Write = 0;
 uint16_t add = 0;
 uint16_t add_t = 0;
 //uint16_t t_pid = 1;
@@ -29,7 +30,7 @@ float LinearValue(uint16_t arr[], uint16_t Value, uint8_t mid)
 {
 	float temper;
 	
-	temper = (float)(Value - arr[mid])/(arr[mid + 1] - arr[mid]) + mid;
+	temper = (float)(Value - arr[mid]) / (arr[mid + 1] - arr[mid]) + mid;
 	
 	return temper;
 }
@@ -37,6 +38,7 @@ float LinearValue(uint16_t arr[], uint16_t Value, uint8_t mid)
 float Temperature(uint16_t arr[], uint16_t Value, uint8_t len)
 {
 	uint16_t max, mid, min;
+
 	min = 0;
 	max = len - 1;
 	mid = (max + min) / 2;
@@ -135,20 +137,44 @@ void insert_sort(void)
 
 void adc_entry(void)
 {
-	static int16_t m1 = 0;
+	static int16_t m1 = 0, cn = 0;
+	static int16_t a = 0;
+	static int16_t a_stat = 0;
 	int16_t m = 0; 
+
 	m = ADC1->DR * 0.8 + m1 * 0.2;
 	m1 = ADC1->DR;
 	adc_cont = Temperature(ad, m, 101) * 10;
-	I2c_Write = adc_cont / 10;
-}
 
+	a = adc_target - adc_cont;
+	cn++;
+
+	switch (a_stat)
+	{
+		case 0:
+			if (2 < cn)
+			{
+				a_stat = 1;
+				cn = 0;
+			}
+			break;
+		case 1:
+			if (a < -10)
+			{
+				GPIOA->BSRR = 1 << 0;   //beep
+			}
+			break;
+		default:
+			break;
+	}
+
+}
 
 
 void adc_pid(void)
 {
 	static int16_t iError = 0, sumError = 0, dError = 0, LastError = 0;
-	static uint16_t  SetPoint = 0, SetPoint1 = 710;
+	static uint16_t  SetPoint = 0;
 	//int16_t kp_c = 130, ki_c = 650;
 	//static int16_t k = 0;
 	static uint16_t kp = 0;
@@ -157,23 +183,22 @@ void adc_pid(void)
 	int16_t t = 0; 
 	int16_t	adc_value = 0, NextPoint = 0; 
 	
-	SetPoint = SetPoint1 + add + add_t; // + add_h;
+	SetPoint = I2c_last + add + add_t; 
 
 	if (1000 < SetPoint)
 	{
-		SetPoint1 = 1000;
+		I2c_last = 1000;
 		add = 0;
 		add_t = 0;
-		//add_h = 0;
 	}
 	if (100 > SetPoint)
 	{
-		SetPoint1 = 100;
+		I2c_last = 100;
 		add = 0;
 		add_t = 0;
-		//add_h = 0;
 	}
 	adc_target = SetPoint;
+	I2c_Write = SetPoint;
 	
 /*
 	if (t_pid == 1)
@@ -191,43 +216,47 @@ void adc_pid(void)
 	t = ADC1->DR * 0.8 + t1 * 0.2;
 	t1 = ADC1->DR;
 	NextPoint = Temperature(ad, t, 101) * 10;
-//	I2c_Write = NextPoint / 10;
 
-	if (400 >= NextPoint && 200 < NextPoint)
+	if (300 >= NextPoint && 150 < NextPoint)
 	{
-		kp = 35, ki = 0.147;
+		kp = 27.5, ki = 0.130;
+	}
+	if (400 >= NextPoint && 300 < NextPoint)
+	{
+		kp = 25.0, ki = 0.132;
 	}
 	else if (500 >= NextPoint && 400 < NextPoint)
 	{
-		kp = 30, ki = 0.154;
+		kp = 24.0, ki = 0.145;
 	}
 	else if (600 >= NextPoint && 500 < NextPoint)
 	{
-		kp = 25, ki = 0.175;
+		kp = 20, ki = 0.145;
 	}
 	else if (700 >= NextPoint && 600 < NextPoint)
 	{
-		kp = 20, ki = 0.185;
+		kp = 16.5, ki = 0.145;
 	}
 	else if (800 >= NextPoint && 700 < NextPoint)
 	{
-		kp = 16, ki = 0.195;
+		kp = 13.5, ki = 0.155;
 	}
 	else if (900 >= NextPoint && 800 < NextPoint)
 	{
-		kp = 15, ki = 0.205;
+		kp = 9.5, ki = 0.158;
 	}
 	else if (950 >= NextPoint && 900 < NextPoint)
 	{
-		kp = 8, ki = 0.210;
+		kp = 8.5, ki = 0.170;
 	}
 	else if (1000 >= NextPoint && 950 < NextPoint)
 	{
-		kp = 8, ki = 0.240;
+		kp = 8, ki = 0.175;
 	}
 	else
 	{
-		kp = 0, ki = 0;
+	//	kp = 0, ki = 0;
+	//	printf("re\r\n");
 	}
 
 	iError = SetPoint - NextPoint;
@@ -247,7 +276,6 @@ void adc_pid(void)
 	LastError = iError;
 	
 	adc_value = kp * iError + ki * sumError + kd * dError;
-	//printf("adc_va:%d\r\n", adc_value);
 	if (4700 < adc_value)
 	{
 		adc_value = 4700;
@@ -258,7 +286,6 @@ void adc_pid(void)
 		adc_value = 0;
 	} 
 
-	//printf("pid:%d\r\n", adc_value);	
 	TIM3->CCR4 = adc_value;
 }
 
