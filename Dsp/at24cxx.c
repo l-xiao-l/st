@@ -3,12 +3,11 @@
 #include "stm32f0xx_hal.h"
 #include "iic.h"
 
-extern uint8_t flag;
-extern uint16_t I2c_last;
-extern uint16_t I2c_Write;
-uint8_t flag_ec11 = 0; 
+extern uint8_t flag;           //ec11.c
+extern uint16_t I2c_last;      //table.c
+extern uint16_t I2c_Write;     //table.c
+uint8_t flag_ec11 = 0; 	       //ec11.c
 uint8_t I2c_Read[5];
-uint8_t last = 1;
 
 void at24c02_adc_write(void)
 {
