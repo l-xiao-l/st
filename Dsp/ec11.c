@@ -12,6 +12,7 @@ extern uint16_t add;    //table.c
 extern uint16_t add_t;  //table.c
 //extern uint8_t t_pid;
 extern uint8_t flag_ec11;  //at24cxx.c
+extern uint8_t flag_exti0;  //at24cxx.c
 static uint8_t t = 1;
 
 
@@ -19,7 +20,7 @@ void ec11_irq_handler(void)
 {
 	if (EXTI->PR & (0x000000001 << 9))
 	{
-		if (GPIOA->IDR&GPIO_PIN_10)
+		if (GPIOA->IDR & GPIO_PIN_10)
 		{
 
 			if (t == 0)
@@ -43,7 +44,7 @@ void ec11_irq_handler(void)
 				add--;
 			}
 		}
-
+		flag_exti0 = 1;
 	}
 	EXTI->PR |= (0x00000001 << 9);
 
