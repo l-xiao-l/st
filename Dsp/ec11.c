@@ -8,10 +8,10 @@
 #define S5 0x05
 
 
-extern uint16_t add;
-extern uint16_t add_t;
+extern uint16_t add;    //table.c
+extern uint16_t add_t;  //table.c
 //extern uint8_t t_pid;
-extern uint8_t flag_ec11;
+extern uint8_t flag_ec11;  //at24cxx.c
 static uint8_t t = 1;
 
 
